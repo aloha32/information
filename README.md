@@ -8,3 +8,5 @@
 [larry(CUDA、pytorch、pycharm)](https://www.bilibili.com/video/BV1VZ421a7rh/)
 # 深度学习缝模块
 [larry](https://www.bilibili.com/video/BV1yx421C7MS/)
+# 动手学深度学习 PyTorch版（强推！！！）
+[李沐，沐神亲自授课，全面且专业，还配备电子书](https://space.bilibili.com/1567748478/channel/seriesdetail?sid=358497)
