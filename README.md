@@ -31,10 +31,10 @@
 - 期刊等级查询
 
   1. 中科院/JCR分区:
-    1. [官网，个人推荐扫码免费查询](https://www.fenqubiao.com/)
-    2. [中科院分区和JCR分区查询](https://blog.csdn.net/xingmeng416/article/details/105921968)
-    3. [LetPub:影响因子、投稿经验、分区](https://www.letpub.com.cn/index.php?page=./journalapp)
-    4. [easyscholar插件-edge版](https://microsoftedge.microsoft.com/addons/detail/easyscholar/bpepicgagmdchlkjjeeiekpoafehpagm?hl=zh-CN)
+      1. [官网，个人推荐扫码免费查询](https://www.fenqubiao.com/)
+      2. [中科院分区和JCR分区查询](https://blog.csdn.net/xingmeng416/article/details/105921968)
+      3. [LetPub:影响因子、投稿经验、分区](https://www.letpub.com.cn/index.php?page=./journalapp)
+      4. [easyscholar插件-edge版](https://microsoftedge.microsoft.com/addons/detail/easyscholar/bpepicgagmdchlkjjeeiekpoafehpagm?hl=zh-CN)
 
 ## 如何精读论文
 论文一般分为四个部分，introduction、related work、method 、experiment 。
