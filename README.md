@@ -11,7 +11,7 @@
 # 动手学深度学习 PyTorch版（强推！！！）
 [李沐，沐神亲自授课，全面且专业，还配备电子书](https://space.bilibili.com/1567748478/channel/seriesdetail?sid=358497)
 
-# 学术启蒙[bilibili视频](https://www.bilibili.com/list/watchlater?oid=113504577197887&bvid=BV1dhUxYtEvY)
+# 学术启蒙（[bilibili视频](https://www.bilibili.com/list/watchlater?oid=113504577197887&bvid=BV1dhUxYtEvY)）
 ## 如何找学术论文
 ### [首推Google scholar](https://scholar.google.com/)
 - 可根据时间线、关键词搜索
@@ -25,18 +25,20 @@
 
 ### 识别是否值得精读
 - 会议等级查询
-[会伴 Conference Partner](https://www.myhuiban.com/?lang=zh_cn)
+  
+  [会伴 Conference Partner](https://www.myhuiban.com/?lang=zh_cn)
 
 - 期刊等级查询
 
-中科院/JCR分区:
-[官网，个人推荐扫码免费查询](https://www.fenqubiao.com/)
-
-[中科院分区和JCR分区查询](https://blog.csdn.net/xingmeng416/article/details/105921968)
-
-[LetPub:影响因子、投稿经验、分区](https://www.letpub.com.cn/index.php?page=./journalapp)
-
-[easyscholar插件-edge版](https://microsoftedge.microsoft.com/addons/detail/easyscholar/bpepicgagmdchlkjjeeiekpoafehpagm?hl=zh-CN)
+  中科院/JCR分区:
+  
+  [官网，个人推荐扫码免费查询](https://www.fenqubiao.com/)
+  
+  [中科院分区和JCR分区查询](https://blog.csdn.net/xingmeng416/article/details/105921968)
+  
+  [LetPub:影响因子、投稿经验、分区](https://www.letpub.com.cn/index.php?page=./journalapp)
+  
+  [easyscholar插件-edge版](https://microsoftedge.microsoft.com/addons/detail/easyscholar/bpepicgagmdchlkjjeeiekpoafehpagm?hl=zh-CN)
 
 ## 如何精读论文
 论文一般分为四个部分，introduction、related work、method 、experiment 。
@@ -47,7 +49,9 @@ introduction部分一般主要关注研究难点、技术难点、本文主要�
 
 experiment部分一般主要关注对比试验、消融实验、（参数实验、效率实验）、case study。
 
-决定这篇论文写的好不好的关键：从introduction提炼出的点有没有反馈到related work以及case studey中、本文的主要贡献有没有对应到method和对比试验的小章节中去。
+决定这篇论文写的好不好的关键：
+1. 从introduction提炼出的点有没有反馈到related work以及case studey中
+2. 本文的主要贡献有没有对应到method和对比试验的小章节中去。
 
 ## 如何做组会报告
 - 关注文章出处、作者团队
