@@ -13,32 +13,32 @@
 
 # 学术启蒙（[bilibili视频](https://www.bilibili.com/list/watchlater?oid=113504577197887&bvid=BV1dhUxYtEvY)）
 ## 如何找学术论文
-### [首推Google scholar](https://scholar.google.com/)
+1. [首推Google scholar](https://scholar.google.com/)
 - 可根据时间线、关键词搜索
 - follow 学术大牛
 - 关键词为大领域时，看好文章（顶会、顶刊）。小领域或紧相关工作时，主要看小同行们现在都在哪个方向努力，哪种技术路线热门。
 
-### [从数据集找论文（papers with code）](https://paperswithcode.com/)
+2. [从数据集找论文（papers with code）](https://paperswithcode.com/)
 - 查询最新公开数据集的最新文章
 
-### follow 重点课题组
+3. follow 重点课题组
 
-### 识别是否值得精读
+## 识别是否值得精读
 - 会议等级查询
   
-  [会伴 Conference Partner](https://www.myhuiban.com/?lang=zh_cn)
+  1. [会伴 Conference Partner](https://www.myhuiban.com/?lang=zh_cn)
 
 - 期刊等级查询
 
-  中科院/JCR分区:
+  1. 中科院/JCR分区:
   
-  [官网，个人推荐扫码免费查询](https://www.fenqubiao.com/)
+  1. [官网，个人推荐扫码免费查询](https://www.fenqubiao.com/)
   
-  [中科院分区和JCR分区查询](https://blog.csdn.net/xingmeng416/article/details/105921968)
+  2. [中科院分区和JCR分区查询](https://blog.csdn.net/xingmeng416/article/details/105921968)
   
-  [LetPub:影响因子、投稿经验、分区](https://www.letpub.com.cn/index.php?page=./journalapp)
+  3. [LetPub:影响因子、投稿经验、分区](https://www.letpub.com.cn/index.php?page=./journalapp)
   
-  [easyscholar插件-edge版](https://microsoftedge.microsoft.com/addons/detail/easyscholar/bpepicgagmdchlkjjeeiekpoafehpagm?hl=zh-CN)
+  4. [easyscholar插件-edge版](https://microsoftedge.microsoft.com/addons/detail/easyscholar/bpepicgagmdchlkjjeeiekpoafehpagm?hl=zh-CN)
 
 ## 如何精读论文
 论文一般分为四个部分，introduction、related work、method 、experiment 。
@@ -46,6 +46,7 @@
 introduction部分一般主要关注研究难点、技术难点、本文主要贡献。
 - 研究难点：从研究背景提炼
 - 技术难点：从技术路线提炼
+- 本文主要贡献
 
 experiment部分一般主要关注对比试验、消融实验、（参数实验、效率实验）、case study。
 
