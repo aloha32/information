@@ -69,3 +69,8 @@ experiment部分一般主要关注对比试验、消融实验、（参数实验�
 ## 如何入门
 1. 站在课题组已有课题的肩膀上
 2. 多读论文
+
+
+
+## 如何通过api使用AI大模型
+[datawhale(前半小时即可)](https://www.bilibili.com/video/BV1oek1YvE74/)
