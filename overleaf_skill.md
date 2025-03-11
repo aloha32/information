@@ -7,7 +7,7 @@
 
 ## 一般不建立空白项目，上传官网模板zip。
 - 空一行表示换行
-- \section{} 表示罗马大标题Ⅰ、Ⅱ、Ⅲ。
+- `\section{}` 表示罗马大标题Ⅰ、Ⅱ、Ⅲ。
 - \subsection{} 表示二级标题，即ABCD
 - 公式书写用 \begin{equation}  \end{equation} 包裹起来。
 - 表格书写用 \begin{table}  \end{table} 包裹起来。
@@ -15,10 +15,10 @@
 
 ## 参考文献
 在最后加上
-
+```
 \bibliographystyle{IEEEtran}      # IEEEtran指文章所用格式，bst文件
 \bibliography{Mybib}              # Mybib指参考文献放在的文件中，bib文件
-
+```
 两行代码
 
 谷歌学术进行引用时可以选择BibTex格式，粘贴至bib文件即可。
