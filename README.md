@@ -76,3 +76,21 @@ experiment部分一般主要关注对比试验、消融实验、（参数实验�
 ## 如何通过api使用AI大模型
 [datawhale(前半小时即可)](https://www.bilibili.com/video/BV1oek1YvE74/)
 
+## 如何选刊
+### [如何选到接受率高-速度快-适合自己的期刊](https://www.bilibili.com/video/BV1Xt421G7S8/)
+- [PubMed](https://pubmed.ncbi.nlm.nih.gov/):收录了来自 MEDLINE、生命科学期刊和在线书籍的超过 3700 万篇生物医学文献引用。引文可能包括来自 PubMed Central 和出版商网站的全文内容的链接。
+- **[jane](https://jane.biosemantics.org/)**:输入论文标题或摘要即可自动匹配
+
+### [文章写完了怎么找合适的期刊？]([https://www.bilibili.com/video/BV1Xt421G7S8/](https://www.bilibili.com/video/BV1TN4y1f73p/))
+- [LetPub](https://www.letpub.com.cn/index.php?page=journalapp):输入期刊名或者ISSN可以详细查看影响因子、自引率等。**自引率增长或过高可能会成为预警。**是否OA开发此项不准，应去官网自行查看。年文章数过少不宜投稿。面文章数过高同时自引率高会容易预警。
+- [爱科学]([https://www.iikx.com/sci/](https://www.iikx.com/sci/list.html?classid=18&orderby=IF2024&ph=1&jcr21=%E8%AE%A1%E7%AE%97%E6%9C%BA%EF%BC%9A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD))：必须输入期刊名。好像只有JCR分区。
+- [梅斯](https://www.medsci.cn/sci/index.do?big_class_id=6&bigclass=%E5%B7%A5%E7%A8%8B%E6%8A%80%E6%9C%AF&page=1&type=sci&small_class_id=445&smallclass=%E8%AE%A1%E7%AE%97%E6%9C%BA%EF%BC%9A%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD)：投稿命中率及审稿周期需要会员才能看。出版周期也可以参考，越频繁越好。流氓网站，不登记信息不给用。
+- [根哥学术](https://www.geenmedical.com/login)：需要账号。似乎很久未更新。优点：提供国人发稿量
+- [爱思维尔](https://journalfinder.elsevier.com/)：同Jane，可以通过标题，摘要，关键字进行推荐，需要进行自我甄别，有可能有无关期刊混入。这里的推荐期刊大部分都是既可以OA也可以非OA。Jane比爱思维尔好一点。
+- [journal guide](https://www.journalguide.com/)：输入标题，摘要。影响因子、是否开源不准。
+- [ijournal](https://ijournal.topeditsci.com/home)
+- [维普期刊查询系统](https://datauthor.com/)：中英文均可，输入标题，摘要，关键词。需要登陆。提供的信息和letpub、爱科学差不多。
+- [科研兔](https://researchrabbitapp.com/home)：可以通过查看谁引用了目标文章，总而找到类似的期刊。
+- []()
+[]()
+[]()
