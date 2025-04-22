@@ -341,9 +341,10 @@ YOLOv8凭借其高速、高精度、多尺度处理能力及工业友好性，�
 ### 总结 
 DAM的三个关键组件共同实现了动态采样、跨尺度建模与高效计算的平衡，使其在目标检测、图像分类等任务中表现卓越。其设计思想为工业检测（如阳极化膜检测）中的复杂场景提供了重要技术支撑。
 
-# YOLOv8架构图
+# YOLOv8架构图(https://github.com/ultralytics/ultralytics/issues/189)
 
-![YOLOv8_structure_v1.6](https://private-user-images.githubusercontent.com/27466624/239739723-57391d0f-1848-4388-9f30-88c2fb79233f.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDQ2Nzg4NDEsIm5iZiI6MTc0NDY3ODU0MSwicGF0aCI6Ii8yNzQ2NjYyNC8yMzk3Mzk3MjMtNTczOTFkMGYtMTg0OC00Mzg4LTlmMzAtODhjMmZiNzkyMzNmLmpwZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA0MTUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNDE1VDAwNTU0MVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWI2M2UyODQ0YzhhMjc3Njc5MTZjZWNkM2ZhZDhlZjM0MGZkMDA4ZDRjZDU4NWE5OTZhNzFkMDQ3ZTVhMmYzMTImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.obUINsnYjCrwq96bUSw85LLm_Ts0d0Co7O6XDJJ4tUE)
+![image](https://github.com/user-attachments/assets/858c8301-4256-497d-8a73-2f6189eb1bb2)
+
 
 ![image-20250415085829227](C:\Users\gaojixue\AppData\Roaming\Typora\typora-user-images\image-20250415085829227.png)
 
