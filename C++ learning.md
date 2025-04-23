@@ -1293,3 +1293,1006 @@ int &ref = a;  // ref 是 a 的引用
 | **数组与引用**          | 不能直接创建引用数组，但可以创建数组的引用，例如：`int (&ref)[10] = arr;` | 可以创建指针数组，也可以创建指向数组的指针，例如：`int *ptrArr[10];` |
 | **安全性**              | 更安全，不能为 `null`，且语法更直观。                        | 更灵活，但容易出错（如空指针、野指针等）。                   |
 | **底层实现**            | 通常通过指针实现，但编译器会优化为直接操作所引用的对象。     | 直接存储目标对象的内存地址。                                 |
+
+引用通常用于函数参数列表和函数返回值。下面列出了 C++ 程序员必须清楚的两个与 C++ 引用相关的重要概念：
+
+| 概念                                                         | 描述                                                     |
+| :----------------------------------------------------------- | :------------------------------------------------------- |
+| [把引用作为参数](https://www.runoob.com/cplusplus/passing-parameters-by-references.html) | C++ 支持把引用作为参数传给函数，这比传一般的参数更安全。 |
+| [把引用作为返回值](https://www.runoob.com/cplusplus/returning-values-by-reference.html) | 可以从 C++ 函数中返回引用，就像返回其他数据类型一样。    |
+
+## 结构体（struct）
+
+在 C++ 中，struct 语句用于定义结构体（structure）。
+
+结构体是一种用户自定义的数据类型，用于将不同类型的数据组合在一起。与类（class）类似，结构体允许你定义成员变量和成员函数。
+
+为了定义结构，您必须使用 **struct** 语句。struct 语句定义了一个包含多个成员的新的数据类型，struct 语句的格式如下：
+
+```cpp
+struct type_name {
+member_type1 member_name1;
+member_type2 member_name2;
+member_type3 member_name3;
+.
+.
+} object_names;
+```
+
+**type_name** 是结构体类型的名称，**member_type1 member_name1** 是标准的变量定义，比如 **int i;** 或者 **float f;** 或者其他有效的变量定义。在结构定义的末尾，最后一个分号之前，您可以指定一个或多个结构变量，这是可选的。下面是声明一个结构体类型 **Books**，变量为 **book**：
+
+```cpp
+struct Books
+{
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+} book;
+```
+
+为了访问结构的成员，我们使用**成员访问运算符（.）**。成员访问运算符是结构变量名称和我们要访问的结构成员之间的一个句号。
+
+```cpp
+#include <iostream>
+#include <cstring>
+ 
+using namespace std;
+ 
+// 声明一个结构体类型 Books 
+struct Books
+{
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+};
+ 
+int main( )
+{
+   Books Book1;        // 定义结构体类型 Books 的变量 Book1
+   Books Book2;        // 定义结构体类型 Books 的变量 Book2
+ 
+   // Book1 详述
+   strcpy( Book1.title, "C++ 教程");
+   strcpy( Book1.author, "Runoob"); 
+   strcpy( Book1.subject, "编程语言");
+   Book1.book_id = 12345;
+ 
+   // Book2 详述
+   strcpy( Book2.title, "CSS 教程");
+   strcpy( Book2.author, "Runoob");
+   strcpy( Book2.subject, "前端技术");
+   Book2.book_id = 12346;
+ 
+   // 输出 Book1 信息
+   cout << "第一本书标题 : " << Book1.title <<endl;
+   cout << "第一本书作者 : " << Book1.author <<endl;
+   cout << "第一本书类目 : " << Book1.subject <<endl;
+   cout << "第一本书 ID : " << Book1.book_id <<endl;
+ 
+   // 输出 Book2 信息
+   cout << "第二本书标题 : " << Book2.title <<endl;
+   cout << "第二本书作者 : " << Book2.author <<endl;
+   cout << "第二本书类目 : " << Book2.subject <<endl;
+   cout << "第二本书 ID : " << Book2.book_id <<endl;
+ 
+   return 0;
+}
+```
+
+您可以把结构作为函数参数，传参方式与其他类型的变量或指针类似。
+
+```cpp
+#include <iostream>
+#include <cstring>
+ 
+using namespace std;
+void printBook( struct Books book );
+ 
+// 声明一个结构体类型 Books 
+struct Books
+{
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+};
+ 
+int main( )
+{
+   Books Book1;        // 定义结构体类型 Books 的变量 Book1
+   Books Book2;        // 定义结构体类型 Books 的变量 Book2
+ 
+    // Book1 详述
+   strcpy( Book1.title, "C++ 教程");
+   strcpy( Book1.author, "Runoob"); 
+   strcpy( Book1.subject, "编程语言");
+   Book1.book_id = 12345;
+ 
+   // Book2 详述
+   strcpy( Book2.title, "CSS 教程");
+   strcpy( Book2.author, "Runoob");
+   strcpy( Book2.subject, "前端技术");
+   Book2.book_id = 12346;
+ 
+   // 输出 Book1 信息
+   printBook( Book1 );
+ 
+   // 输出 Book2 信息
+   printBook( Book2 );
+ 
+   return 0;
+}
+void printBook( struct Books book )
+{
+   cout << "书标题 : " << book.title <<endl;
+   cout << "书作者 : " << book.author <<endl;
+   cout << "书类目 : " << book.subject <<endl;
+   cout << "书 ID : " << book.book_id <<endl;
+}
+```
+
+### 结构体的各个部分详细介绍
+
+- **struct 关键字：**用于定义结构体，它告诉编译器后面要定义的是一个自定义类型。
+- **成员变量：**成员变量是结构体中定义的数据项，它们可以是任何基本类型或其他自定义类型。在 struct 中，这些成员默认是 public，可以直接访问。
+- **成员函数：**结构体中也可以包含成员函数，这使得结构体在功能上类似于类。成员函数可以操作结构体的成员变量，提供对数据的封装和操作。
+- **访问权限：**与 class 类似，你可以在 struct 中使用 public、private 和 protected 来定义成员的访问权限。在 struct 中，默认所有成员都是 public，而 class 中默认是 private。
+
+### 指向结构的指针
+
+您可以定义指向结构的指针，方式与定义指向其他类型变量的指针相似:
+
+```cpp
+struct Books *struct_pointer;
+```
+
+可以在上述定义的指针变量中存储结构变量的地址。为了查找结构变量的地址，请把 **&** 运算符放在结构名称的前面:
+
+```cpp
+struct_pointer = &Book1;
+```
+
+为了使用指向该结构的指针访问结构的成员，您必须使用 **->** 运算符:
+
+```cpp
+struct_pointer->title;
+```
+
+```cpp
+#include <iostream>
+#include <string>
+ 
+using namespace std;
+ 
+// 声明一个结构体类型 Books 
+struct Books
+{
+    string title;
+    string author;
+    string subject;
+    int book_id;
+ 
+    // 构造函数
+    Books(string t, string a, string s, int id)
+        : title(t), author(a), subject(s), book_id(id) {}
+};
+ 
+// 打印书籍信息的函数，接受一个指向 Books 结构体的指针
+void printBookInfo(const Books* book) {
+    cout << "书籍标题: " << book->title << endl;
+    cout << "书籍作者: " << book->author << endl;
+    cout << "书籍类目: " << book->subject << endl;
+    cout << "书籍 ID: " << book->book_id << endl;
+}
+ 
+int main()
+{
+    // 创建两本书的对象
+    Books Book1("C++ 教程", "Runoob", "编程语言", 12345);
+    Books Book2("CSS 教程", "Runoob", "前端技术", 12346);
+ 
+    // 使用指针指向这两本书的对象
+    Books* ptrBook1 = &Book1;
+    Books* ptrBook2 = &Book2;
+ 
+    // 输出书籍信息，传递指针
+    printBookInfo(ptrBook1);
+    printBookInfo(ptrBook2);
+ 
+    return 0;
+}
+```
+
+### typedef 关键字
+
+为创建的类型取一个"别名":
+
+```cpp
+typedef struct Books
+{
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+}Books;
+```
+
+直接使用 *Books* 来定义 *Books* 类型的变量，而不需要使用 struct 关键字。
+
+```cpp
+Books Book1, Book2;
+```
+
+可以使用 **typedef** 关键字来定义非结构类型:
+
+```cpp
+typedef long int *pint32;
+ 
+pint32 x, y, z;
+```
+
+### 结构体与类的区别
+
+在 C++ 中，struct 和 class 本质上非常相似，唯一的区别在于默认的访问权限：
+
+- `struct` 默认的成员和继承是 `public`。
+- `class` 默认的成员和继承是 `private`。
+
+你可以将 `struct` 当作一种简化形式的 `class`，适合用于没有太多复杂功能的简单数据封装。
+
+## vector 容器
+
+C++ 中的 vector 是一种序列容器，它允许你在运行时动态地插入和删除元素。
+
+vector 是基于数组的数据结构，但它可以自动管理内存，这意味着你不需要手动分配和释放内存。
+
+与 C++ 数组相比，vector 具有更多的灵活性和功能，使其成为 C++ 中常用的数据结构之一。
+
+vector 是 C++ 标准模板库（STL）的一部分，提供了灵活的接口和高效的操作。
+
+**基本特性:**
+
+- **动态大小**：`vector` 的大小可以根据需要自动增长和缩小。
+- **连续存储**：`vector` 中的元素在内存中是连续存储的，这使得访问元素非常快速。
+- **可迭代**：`vector` 可以被迭代，你可以使用循环（如 `for` 循环）来访问它的元素。
+- **元素类型**：`vector` 可以存储任何类型的元素，包括内置类型、对象、指针等。
+
+**使用场景：**
+
+- 当你需要一个可以动态增长和缩小的数组时。
+- 当你需要频繁地在序列的末尾添加或移除元素时。
+- 当你需要一个可以高效随机访问元素的容器时。
+
+### 创建vector
+
+导入头文件
+
+```cpp
+#include <vector>
+```
+
+```cpp
+std::vector<int> myVector; // 创建一个存储整数的空 vector
+```
+
+在创建时指定初始大小和初始值：
+
+```cpp
+std::vector<int> myVector(5); // 创建一个包含 5 个整数的 vector，每个值都为默认值（0）
+std::vector<int> myVector(5, 10); // 创建一个包含 5 个整数的 vector，每个值都为 10
+```
+
+或：
+
+```cpp
+std::vector<int> vec; // 默认初始化一个空的 vector
+std::vector<int> vec2 = {1, 2, 3, 4}; // 初始化一个包含元素的 vector
+```
+
+### 添加元素
+
+可以使用 push_back 方法向 vector 中添加元素：
+
+```cpp
+myVector.push_back(7); // 将整数 7 添加到 vector 的末尾
+```
+
+### 访问元素
+
+可以使用下标操作符 [] 或 at() 方法访问 vector 中的元素：
+
+```cpp
+int x = myVector[0]; // 获取第一个元素
+int y = myVector.at(1); // 获取第二个元素
+```
+
+### 获取大小
+
+可以使用 size() 方法获取 vector 中元素的数量：
+
+```cpp
+int size = myVector.size(); // 获取 vector 中的元素数量
+```
+
+### 迭代访问
+
+可以使用迭代器遍历 vector 中的元素：
+
+```cpp
+for (auto it = myVector.begin(); it != myVector.end(); ++it) {
+    std::cout << *it << " ";
+}
+```
+
+或者使用范围循环：
+
+```cpp
+for (int element : myVector) {
+    std::cout << element << " ";
+}
+```
+
+### 删除元素
+
+可以使用 erase() 方法删除 vector 中的元素：
+
+```cpp
+myVector.erase(myVector.begin() + 2); // 删除第三个元素
+```
+
+### 清空 Vector
+
+可以使用 clear() 方法清空 vector 中的所有元素：
+
+```cpp
+myVector.clear(); // 清空 vector
+```
+
+### 实例
+
+```cpp
+#include <iostream>
+#include <vector>
+
+int main() {
+    // 创建一个空的整数向量
+    std::vector<int> myVector;
+
+    // 添加元素到向量中
+    myVector.push_back(3);
+    myVector.push_back(7);
+    myVector.push_back(11);
+    myVector.push_back(5);
+
+    // 访问向量中的元素并输出
+    std::cout << "Elements in the vector: ";
+    for (int element : myVector) {
+        std::cout << element << " ";
+    }
+    std::cout << std::endl;
+
+    // 访问向量中的第一个元素并输出
+    std::cout << "First element: " << myVector[0] << std::endl;
+
+    // 访问向量中的第二个元素并输出
+    std::cout << "Second element: " << myVector.at(1) << std::endl;
+
+    // 获取向量的大小并输出
+    std::cout << "Size of the vector: " << myVector.size() << std::endl;
+
+    // 删除向量中的第三个元素
+    myVector.erase(myVector.begin() + 2);
+
+    // 输出删除元素后的向量
+    std::cout << "Elements in the vector after erasing: ";
+    for (int element : myVector) {
+        std::cout << element << " ";
+    }
+    std::cout << std::endl;
+
+    // 清空向量并输出
+    myVector.clear();
+    std::cout << "Size of the vector after clearing: " << myVector.size() << std::endl;
+
+    return 0;
+}
+```
+
+## 数据结构
+
+常用的数据结构及其特点和用法:
+
+### 1. **数组（Array）**
+
+数组是最基础的数据结构，用于存储一组相同类型的数据。
+
+**特点**：
+
+- 固定大小，一旦声明，大小不能改变。
+- 直接访问元素，时间复杂度为 O(1)。
+- 适合处理大小已知、元素类型相同的集合。
+
+#### 实例
+```
+int arr[5] = {1, 2, 3, 4, 5};
+cout << arr[0]; // 输出第一个元素
+```
+**优缺点**：
+
+- 优点：访问速度快，内存紧凑。
+- 缺点：大小固定，无法动态扩展，不适合处理大小不确定的数据集。
+
+### 2. **结构体（Struct）**
+
+结构体允许将不同类型的数据组合在一起，形成一种自定义的数据类型。
+
+**特点**：
+
+- 可以包含不同类型的成员变量。
+- 提供了对数据的基本封装，但功能有限。
+
+**示例**：
+
+#### 实例
+```
+struct Person {
+  string name;
+  int age;
+};
+Person p = {"Alice", 25};
+cout << p.name << endl; // 输出 Alice
+```
+### 3. **类（Class）**
+
+类是 C++ 中用于面向对象编程的核心结构，允许定义成员变量和成员函数。与 `struct` 类似，但功能更强大，支持继承、封装、多态等特性。
+
+**特点**：
+
+- 可以包含成员变量、成员函数、构造函数、析构函数。
+- 支持面向对象特性，如封装、继承、多态。
+
+#### 实例
+```
+class Person {
+private:
+  string name;
+  int age;
+public:
+  Person(string n, int a) : name(n), age(a) {}
+  void printInfo() {
+    cout << "Name: " << name << ", Age: " << age << endl;
+  }
+};
+Person p("Bob", 30);
+p.printInfo(); // 输出: Name: Bob, Age: 30
+```
+### 4. **链表（Linked List）**
+
+链表是一种动态数据结构，由一系列节点组成，每个节点包含数据和指向下一个节点的指针。
+
+**特点**：
+
+- 动态调整大小，不需要提前定义容量。
+- 插入和删除操作效率高，时间复杂度为 O(1)（在链表头部或尾部操作）。
+- 线性查找，时间复杂度为 O(n)。
+
+#### 实例（单向链表）
+```
+struct Node {
+  int data;
+  Node* next;
+};
+Node* head = nullptr;
+Node* newNode = new Node{10, nullptr};
+head = newNode; // 插入新节点
+```
+**优缺点**：
+
+- 优点：动态大小，适合频繁插入和删除的场景。
+- 缺点：随机访问效率低，不如数组直接访问快。
+
+### 5. **栈（Stack）**
+
+栈是一种后进先出（LIFO, Last In First Out）的数据结构，常用于递归、深度优先搜索等场景。
+
+**特点**：
+
+- 只允许在栈顶进行插入和删除操作。
+- 时间复杂度为 O(1)。
+
+#### 实例
+```
+stack<int> s;
+s.push(1);
+s.push(2);
+cout << s.top(); // 输出 2
+s.pop();
+```
+**优缺点**：
+
+- 优点：操作简单，效率高。
+- 缺点：只能在栈顶操作，访问其他元素需要弹出栈顶元素。
+
+### 6. **队列（Queue）**
+
+队列是一种先进先出（FIFO, First In First Out）的数据结构，常用于广度优先搜索、任务调度等场景。
+
+**特点**：
+
+- 插入操作在队尾进行，删除操作在队头进行。
+- 时间复杂度为 O(1)。
+
+#### 实例
+```
+queue<int> q;
+q.push(1);
+q.push(2);
+cout << q.front(); // 输出 1
+q.pop();
+```
+**优缺点**：
+
+- 优点：适合按顺序处理数据的场景，如任务调度。
+- 缺点：无法随机访问元素。
+
+### 7. **双端队列（Deque）**
+
+双端队列允许在两端进行插入和删除操作，是栈和队列的结合体。
+
+**特点**：
+
+- 允许在两端进行插入和删除。
+- 时间复杂度为 O(1)。
+
+#### 实例
+```
+deque<int> dq;
+dq.push_back(1);
+dq.push_front(2);
+cout << dq.front(); // 输出 2
+dq.pop_front();
+```
+**优缺点**：
+
+- 优点：灵活的双向操作。
+- 缺点：空间占用较大，适合需要在两端频繁操作的场景。
+
+### 8. **哈希表（Hash Table）**
+
+哈希表是一种通过键值对存储数据的数据结构，支持快速查找、插入和删除操作。C++ 中的 `unordered_map` 是哈希表的实现。
+
+**特点**：
+
+- 使用哈希函数快速定位元素，时间复杂度为 O(1)。
+- 不保证元素的顺序。
+
+#### 实例
+```
+unordered_map<string, int> hashTable;
+hashTable["apple"] = 10;
+cout << hashTable["apple"]; // 输出 10
+```
+**优缺点**：
+
+- 优点：查找、插入、删除操作效率高。
+- 缺点：无法保证元素顺序，哈希冲突时性能会下降。
+
+### 9. **映射（Map）**
+
+`map` 是一种有序的键值对容器，底层实现是红黑树。与 `unordered_map` 不同，它保证键的顺序，查找、插入和删除的时间复杂度为 O(log n)。
+
+**特点**：
+
+- 保证元素按键的顺序排列。
+- 使用二叉搜索树实现。
+
+#### 实例
+```
+map<string, int> myMap;
+myMap["apple"] = 10;
+cout << myMap["apple"]; // 输出 10
+```
+**优缺点**：
+
+- 优点：元素有序，适合需要按顺序处理数据的场景。
+- 缺点：操作效率比 `unordered_map` 略低。
+
+### 10. **集合（Set）**
+
+`set` 是一种用于存储唯一元素的有序集合，底层同样使用红黑树实现。它保证元素不重复且有序。
+
+**特点**：
+
+- 保证元素的唯一性。
+- 元素自动按升序排列。
+- 时间复杂度为 O(log n)。
+
+#### 实例
+```
+set<int> s;
+s.insert(1);
+s.insert(2);
+cout << *s.begin(); // 输出 1
+```
+**优缺点**：
+
+- 优点：自动排序和唯一性保证。
+- 缺点：插入和删除的效率不如无序集合。
+
+### 11. **动态数组（Vector）**
+
+`vector` 是 C++ 标准库提供的动态数组实现，可以动态扩展容量，支持随机访问。
+
+**特点**：
+
+- 动态调整大小。
+- 支持随机访问，时间复杂度为 O(1)。
+- 当容量不足时，动态扩展，时间复杂度为摊销 O(1)。
+
+#### 实例
+```
+vector<int> v;
+v.push_back(1);
+v.push_back(2);
+cout << v[0]; // 输出 1
+```
+**优缺点**：
+
+- 优点：支持随机访问，动态扩展。
+- 缺点：插入和删除中间元素的效率较低。
+
+## 智能指针
+
+### 什么是智能指针？
+
+智能指针不是指针，是一个管理指针的类，用来存储指向动态分配对象的指针，负责自动释放动态分配的对象，防止堆[内存泄漏](https://so.csdn.net/so/search?q=内存泄漏&spm=1001.2101.3001.7020)和空悬指针等等问题。
+
+动态分配的资源，交给一个类对象去管理，当类对象声明周期结束时，自动调用析构函数释放资源。
+
+### 为什么需要智能指针
+
+#### 内存泄漏
+
+##### 什么是内存泄漏
+
+**内存泄漏指因为疏忽或错误造成程序未能释放已经不再使用的内存的情况。**
+
+内存泄漏并不是指内存在物理上的消失，而是应用程序分配某段内存后，因为设计错误，失去了对该段内存的控制，因而造成了内存的浪费。
+
+##### 危害
+
+长期运行的程序出现内存泄漏，影响很大，如操作系统、后台服务等等，出现 内存泄漏会导致响应越来越慢，最终卡死。
+
+#### 防止内存泄漏
+
+```cpp
+void fxx()
+{
+	int* p1 = new int[10];
+	int* p2 = new int[20];
+    int* p3 = new int[30];
+ 
+	//...
+ 
+	delete[] p1;
+	delete[] p2;
+	delete[] p3;
+}
+```
+
+如果指针p2或者p3开辟空间new错误，这里就会导致后面的delete不会被执行，这就导致了指针p1的**内存泄漏**。
+
+### 智能指针的原理与使用
+
+#### 智能指针的原理
+
+智能指针的基本原理是利用RAII。
+
+RAII：RAII（Resource Acquisition Is Initialization）是一种利用对象生命周期来控制程序资源（如内存、文件句柄、网络连接、互斥量等等）的简单技术。
+
+**在对象构造时获取资源**，接着控制对资源的访问使之在对象的生命周期内始终保持有效，最后在 **对象析构的时候释放资源**。借此，我们实际上把管理一份资源的责任托管给了一个对象。这种做 法有两大好处：
+
+- 不需要显式地释放资源。
+- 采用这种方式，对象所需的资源在其生命期内始终保持有效。
+
+```cpp
+template<class T>
+class Smartptr
+{
+public:
+	//RAII
+	Smartptr(T* ptr)
+		:_ptr(ptr)
+	{}
+	~Smartptr()
+	{
+		cout << "delete:" << _ptr << endl;
+		delete _ptr;
+	}
+ 
+	//像指针一样
+	T& operator*()
+	{
+		return *_ptr;
+	}
+	T* operator->()
+	{
+		return _ptr;
+	}
+private:
+	T* _ptr;
+};
+ 
+int main()
+{
+    Smartptr<int> sp1(new int(1));
+	Smartptr<int> sp2(new int(2));
+	*sp1 += 10;
+	Smartptr<pair<string, int>> sp3(new pair<string, int>);
+	sp3->first = "apple";
+	sp3->second = 1;
+	return 0;
+}
+```
+
+```cpp
+template<class T>
+class Smartptr
+{
+public:
+	//RAII
+	Smartptr(T* ptr)
+		:_ptr(ptr)
+	{}
+	~Smartptr()
+	{
+		cout << "delete:" << _ptr << endl;
+		delete _ptr;
+	}
+ 
+	//像指针一样
+	T& operator*()
+	{
+		return *_ptr;
+	}
+	T* operator->()
+	{
+		return _ptr;
+	}
+private:
+	T* _ptr;
+};
+ 
+int div()
+{
+	int a, b;
+	cin >> a >> b;
+	if (b == 0)
+	{
+		throw invalid_argument("除0错误");
+	}
+	return a / b;
+}
+void func()
+{
+	Smartptr<int> sp1(new int(1));
+	Smartptr<int> sp2(new int(2));
+	*sp1 += 10;
+	cout << div() << endl;
+}
+int main()
+{
+	try
+	{
+		func();
+	}
+	catch (const exception& e)
+	{
+		cout << e.what() << endl;
+	}
+	return 0;
+}
+```
+
+通过SmartPtr对象，无论程序是正常执行结束，还是因为某些中途原因进行返回，或者抛出异常等开始所面临的困境，只要SmartPtr对象的生命周期结束就会自动调用对应的析构函数，不会造成内存泄漏，完成资源释放。
+
+#### 智能指针的拷贝问题
+
+如果我们用一个智能指针拷贝构造一个智能指针，或者用一个智能指针赋值给另一个智能指针。这样的操作都会导致程序崩溃。
+
+```cpp
+void test()
+{
+	SmartPtr<int> sp1(new int);
+	SmartPtr<int> sp2(sp1);//拷贝构造
+	SmartPtr<int> sp3(new int);
+	SmartPtr<int> sp4 = sp3;//赋值
+}
+```
+
+因为对于我们的智能指针来说，将sp1拷贝给sp2操作是浅拷贝，是将两个指针的指向统一到一块空间。当sp1和sp2释放时，会导致这块空间释放两次。同样的道理，将sp3赋值给sp4的时候，也只是单纯的将指针的指向指到同一块空间，这样在析构的时候也会导致析构两次。
+
+### 智能指针的众多版本
+
+C++中存在4种智能指针：auto_ptr,unquie_ptr,shared_ptr,weak_ptr，他们各有优缺点，以及对应的实用场景。
+
+#### auto_ptr
+
+auto_ptr ：管理权转移，被拷贝对象把资源管理权转移给拷贝对象，导致被拷贝对象悬空。
+
+auto_ptr是C++98的，通过管理权转移的方式解决智能指针拷贝问题，保证了一个资源只有一个对象对其进行管理，这时候一个资源就不会被多个释放：
+
+```cpp
+int main()
+{
+	yjy::auto_ptr<int> ap1(new int(1));
+	yjy::auto_ptr<int> ap2(ap1);
+ 
+	*ap2 += 10;
+ 
+	//ap1悬空
+	//*ap1 += 10;
+ 
+	return 0;
+}
+```
+
+构造对象获取资源，析构对象释放资源。对*和->运算符进行重载，使其像指针一样。拷贝构造函数，用传入的对象的资源来构造当前对象，并将传入对象管理资源指针悬空。
+
+#### unique_ptr
+
+需要引用memory库来使用。
+
+unique_ptr是C++11中的智能指针，unique_ptr来的更直接：**直接防止拷贝**的方式解决智能指针的拷贝问题，简单而又粗暴，防止智能指针对象拷贝，保证资源不会被多次释放，但是防止拷贝也不是解决问题的好办法，因为在很多场景下是需要拷贝的。
+
+#### shared_ptr
+
+shared_ptr是C++11的智能指针，通过**引用计数**的方式解决智能指针的拷贝问题。
+
+- shared_ptr在其内部，给每个资源都维护了着一份计数，用来记录该份资源被几个对象共 享。
+- 在对象被销毁时(也就是析构函数调用)，就说明自己不使用该资源了，对象的引用计数减 一。如果引用计数是0，就说明自己是最后一个使用该资源的对象，必须释放该资源；
+- 如果不是0，就说明除了自己还有其他对象在使用该份资源，不能释放该资源，否则其他对 象就成野指针了。
+
+ 引用计数的方式能够支持多个对象一起管理一个资源，也就支持智能指针的拷贝，只有当资源的引用计数减为0时才会释放，保证了同一个资源不会被多次释放。
+
+
+
+shared_ptr的美中不足的地方：循环引用
+
+```cpp
+struct ListNode
+{
+	int _val;
+	yjy::shared_ptr<ListNode> _next;
+	yjy::shared_ptr<ListNode> _prev;
+ 
+	ListNode(int val = 0)
+		:_val(val)
+	{}
+ 
+	~ListNode()
+	{
+		cout << "ListNode" << endl;
+	}
+};
+ 
+int main()
+{
+	yjy::shared_ptr<ListNode> n1(new ListNode(10));
+	yjy::shared_ptr<ListNode> n2(new ListNode(20));
+ 
+	cout << n1.use_count() << endl;
+	cout << n2.use_count() << endl;
+ 
+	n1->_next = n2;
+	n2->_next = n1;
+ 
+	cout << n1.use_count() << endl;
+	cout << n2.use_count() << endl;
+	return 0;
+}
+```
+
+我们可以看到定义了两个对象，对象里面的prev和next对应指向另一个对象，这时候我们的shared_ptr就会存在缺陷。
+
+![img](https://i-blog.csdnimg.cn/direct/75006c5e9c3147e79733f34bc3d7df3c.png)
+
+在我们出作用域销毁的时候，会发生下面的情况：
+
+**n2对象销毁时-》_prev指针释放-》n1对象销毁-》_next指针释放-》n2对象销毁**
+
+可以看到这个销毁的过程是一个互相影响的过程，是一个死循环。这样的结构就是我们的循环引用。该怎么办呢？
+
+#### weak_ptr
+
+`std::weak_ptr` 是 C++11 引入的一个智能指针，它是对 `std::shared_ptr` 的一个补充。`std::weak_ptr` 不控制所指向对象的使用寿命，也就是说，它不会增加所指向对象的引用计数。其主要用途是观察一个由 `std::shared_ptr` 所管理的对象，而不会在对象的生命周期中持有所有权。
+
+`std::weak_ptr` 的主要特性和用途：
+
+1. **不拥有对象**：与 `std::shared_ptr` 不同，`std::weak_ptr` 不拥有其指向的对象。这意味着，当最后一个 `std::shared_ptr` 被销毁或重置时，即使还有 `std::weak_ptr` 指向该对象，对象也会被销毁。
+2. **防止循环引用**：当两个或更多的 `std::shared_ptr` 相互引用时，它们会形成一个循环引用，导致它们所指向的对象无法被正确销毁。通过使用 `std::weak_ptr` 来打破这种循环引用，可以确保对象在不再需要时被正确销毁。
+3. **转换为 `std::shared_ptr`**：尽管 `std::weak_ptr` 不拥有对象，但它可以安全地转换为 `std::shared_ptr`（如果对象仍然存在）。这种转换会增加对象的引用计数，确保在转换后的 `std::shared_ptr` 生命周期内对象不会被销毁。
+4. **检查对象是否存在**：可以使用 `std::weak_ptr` 的 `expired()` 成员函数来检查它所指向的对象是否仍然存在。
+
+```cpp
+//不支持RAII，不参与资源管理
+template<class T>
+class weak_ptr
+{
+public:
+	//RAII
+	weak_ptr()
+		:_ptr(nullptr)
+	{}
+ 
+	weak_ptr(const shared_ptr<T>& wp)
+	{
+		_ptr = wp.get();
+	}
+ 
+	weak_ptr<T>& operator=(const shared_ptr<T>& wp)
+	{
+		_ptr = wp.get();
+		return *this;
+	}
+ 
+	// 像指针一样
+	T& operator*()
+	{
+		return *_ptr;
+	}
+ 
+	T* operator->()
+	{
+		return _ptr;
+	}
+private:
+	T* _ptr;
+};
+```
+
+ 这里的weak_ptr就不涉及RAII，不参与资源管理，从根源上杜绝了这个问题
+
+## 红黑树
+
+红黑树是一种自平衡二叉查找树。红黑树的特点如下：
+
+- 每个节点非红即黑。
+
+- 根节点总是黑色的。
+
+- 每个叶子节点都是黑色的空节点（NIL 节点）。
+
+- 如果节点是红色的，则它的子节点必须是黑色的（反之不一定），通常这条规则也叫不会有连续的红色节点。
+
+- 从根节点到叶节点或空子节点的每条路径，必须包含相同数目的黑色节点（即相同的黑色高度）。
+
+红黑树是每个节点都带有颜色属性的二叉查找树，颜色或红色或黑色。在二叉查找树强制一般要求以外，对于任何有效的红黑树我们增加了如下的额外要求：
+
+- 性质 1. 节点是红色或黑色。
+
+- 性质 2. 根节点是黑色。
+
+- 性质 3. 每个叶节点（NIL 节点，空节点）是黑色的。
+
+- 性质 4. 每个红色节点的两个子节点都是黑色。(从每个叶子到根的所有路径上不能有两个连续的红色节点)
+
+- 性质 5. 从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点。
+
+关键性质：从根到叶子的最长的可能路径不多于最短的可能路径的两倍长。结果是这个树大致上是平衡的。因为操作比如插入、删除和查找某个值的最坏情况时间都要求与树的高度成比例，这个在高度上的理论上限允许红黑树在最坏情况下都是高效的，而不同于普通的二叉查找树。
+
+### 红黑树与其他数据结构的对比
+
+#### 1. 与二叉树对比
+
+​    二叉树没有自平衡机制，可能导致树的不平衡。例如，当大量插入有序数据时，二叉树可能会变得线性化，结构不平衡。而红黑树通过节点的颜色标记和旋转操作来保持平衡。红黑树中的每个节点非红即黑，根节点总是黑色的，红色节点的两个子节点必须是黑色的，从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点。这些规则确保了红黑树在插入和删除节点时能够保持相对平衡，避免出现极端不平衡的情况。
+
+#### 2. 与 AVL 树对比
+
+​    AVL 树对平衡性要求更高，在任何节点的左右子树高度差不超过 1。这使得 AVL 树在插入和删除操作时的性能开销较大，因为需要频繁地进行旋转操作来维持平衡。而红黑树更常用于各种常规应用，在插入和删除操作中具有较好的平均和最坏情况时间复杂度。红黑树是一种弱平衡二叉树，它不要求像 AVL 树那样严格的平衡条件，但通过颜色标记和旋转操作，也能保证树的大致平衡，同时减少了旋转操作的次数，提高了性能。
+
+#### 3. 与 B 树和 B + 树对比
+
+​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
