@@ -210,3 +210,202 @@ GOOGLE.COM
 - [ ] 另一个未完成的任务
 
 # 引用块
+引用块用于突出显示重要信息、引用他人观点或创建视觉层次。
+
+## 单级引用的使用
+Markdown 区块引用是在段落开头使用 > 符号 ，然后后面紧跟一个空格符号：
+```
+> 区块引用
+> 菜鸟教程
+> 学的不仅是技术更是梦想
+```
+> 区块引用
+> 菜鸟教程
+> 学的不仅是技术更是梦想
+
+多行引用：
+只在第一行使用 > ，其余行会自动包含在引用中：
+```
+> 这是一个长引用，
+包含多行内容，
+只需要在第一行使用 > 符号。
+```
+> 这是一个长引用，
+包含多行内容，
+只需要在第一行使用 > 符号。
+
+## 多级嵌套引用
+区块是可以嵌套的，一个 > 符号是最外层，两个 > 符号是第一层嵌套，以此类推：
+```
+> 最外层
+> > 第一层嵌套
+> > > 第二层嵌套
+```
+> 最外层
+> > 第一层嵌套
+> > > 第二层嵌套
+
+# 代码
+## 行内代码
+如果是段落上的一个函数或片段的代码可以用反引号把它包起来（`），例如：
+`printf()` 函数
+## 特殊字符转义
+当需要在行内代码中显示反引号或其他特殊字符时，需要进行转义处理。
+
+显示反引号的方法：
+
+使用双反引号包围单反引号：
+``使用 `反引号` 包围代码``
+
+## 三反引号代码块
+```
+多行代码内容
+可以包含空行
+保持原有缩进
+```
+
+```javascript
+$(document).ready(function () {
+    alert('RUNOOB');
+});
+```
+
+## 代码块的高级特性
+### 行号显示
+某些 Markdown 渲染器支持显示行号，通过特定的语法或配置实现。
+```javascript {.line-numbers}
+function fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+console.log(fibonacci(10));
+```
+
+```javascript showLineNumbers
+const numbers = [1, 2, 3, 4, 5];
+const doubled = numbers.map(x => x * 2);
+const sum = doubled.reduce((a, b) => a + b, 0);
+console.log(`总和: ${sum}`);
+```
+### 代码差异对比
+用于显示代码的添加、删除或修改，常用于展示版本控制中的变更。
+
+Diff 语法：
+```diff
+function calculateTotal(items) {
+-   let total = 0;
++   let total = 0.0;
+    
+    for (let item of items) {
+-       total += item.price;
++       total += parseFloat(item.price);
+    }
+    
++   // 保留两位小数
++   total = Math.round(total * 100) / 100;
+    return total;
+}
+```
+
+Git 风格的差异显示：
+```diff
+@@ -1,5 +1,8 @@
+ function greetUser(name) {
+-    console.log("Hello " + name);
++    if (!name) {
++        throw new Error("Name is required");
++    }
++    console.log(`Hello, ${name}!`);
+ }
+```
+
+语言特定的差异对比：
+```javascript
+// 之前的代码
+const oldFunction = () => {
+    var x = 10;  // &#x274c; 使用 var
+    console.log("Value: " + x);  // &#x274c; 字符串拼接
+}
+
+// 改进后的代码  
+const newFunction = () => {
+    const x = 10;  // &#x2705; 使用 const
+    console.log(`Value: ${x}`);  // &#x2705; 模板字符串
+}
+```
+
+# 链接
+链接使用方法如下：
+```
+[链接名称](链接地址)
+[链接文字](链接地址 "可选的标题")
+```
+或者:
+```
+<链接地址>
+```
+这是 [百度搜索](https://www.baidu.com "百度一下，你就知道")
+
+## 参考链接
+参考式链接将链接定义与使用分离，让文档更整洁，特别适合长文档或需要多次引用相同链接的情况。
+```
+markdown[链接文字][参考标签]
+
+[参考标签]: URL "可选标题"
+```
+
+```
+这个链接用 1 作为网址变量 [Google][1]
+这个链接用 runoob 作为网址变量 [Runoob][runoob]
+然后在文档的结尾为变量赋值（网址）
+
+  [1]: http://www.google.com/
+  [runoob]: http://www.runoob.com/
+```
+
+简化写法：
+
+当参考标签与链接文字相同时，可以省略第二个方括号：
+```
+markdown 我喜欢使用 [GitHub][] 来管理代码。
+
+[GitHub]: https://github.com
+
+```
+## 锚点链接的使用
+锚点链接用于在同一文档内跳转，特别适合长文档的导航：
+跳转到标题：
+```
+## 目录
+- [第一章：介绍](#第一章介绍)
+- [第二章：安装](#第二章安装)
+- [第三章：使用方法](#第三章使用方法)
+
+# 第一章：介绍
+这里是介绍内容...
+
+# 第二章：安装
+这里是安装说明...
+
+# 第三章：使用方法
+这里是使用说明...
+```
+
+## 手动创建锚点
+```
+<a id="custom-anchor"></a>
+## 自定义锚点位置
+
+[跳转到自定义位置](#custom-anchor)
+```
+# 图片
+图片语法格式如下：
+```
+![替代文字](图片路径)
+![替代文字](图片路径 "图片标题")
+```
+Markdown 还没有办法指定图片的高度与宽度，如果你需要的话，你可以使用普通的 <img> 标签。
+```
+<img src="https://static.jyshare.com/images/runoob-logo.png" width="50%">
+```
