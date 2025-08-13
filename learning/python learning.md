@@ -8,7 +8,7 @@ Python 是一个高层次的结合了解释性、编译性、互动性和面向�
 
 ## 保留关键字
 保留字即关键字，我们不能把它们用作任何标识符名称。Python 的标准库提供了一个 keyword 模块，可以输出当前版本的所有关键字：
-```
+```python
 >>> import keyword
 >>> keyword.kwlist
 ['False', 'None', 'True', '__peg_parser__', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', 'def',
@@ -54,3 +54,237 @@ Python 是一个高层次的结合了解释性、编译性、互动性和面向�
 |            | with     | 上下文管理器，用于资源管理                  |
 |            | yield    | 从生成器函数返回值                         |
 
+Python 通常是一行写完一条语句，但如果语句很长，我们可以使用反斜杠 \ 来实现多行语句，例如：
+```python
+total = item_one + \
+        item_two + \
+        item_three
+```
+在 [], {}, 或 () 中的多行语句，不需要使用反斜杠 \，例如：
+```python
+total = ['item_one', 'item_two', 'item_three',
+        'item_four', 'item_five']
+```
+
+## print 输出
+print 默认输出是换行的，如果要实现不换行需要在变量末尾加上 `end=""`：
+`print( x, end=" " )`
+
+## import 与 from...import
+在 python 用 import 或者 from...import 来导入相应的模块。
+
+将整个模块(somemodule)导入，格式为： `import somemodule` 。
+- 使用时需通过模块名访问模块中的对象
+- 不会与当前命名空间中的其他对象冲突
+- 代码中明确知道哪些对象来自哪个模块，因为总是使用模块名前缀
+- 适用于需要使用模块中多个对象的情况
+```python
+import math
+
+result = math.sqrt(16)
+print(result)  # 输出 4.0
+```
+
+从某个模块中导入某个函数,格式为： `from somemodule import somefunction` 。
+- 使用时直接引用导入的对象，不需模块名前缀
+- 可能会与当前命名空间中的其他对象发生命名冲突
+- 代码中直接使用对象名，可能难以看出这些对象来自哪个模块
+- 适用于只需要使用模块中少量对象的情况，节省内存
+```python
+from math import sqrt
+
+result = sqrt(16)
+print(result)  # 输出 4.0
+```
+```python
+from math import sqrt
+from cmath import sqrt  # 复数的 sqrt
+
+result = sqrt(-1)  # 可能会混淆使用的 sqrt 函数
+print(result)
+```
+
+从某个模块中导入多个函数,格式为： `from somemodule import firstfunc, secondfunc, thirdfunc`
+
+将某个模块中的全部函数导入，格式为： `from somemodule import *`
+- 导入模块中的所有对象到当前命名空间
+- 可能导致命名冲突，降低代码可读性，不推荐使用
+
+# 基本数据类型
+Python 中的变量**不需要声明**。每个变量在使用前都必须赋值，变量赋值以后该变量才会被创建。
+
+在 Python 中，变量就是变量，它没有类型，我们所说的"类型"是变量所指的内存中对象的类型。
+
+Python允许你同时为多个变量赋值。例如：`a = b = c = 1`
+
+也可以为多个对象指定多个变量。例如：`a, b, c = 1, 2, "runoob"`
+
+可以通过 type() 函数查看变量的类型：`print(type(x))`
+
+## 标准数据类型
+常见的数据类型有：
+- Number（数字）
+- String（字符串）
+- bool（布尔类型）
+- List（列表）
+- Tuple（元组）
+- Set（集合）
+- Dictionary（字典）
+
+Python3 的六个标准数据类型中：
+
+- 不可变数据（3 个）：Number（数字）、String（字符串）、Tuple（元组）；
+- 可变数据（3 个）：List（列表）、Dictionary（字典）、Set（集合）。
+
+此外还有一些高级的数据类型，如: 字节数组类型(bytes)。
+
+### Number（数字）
+四种类型：整数、布尔型、浮点数和复数。
+- int (整数), 如 1, 只有一种整数类型 int，表示为长整型，没有 python2 中的 Long。
+- bool (布尔), 如 True。
+- float (浮点数), 如 1.23、3E-2
+- complex (复数) - 复数由实部和虚部组成，形式为 `a + bj` 或者 `complex(a,b)`，其中 a 是实部，b 是虚部，j 表示虚数单位。如 1 + 2j、 1.1 + 2.2j ， 复数的实部 a 和虚部 b 都是浮点型。
+
+可以用 isinstance 来判断类型：
+```python
+>>> a = 111
+>>> isinstance(a, int)
+True
+>>>
+```
+
+isinstance 和 type 的区别在于：
+- type 只检查对象的精确类型。
+- isinstance 会检查对象是否是某个类或其子类的实例，因此它在继承链中更加灵活。
+
+```python
+>>> class A:
+...     pass
+... 
+>>> class B(A):
+...     pass
+... 
+>>> isinstance(A(), A)
+True
+>>> type(A()) == A 
+True
+>>> isinstance(B(), A)
+True
+>>> type(B()) == A
+False
+```
+
+Python3 中，bool 是 int 的子类，True 和 False 可以和数字相加， `True==1`、`False==0` 会返回 True。
+
+可以通过使用 del 语句删除单个或多个对象。例如：
+```python
+del var
+del var_a, var_b
+```
+
+#### 数值运算
+```python
+>>> 5 + 4  # 加法
+9
+>>> 4.3 - 2 # 减法
+2.3
+>>> 3 * 7  # 乘法
+21
+>>> 2 / 4  # 除法，得到一个浮点数
+0.5
+>>> 2 // 4 # 除法，得到一个整数
+0
+>>> 17 % 3 # 取余 
+2
+>>> 2 ** 5 # 乘方
+32
+```
+
+### 字符串(String)
+- Python 中单引号 `'` 和双引号 `"` 使用完全相同。
+- 使用三引号(`'''` 或 `"""`)可以指定一个多行字符串。
+- 转义符 `\`。
+- 反斜杠可以用来转义，使用 **r** 可以让反斜杠不发生转义。 如 `r"this is a line with \n"` 则 `\n` 会显示，并不是换行。
+- 字符串可以用 `+` 运算符连接在一起，用 `*` 运算符重复。
+- Python 中的字符串有两种索引方式，从左往右以 0 开始，从右往左以 -1 开始。
+- Python 中的字符串不能改变。向一个索引位置赋值，比如 `word[0] = 'm'` 会导致错误。
+- Python 没有单独的字符类型，一个字符就是长度为 1 的字符串。
+- 字符串切片 `str[start:end]`，其中 start（包含）是切片开始的索引，end（不包含）是切片结束的索引。
+- 字符串的切片可以加上步长参数 step，语法格式如下：`str[start:end:step]`
+
+```python
+word = '字符串'
+sentence = "这是一个句子。"
+paragraph = """这是一个段落，
+可以由多行组成"""
+```
+
+### bool（布尔类型）
+在 Python 中，所有非零的数字和非空的字符串、列表、元组等数据类型都被视为 True，只有 0、空字符串、空列表、空元组等被视为 False。因此，在进行布尔类型转换时，需要注意数据类型的真假性。
+
+### List（列表）
+列表中元素的类型可以不相同，它支持数字，字符串甚至可以包含列表（所谓嵌套）。
+
+列表是写在方括号 [] 之间、用逗号分隔开的元素列表。
+
+和字符串一样，列表同样可以被索引和截取，列表被截取后返回一个包含所需元素的新列表。索引值以 0 为开始值，-1 为从末尾的开始位置。
+
+<img width="1366" height="720" alt="image" src="https://github.com/user-attachments/assets/7e9a011e-3e90-4ac3-aab9-1f8687eaeea3" />
+
+加号 + 是列表连接运算符，星号 * 是重复操作。如下实例：
+```python
+#!/usr/bin/python3
+
+list = [ 'abcd', 786 , 2.23, 'runoob', 70.2 ]  # 定义一个列表
+tinylist = [123, 'runoob']
+
+print (list)            # 打印整个列表
+print (list[:]) 
+print (list[-2:]) 
+print (list[0])         # 打印列表的第一个元素
+print (list[1:3])       # 打印列表第二到第四个元素（不包含第四个元素）
+print (list[2:])        # 打印列表从第三个元素开始到末尾
+print (tinylist * 2)    # 打印tinylist列表两次
+print (list + tinylist)  # 打印两个列表拼接在一起的结果
+```
+输出结果：
+```python
+['abcd', 786, 2.23, 'runoob', 70.2]
+['abcd', 786, 2.23, 'runoob', 70.2]
+['runoob', 70.2]
+abcd
+[786, 2.23]
+[2.23, 'runoob', 70.2]
+[123, 'runoob', 123, 'runoob']
+['abcd', 786, 2.23, 'runoob', 70.2, 123, 'runoob']
+```
+```python
+>>> a = [1, 2, 3, 4, 5, 6]
+>>> a[0] = 9
+>>> a[2:5] = [13, 14, 15]
+>>> a
+[9, 2, 13, 14, 15, 6]
+>>> a[2:5] = []   # 将对应的元素值设置为 [] 
+>>> a
+[9, 2, 6]
+```
+Python 列表截取可以接收第三个参数，参数作用是截取的步长，以下实例在索引 1 到索引 4 的位置并设置为步长为 2（间隔一个位置）来截取字符串：
+<img width="711" height="318" alt="image" src="https://github.com/user-attachments/assets/89d53865-429a-4a2c-96d3-af41a9787f60" />
+
+翻转字符串可以理解为：逆向遍历列表，并且以步长为 1 的方式 每隔一个元素取一个。
+```python
+def reverseWords(input):
+     
+    # 通过空格将字符串分隔符，把各个单词分隔为列表
+    inputWords = input.split(" ")
+ 
+    # 翻转字符串
+    inputWords=inputWords[-1::-1]
+ 
+    # 重新组合字符串
+    output = ' '.join(inputWords)
+     
+    return output
+```
+
+### Tuple（元组）
