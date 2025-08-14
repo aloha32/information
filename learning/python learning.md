@@ -350,3 +350,131 @@ parame = {value01,value02,...}
 或者
 set(value)
 ```
+```python
+#!/usr/bin/python3
+
+sites = {'Google', 'Taobao', 'Runoob', 'Facebook', 'Zhihu', 'Baidu'}
+
+print(sites)   # 输出集合，重复的元素被自动去掉
+
+# 成员测试
+if 'Runoob' in sites :
+    print('Runoob 在集合中')
+else :
+    print('Runoob 不在集合中')
+
+
+# set可以进行集合运算
+a = set('abracadabra')
+b = set('alacazam')
+
+print(a)
+
+print(a - b)     # a 和 b 的差集
+
+print(a | b)     # a 和 b 的并集
+
+print(a & b)     # a 和 b 的交集
+
+print(a ^ b)     # a 和 b 中不同时存在的元素
+```
+输出结果：
+```python
+{'Zhihu', 'Baidu', 'Taobao', 'Runoob', 'Google', 'Facebook'}
+Runoob 在集合中
+{'b', 'c', 'a', 'r', 'd'}
+{'r', 'b', 'd'}
+{'b', 'c', 'a', 'z', 'm', 'r', 'l', 'd'}
+{'c', 'a'}
+{'z', 'b', 'm', 'r', 'l', 'd'}
+
+```
+### Dictionary（字典）
+列表是**有序**的对象集合，字典是**无序**的对象集合。两者之间的区别在于：字典当中的元素是通过键来存取的，而不是通过偏移存取。
+
+字典是一种映射类型，字典用 `{ }` 标识，它是一个无序的 **键(key) : 值(value)** 的集合。
+
+键(key)必须使用不可变类型。在同一个字典中，键(key)必须是唯一的。
+```python
+#!/usr/bin/python3
+
+dict = {}
+dict['one'] = "1 - 菜鸟教程"
+dict[2]     = "2 - 菜鸟工具"
+
+tinydict = {'name': 'runoob','code':1, 'site': 'www.runoob.com'}
+
+print (dict)
+print (dict['one'])       # 输出键为 'one' 的值
+print (dict[2])           # 输出键为 2 的值
+print (tinydict)          # 输出完整的字典
+print (tinydict.keys())   # 输出所有键
+print (tinydict.values()) # 输出所有值
+```
+输出结果：
+```python
+{'one': '1 - 菜鸟教程', 2: '2 - 菜鸟工具'}
+1 - 菜鸟教程
+2 - 菜鸟工具
+{'name': 'runoob', 'code': 1, 'site': 'www.runoob.com'}
+dict_keys(['name', 'code', 'site'])
+dict_values(['runoob', 1, 'www.runoob.com'])
+```
+构造函数 dict() 可以直接从键值对序列中构建字典，
+```python
+>>> dict([('Runoob', 1), ('Google', 2), ('Taobao', 3)])
+{'Runoob': 1, 'Google': 2, 'Taobao': 3}
+>>> {x: x**2 for x in (2, 4, 6)} // 这是字典推导式，语法形如：{key_expr: value_expr for 变量 in 可迭代对象 [if 条件]}。
+{2: 4, 4: 16, 6: 36}
+>>> dict(Runoob=1, Google=2, Taobao=3)
+{'Runoob': 1, 'Google': 2, 'Taobao': 3}
+```
+
+注意：
+
+1、字典是一种映射类型，它的元素是键值对。
+
+2、字典的关键字必须为不可变类型，且不能重复。
+
+3、创建空字典使用 { }。
+
+### bytes 类型
+bytes 类型表示的是不可变的二进制序列（byte sequence）。与字符串类型不同的是，bytes 类型中的元素是整数值（0 到 255 之间的整数），而不是 Unicode 字符。
+
+创建 bytes 对象的方式有多种，最常见的方式是使用 b 前缀：
+
+此外，也可以使用 bytes() 函数将其他类型的对象转换为 bytes 类型。bytes() 函数的第一个参数是要转换的对象，第二个参数是编码方式，如果省略第二个参数，则默认使用 UTF-8 编码：
+```python
+x = bytes("hello", encoding="utf-8")
+```
+
+与字符串类型类似，bytes 类型也支持许多操作和方法，如切片、拼接、查找、替换等等。同时，由于 bytes 类型是不可变的，因此在进行修改操作时需要创建一个新的 bytes 对象。
+```python
+x = b"hello"
+y = x[1:3]  # 切片操作，得到 b"el"
+z = x + b"world"  # 拼接操作，得到 b"helloworld"
+if x[0] == ord("h"):
+    print("The first element is 'h'")
+```
+bytes 类型中的元素是整数值，因此在进行比较操作时需要使用相应的整数值。其中 ord() 函数用于将字符转换为相应的整数值。
+
+## 数据类型转换
+
+| 函数                | 描述                                      |
+| ------------------- | ----------------------------------------- |
+| int(x [,base])      | 将x转换为一个整数                          |
+| float(x)            | 将x转换到一个浮点数                        |
+| complex(real [,imag]) | 创建一个复数                              |
+| str(x)              | 将对象 x 转换为字符串                      |
+| repr(x)             | 将对象 x 转换为表达式字符串                |
+| eval(str)           | 用来计算在字符串中的有效Python表达式,并返回一个对象 |
+| tuple(s)            | 将序列 s 转换为一个元组                    |
+| list(s)             | 将序列 s 转换为一个列表                    |
+| set(s)              | 转换为可变集合                            |
+| dict(d)             | 创建一个字典。d 必须是一个 (key, value)元组序列。 |
+| frozenset(s)        | 转换为不可变集合                          |
+| chr(x)              | 将一个整数转换为一个字符                  |
+| ord(x)              | 将一个字符转换为它的整数值                |
+| hex(x)              | 将一个整数转换为一个十六进制字符串        |
+| oct(x)              | 将一个整数转换为一个八进制字符串          |
+
