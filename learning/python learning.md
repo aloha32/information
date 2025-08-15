@@ -1019,3 +1019,101 @@ True
 | `lambda` | `lambda` 表达式 |
 | `:=` | 赋值表达式 |
 
+## 条件控制
+### if 语句
+一般形式如下所示：
+```python
+if condition_1:
+    statement_block_1
+elif condition_2:
+    statement_block_2
+else:
+    statement_block_3
+```
+
+在 Python 中没有 `switch...case` 语句，但在 Python3.10 版本添加了 `match...case`
+
+match 后的对象会依次与 case 后的内容进行匹配，如果匹配成功，则执行匹配到的表达式，否则直接跳过，`_` 可以匹配一切。
+```python
+match subject:
+    case <pattern_1>:
+        <action_1>
+    case <pattern_2>:
+        <action_2>
+    case <pattern_3>:
+        <action_3>
+    case _:
+        <action_wildcard>
+```
+`case _`: 类似于 C 和 Java 中的 `default:`，当其他 case 都无法匹配时，匹配这条，保证永远会匹配成功。
+```python
+def http_error(status):
+    match status:
+        case 400:
+            return "Bad request"
+        case 404:
+            return "Not found"
+        case 418:
+            return "I'm a teapot"
+        case _:
+            return "Something's wrong with the internet"
+
+mystatus=400
+print(http_error(400))
+```
+一个 case 也可以设置多个匹配条件，条件使用 ｜ 隔开，例如：
+```python
+...
+    case 401|403|404:
+        return "Not allowed"
+```
+- match语句后跟一个表达式，然后使用case语句来定义不同的模式。
+- case后跟一个模式，可以是具体值、变量、通配符等。
+- 可以使用if关键字在case中添加条件。
+
+## 循环语句
+Python 中的循环语句有 for 和 while。Python 中没有 do..while 循环。
+
+如果 while 后面的条件语句为 false 时，则执行 else 的语句块。
+
+语法格式如下：
+```python
+while <expr>:
+    <statement(s)>
+else:
+    <additional_statement(s)>
+```
+
+for 循环可以遍历任何可迭代对象，如一个列表或者一个字符串。
+
+for循环的一般格式如下：
+```python
+for <variable> in <sequence>:
+    <statements>
+else:
+    <statements>
+```
+如果在循环过程中遇到了 break 语句，则会中断循环，此时不会执行 else 子句。
+
+可以结合 range() 和 len() 函数以遍历一个序列的索引,如下所示:
+```python
+>>>a = ['Google', 'Baidu', 'Runoob', 'Taobao', 'QQ']
+>>> for i in range(len(a)):
+...     print(i, a[i])
+... 
+0 Google
+1 Baidu
+2 Runoob
+3 Taobao
+4 QQ
+>>>
+```
+
+### break 和 continue 语句及循环中的 else 子句
+break 语句可以跳出 for 和 while 的循环体。如果你从 for 或 while 循环中终止，任何对应的循环 else 块将不执行。
+
+continue 语句被用来告诉 Python 跳过当前循环块中的剩余语句，然后继续进行下一轮循环。
+<img width="425" height="447" alt="image" src="https://github.com/user-attachments/assets/d9712325-71f2-4d38-9007-22bf41fbe1a3" />
+<img width="480" height="452" alt="image" src="https://github.com/user-attachments/assets/d9aa62a7-a5b2-4faf-9fd7-44a3ce104686" />
+<img width="708" height="798" alt="image" src="https://github.com/user-attachments/assets/4530656e-1e46-46b2-9b24-686c2e1c95c3" />
+<img width="540" height="291" alt="image" src="https://github.com/user-attachments/assets/4d1c9d88-e905-44f3-b307-b2acb6e0101a" />
