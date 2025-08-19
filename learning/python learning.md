@@ -792,7 +792,7 @@ if x[0] == ord("h"):
 ```
 bytes 类型中的元素是整数值，因此在进行比较操作时需要使用相应的整数值。其中 ord() 函数用于将字符转换为相应的整数值。
 
-## 数据类型转换
+# 数据类型转换
 
 | 函数                | 描述                                      |
 | ------------------- | ----------------------------------------- |
@@ -812,7 +812,7 @@ bytes 类型中的元素是整数值，因此在进行比较操作时需要使�
 | hex(x)              | 将一个整数转换为一个十六进制字符串        |
 | oct(x)              | 将一个整数转换为一个八进制字符串          |
 
-### 隐式类型转换
+## 隐式类型转换
 在隐式类型转换中，Python 会自动将一种数据类型转换为另一种数据类型，不需要我们去干预。
 ```python
 num_int = 123
@@ -827,7 +827,7 @@ print("num_new 值为:",num_new)
 print("num_new 数据类型为:",type(num_new))
 ```
 
-### 显式类型转换
+## 显式类型转换
 `int()` 强制转换为整型：
 ```python
 x = int(1)   # x 输出结果为 1
@@ -857,7 +857,7 @@ z = str(3.0)  # z 输出结果为 '3.0'
 - 对于一个非数字字符串（如"Hello"），它无法被转换为一个整数或浮点数，因为这个字符串并不包含任何可以表示一个数字的信息。
 - 对于一个列表或元组，它可以被转换为一个集合（如果它的元素是不可变的），但不能被转换为一个整数，因为一个集合或列表中的元素无法合理地表示为一个单独的数字。
 
-## Python 解释器
+# Python 解释器
 Python 解释器可不止一种哦，有 CPython、IPython、Jython、PyPy 等。
 
 顾名思义，CPython 就是用 C 语言开发的了，是官方标准实现，拥有良好的生态，所以应用也就最为广泛了。
@@ -868,7 +868,7 @@ Jython 是专为 Java 平台设计的 Python 解释器（http://www.jython.org/�
 
 PyPy 是 Python 语言（2.7.13和3.5.3）的一种快速、兼容的替代实现（http://pypy.org/），以速度快著称。
 
-## 注释
+# 注释
 Python 中单行注释以 `#` 开头，多行注释用三个单引号 `'''` 或者三个双引号 `"""` 将注释括起来。嵌套多行注释会导致语法错误。
 ```python
 '''
@@ -891,8 +891,8 @@ Python 中单行注释以 `#` 开头，多行注释用三个单引号 `'''` 或�
 # 可以嵌套在多行注释中
 '''
 ```
-## 运算符
-### 算术运算符
+# 运算符
+## 算术运算符
 以下假设变量 a=10，变量 b=21：
 
 | 运算符 | 描述                     | 实例                                                         |
@@ -905,7 +905,7 @@ Python 中单行注释以 `#` 开头，多行注释用三个单引号 `'''` 或�
 | **     | 幂 - 返回x的y次幂        | a**b 为10的21次方                                            |
 | //     | 取整除 - 往小的方向取整数 | >>> 9//2<br/>4<br/>>>> -9//2<br/>-5 |
 
-### 比较运算符
+## 比较运算符
 以下假设变量 a 为 10，变量 b 为20：
 
 以下是转换为 Markdown 格式的表格代码：
@@ -919,14 +919,14 @@ Python 中单行注释以 `#` 开头，多行注释用三个单引号 `'''` 或�
 | >=     | 大于等于 - 返回x是否大于等于y。                              | (a >= b) 返回 False。       |
 | <=     | 小于等于 - 返回x是否小于等于y。                              | (a <= b) 返回 True。        |
 
-### 赋值运算符
+## 赋值运算符
 以下假设变量a为10，变量b为20：
 
 <img width="1023" height="713" alt="image" src="https://github.com/user-attachments/assets/f131f307-eaa2-4ec7-a3ab-94aff6515f15" />
 
 `n := len(a)` 这行代码的作用是计算 `a` 列表的长度，并将结果赋值给变量 `n`。这样，`n` 就可以在 `if` 语句中直接使用，而不需要先单独赋值，然后再在 `if` 中判断。
 
-### 位运算符
+## 位运算符
 按位运算符是把数字看作二进制来进行计算的。Python中的按位运算法则如下：
 
 下表中变量 a 为 60，b 为 13二进制格式如下：
@@ -955,7 +955,7 @@ a^b = 0011 0001
 | <<     | 左移动运算符：运算数的各二进位全部左移若干位，由 '<<'右边的数指定移动的位数，高位丢弃，低位补0。 | a << 2 输出结果 240 ，二进制解释:  1111 0000             |
 | >>     | 右移动运算符：把">>"左边的运算数的各二进位全部右移若干位，">>"右边的数指定移动的位数 | a >> 2 输出结果 15 ，二进制解释:  0000 1111              |
 
-### 逻辑运算符
+## 逻辑运算符
 假设变量 a 为 10, b为 20:
 
 | 运算符 | 逻辑表达式 | 描述                                                         | 实例                        |
@@ -964,14 +964,14 @@ a^b = 0011 0001
 | or     | x or y     | 布尔“或” - 如果 x 是 True，它返回 x 的值，否则它返回 y 的计算值。 | (a or b) 返回 10。          |
 | not    | not x      | 布尔“非” - 如果 x 为 True，返回 False 。如果 x 为 False，它返回 True。 | not(a and b) 返回 False     |
 
-### 成员运算符
+## 成员运算符
 
 | 运算符 | 描述                                     | 实例                            |
 | ------ | ---------------------------------------- | ------------------------------- |
 | in     | 如果在指定的序列中找到值返回 True，否则返回 False。 | x 在 y 序列中 , 如果 x 在 y 序列中返回 True。  |
 | not in | 如果在指定的序列中没有找到值返回 True，否则返回 False。 | x 不在 y 序列中 , 如果 x 不在 y 序列中返回 True。 |
 
-### 身份运算符
+## 身份运算符
 身份运算符用于比较两个对象的存储单元
 
 | 运算符 | 描述                                     | 实例                                                         |
@@ -995,7 +995,7 @@ False
 True
 ```
 
-### 运算符优先级
+## 运算符优先级
 以下表格列出了从最高到最低优先级的所有运算符， 相同单元格内的运算符具有相同优先级。 运算符均指二元运算，除非特别指出。
 
 | 运算符 | 描述 |
@@ -1006,7 +1006,7 @@ True
 | `**` | 乘方(指数) |
 | `+x`, `-x`, `~x` | 正，负，按位非 NOT |
 | `*`, `@`, `/`, `//`, `%` | 乘，矩阵乘，除，整除，取余 |
-| `+`, `-` | 加和减 |
+| `+`， `-` | 加和减 |
 | `<<`, `>>` | 移位 |
 | `&` | 按位与 AND |
 | `^` | 按位异或 XOR |
@@ -1019,8 +1019,8 @@ True
 | `lambda` | `lambda` 表达式 |
 | `:=` | 赋值表达式 |
 
-## 条件控制
-### if 语句
+# 条件控制
+## if 语句
 一般形式如下所示：
 ```python
 if condition_1:
@@ -1071,7 +1071,7 @@ print(http_error(400))
 - case后跟一个模式，可以是具体值、变量、通配符等。
 - 可以使用if关键字在case中添加条件。
 
-## 循环语句
+# 循环语句
 Python 中的循环语句有 for 和 while。Python 中没有 do..while 循环。
 
 如果 while 后面的条件语句为 false 时，则执行 else 的语句块。
@@ -1109,7 +1109,7 @@ else:
 >>>
 ```
 
-### break 和 continue 语句及循环中的 else 子句
+## break 和 continue 语句及循环中的 else 子句
 break 语句可以跳出 for 和 while 的循环体。如果你从 for 或 while 循环中终止，任何对应的循环 else 块将不执行。
 
 continue 语句被用来告诉 Python 跳过当前循环块中的剩余语句，然后继续进行下一轮循环。
@@ -1117,3 +1117,339 @@ continue 语句被用来告诉 Python 跳过当前循环块中的剩余语句，
 <img width="480" height="452" alt="image" src="https://github.com/user-attachments/assets/d9aa62a7-a5b2-4faf-9fd7-44a3ce104686" />
 <img width="708" height="798" alt="image" src="https://github.com/user-attachments/assets/4530656e-1e46-46b2-9b24-686c2e1c95c3" />
 <img width="540" height="291" alt="image" src="https://github.com/user-attachments/assets/4d1c9d88-e905-44f3-b307-b2acb6e0101a" />
+
+# 推导式
+ 推导式是一种独特的数据处理方式，可以从一个数据序列构建另一个新的数据序列的结构体。
+
+ ## 列表推导式
+ 格式为：
+ ```python
+[表达式 for 变量 in 列表] 
+[out_exp_res for out_exp in input_list]
+
+或者 
+
+[表达式 for 变量 in 列表 if 条件]
+[out_exp_res for out_exp in input_list if condition]
+ ```
+- out_exp_res：列表生成元素表达式，可以是有返回值的函数。
+- for out_exp in input_list：迭代 input_list 将 out_exp 传入到 out_exp_res 表达式中。
+- if condition：条件语句，可以过滤列表中不符合条件的值。
+
+过滤掉长度小于或等于3的字符串列表，并将剩下的转换成大写字母：
+```python
+>>> names = ['Bob','Tom','alice','Jerry','Wendy','Smith']
+>>> new_names = [name.upper()for name in names if len(name)>3]
+>>> print(new_names)
+['ALICE', 'JERRY', 'WENDY', 'SMITH']
+```
+
+## 字典推导式
+基本格式：
+```python
+{ key_expr: value_expr for value in collection }
+
+或
+
+{ key_expr: value_expr for value in collection if condition }
+```
+
+使用字符串及其长度创建字典：
+```python
+listdemo = ['Google','Runoob', 'Taobao']
+# 将列表中各字符串值为键，各字符串的长度为值，组成键值对
+>>> newdict = {key:len(key) for key in listdemo}
+>>> newdict
+{'Google': 6, 'Runoob': 6, 'Taobao': 6}
+```
+
+提供三个数字，以三个数字为键，三个数字的平方为值来创建字典：
+```python
+>>> dic = {x: x**2 for x in (2, 4, 6)}
+>>> dic
+{2: 4, 4: 16, 6: 36}
+>>> type(dic)
+<class 'dict'>
+```
+
+## 集合推导式
+基本格式：
+```python
+{ expression for item in Sequence }
+或
+{ expression for item in Sequence if conditional }
+```
+
+计算数字 1,2,3 的平方数：
+```python
+>>> setnew = {i**2 for i in (1,2,3)}
+>>> setnew
+{1, 4, 9}
+```
+
+判断不是 abc 的字母并输出：
+```python
+>>> a = {x for x in 'abracadabra' if x not in 'abc'}
+>>> a
+{'d', 'r'}
+>>> type(a)
+<class 'set'>
+```
+
+## 元组推导式（生成器表达式）
+元组推导式可以利用 range 区间、元组、列表、字典和集合等数据类型，快速生成一个满足指定需求的元组。元组推导式返回的结果是一个生成器对象。基本格式：
+```python
+(expression for item in Sequence )
+或
+(expression for item in Sequence if conditional )
+```
+
+生成一个包含数字 1~9 的元组：
+```python
+>>> a = (x for x in range(1,10))
+>>> a
+<generator object <genexpr> at 0x7faf6ee20a50>  # 返回的是生成器对象
+
+>>> tuple(a)       # 使用 tuple() 函数，可以直接将生成器对象转换成元组
+(1, 2, 3, 4, 5, 6, 7, 8, 9)
+```
+
+## 进阶
+语法格式：
+```python
+结果值1 if 判断条件 else 结果2  for 变量名 in 原列表
+```
+
+```python
+list1 = ['python', 'test1', 'test2']
+list2 = [word.title() if word.startswith('p') else word.upper() for word in list1]
+print(list2)
+```
+输出结果：
+```python
+['Python', 'TEST1', 'TEST2']
+```
+
+# 迭代器与生成器
+## 迭代器
+迭代是 Python 最强大的功能之一，是访问集合元素的一种方式。
+迭代器是一个可以记住遍历的位置的对象。
+迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。
+迭代器有两个基本的方法：`iter()` 和 `next()`。
+字符串，列表或元组对象都可用于创建迭代器：
+```python
+>>> list=[1,2,3,4]
+>>> it = iter(list)    # 创建迭代器对象
+>>> print (next(it))   # 输出迭代器的下一个元素
+1
+>>> print (next(it))
+2
+>>>
+```
+迭代器对象可以使用常规for语句进行遍历：
+```python
+#!/usr/bin/python3
+ 
+list=[1,2,3,4]
+it = iter(list)    # 创建迭代器对象
+for x in it:
+    print (x, end=" ")
+```
+也可以使用 next() 函数：
+```python
+#!/usr/bin/python3
+ 
+import sys         # 引入 sys 模块
+ 
+list=[1,2,3,4]
+it = iter(list)    # 创建迭代器对象
+ 
+while True:
+    try:
+        print (next(it))
+    except StopIteration:
+        sys.exit()
+```
+
+### 创建一个迭代器
+把一个类作为一个迭代器使用需要在类中实现两个方法 __iter__() 与 __next__() 。
+
+__iter__() 方法返回一个特殊的迭代器对象， 这个迭代器对象实现了 __next__() 方法并通过 StopIteration 异常标识迭代的完成。
+
+__next__() 方法会返回下一个迭代器对象。
+
+创建一个返回数字的迭代器，初始值为 1，逐步递增 1：
+```python
+class MyNumbers:
+  def __iter__(self):
+    self.a = 1
+    return self
+ 
+  def __next__(self):
+    x = self.a
+    self.a += 1
+    return x
+ 
+myclass = MyNumbers()
+myiter = iter(myclass)
+ 
+print(next(myiter))
+print(next(myiter))
+print(next(myiter))
+print(next(myiter))
+print(next(myiter))
+```
+
+输出结果为：
+```python
+1
+2
+3
+4
+5
+```
+
+### StopIteration
+StopIteration 异常用于标识迭代的完成，防止出现无限循环的情况，在 __next__() 方法中我们可以设置在完成指定循环次数后触发 StopIteration 异常来结束迭代。
+
+在 20 次迭代后停止执行：
+```python
+class MyNumbers:
+  def __iter__(self):
+    self.a = 1
+    return self
+ 
+  def __next__(self):
+    if self.a <= 20:
+      x = self.a
+      self.a += 1
+      return x
+    else:
+      raise StopIteration
+ 
+myclass = MyNumbers()
+myiter = iter(myclass)
+ 
+for x in myiter:
+  print(x)
+```
+
+## 生成器
+在 Python 中，使用了 yield 的函数被称为生成器（generator）。
+
+yield 是一个关键字，用于定义生成器函数，生成器函数是一种特殊的函数，可以在迭代过程中逐步产生值，而不是一次性返回所有结果。
+
+跟普通函数不同的是，生成器是一个返回迭代器的函数，只能用于迭代操作，更简单点理解生成器就是一个迭代器。
+
+当在生成器函数中使用 yield 语句时，函数的执行将会暂停，并将 yield 后面的表达式作为当前迭代的值返回。
+
+然后，每次调用生成器的 next() 方法或使用 for 循环进行迭代时，函数会从上次暂停的地方继续执行，直到再次遇到 yield 语句。这样，生成器函数可以逐步产生值，而不需要一次性计算并返回所有结果。
+
+**yield 就像一个可以暂停和恢复的 return。当函数执行到 yield 时，它会返回 yield 后面的值，并暂停函数的执行，保存当前所有的运行信息。 当下一次通过 next() 或 for 循环调用它时，它会从上次暂停的地方继续执行。**
+
+调用一个生成器函数，返回的是一个迭代器对象。
+
+下面是一个简单的示例，展示了生成器函数的使用：
+```python
+def countdown(n):
+    while n > 0:
+        yield n
+        n -= 1
+ 
+# 创建生成器对象
+generator = countdown(5)
+ 
+# 通过迭代生成器获取值
+print(next(generator))  # 输出: 5
+print(next(generator))  # 输出: 4
+print(next(generator))  # 输出: 3
+ 
+# 使用 for 循环迭代生成器
+for value in generator:
+    print(value)  # 输出: 2 1
+```
+以上实例中，countdown 函数是一个生成器函数。它使用 yield 语句逐步产生从 n 到 1 的倒数数字。在每次调用 yield 语句时，函数会返回当前的倒数值，并在下一次调用时从上次暂停的地方继续执行。
+
+通过创建生成器对象并使用 next() 函数或 for 循环迭代生成器，我们可以逐步获取生成器函数产生的值。在这个例子中，我们首先使用 next() 函数获取前三个倒数值，然后通过 for 循环获取剩下的两个倒数值。
+
+生成器函数的优势是它们可以按需生成值，避免一次性生成大量数据并占用大量内存。此外，生成器还可以与其他迭代工具（如for循环）无缝配合使用，提供简洁和高效的迭代方式。
+
+使用 yield 实现斐波那契数列：
+```python
+#!/usr/bin/python3
+ 
+import sys
+ 
+def fibonacci(n): # 生成器函数 - 斐波那契
+    a, b, counter = 0, 1, 0
+    while True:
+        if (counter > n): 
+            return
+        yield a
+        a, b = b, a + b
+        counter += 1
+f = fibonacci(10) # f 是一个迭代器，由生成器返回生成
+ 
+while True:
+    try:
+        print (next(f), end=" ")
+    except StopIteration:
+        sys.exit()
+```
+
+## 为什么需要迭代器和生成器？
+1. 节省内存: 这是最核心的优势。对于非常大的数据集，如果一次性将所有数据加载到内存中（例如，创建一个巨大的列表），可能会耗尽系统内存。而迭代器和生成器采用“惰性计算”或“按需生成”的方式，只在需要时才生成下一个值，因此在内存中始终只保留一个元素。 这使得处理大型文件或无限序列成为可能。
+
+2. 提高效率: 由于数据是按需生成的，程序可以更快地开始处理第一个数据项，而无需等待所有数据都被生成。
+
+3. 代码更简洁优雅: 生成器提供了一种非常简洁的方式来实现迭代器模式，而无需编写一个完整的类并实现 __iter__ 和 __next__ 方法。 这使得代码更易于阅读和维护。
+
+4. 提供统一的迭代方式: 迭代器为所有序列和非序列类型（如字典、集合）提供了一种统一的遍历方式。 for 循环的底层工作原理就是基于迭代器协议的。
+
+迭代器与生成器的主要区别:
+| 特性 | 迭代器 (Iterator) | 生成器 (Generator) |
+| :--- | :--- | :--- |
+| **实现方式** | 通常通过实现一个带有 `__iter__()` 和 `__next__()` 方法的类来创建。 | 通过带有 `yield` 关键字的函数或生成器表达式来创建。 |
+| **代码复杂度** | 相对复杂，需要编写一个类。 | 非常简洁，语法更简单。 |
+| **本质关系** | 生成器是迭代器的一种特殊、更方便的实现。 所有的生成器都是迭代器，但反之不成立。 | - |
+| **数据来源** | 通常是遍历一个已经存在的容器（如列表）。 | 动态地“生成”数据，数据不是预先存在的。 |
+
+例子:
+遍历一个二叉树（前序遍历）:
+```python
+class TreeNode:
+    def __init__(self, value, left=None, right=None):
+        self.value = value
+        self.left = left
+        self.right = right
+
+def preorder_traversal(node):
+    """使用生成器进行前序遍历，代码非常直观。"""
+    if node is not None:
+        yield node.value
+        # 'yield from' 是一个强大的语法，可以把另一个生成器的所有值yield出去
+        yield from preorder_traversal(node.left)
+        yield from preorder_traversal(node.right)
+
+# 构建一个树:
+#      1
+#     / \
+#    2   3
+#   /   / \
+#  4   5   6
+root = TreeNode(1, 
+              left=TreeNode(2, left=TreeNode(4)),
+              right=TreeNode(3, left=TreeNode(5), right=TreeNode(6)))
+
+print("二叉树前序遍历结果:")
+for value in preorder_traversal(root):
+    print(value, end=" ") # 输出: 1 2 4 3 5 6
+
+```
+**为什么用生成器好？**
+
+代码简洁：递归生成器写起来几乎和标准的递归函数一样简单，避免了手动管理栈的复杂性。yield from 语法更是让代码优雅地处理递归生成。
+
+状态管理：Python自动为你保存和恢复函数的状态（在哪个节点、下一步该去左边还是右边），你无需操心。
+
+# with 关键字
