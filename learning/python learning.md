@@ -507,6 +507,216 @@ operator.eq(c,b):  True
 | `list.clear()` | 清空列表 |
 | `list.copy()` | 复制列表 |
 
+```python
+>>> a = [66.25, 333, 333, 1, 1234.5]
+>>> print(a.count(333), a.count(66.25), a.count('x'))
+2 1 0
+>>> a.insert(2, -1)
+>>> a.append(333)
+>>> a
+[66.25, 333, -1, 333, 1, 1234.5, 333]
+>>> a.index(333)
+1
+>>> a.remove(333)
+>>> a
+[66.25, -1, 333, 1, 1234.5, 333]
+>>> a.reverse()
+>>> a
+[333, 1234.5, 1, 333, -1, 66.25]
+>>> a.sort()
+>>> a
+[-1, 1, 66.25, 333, 333, 1234.5]
+```
+注意：类似 insert, remove 或 sort 等修改列表的方法没有返回值。
+
+#### 将列表当做栈使用
+在 Python 中，可以使用列表（list）来实现栈的功能。列表提供了一些方法，使其非常适合用于栈操作，特别是 `append()` 和 `pop()` 方法。
+
+栈操作
+- 压入（Push）: 将一个元素添加到栈的顶端。
+- 弹出（Pop）: 移除并返回栈顶元素。
+- 查看栈顶元素（Peek/Top）: 返回栈顶元素而不移除它。
+- 检查是否为空（IsEmpty）: 检查栈是否为空。
+- 获取栈的大小（Size）: 获取栈中元素的数量。
+
+1. 创建空栈
+```python
+stack = []
+```
+
+2. push
+```python
+stack.append(1)
+stack.append(2)
+stack.append(3)
+print(stack)  # 输出: [1, 2, 3]
+```
+
+3. pop
+```python
+top_element = stack.pop()
+print(top_element)  # 输出: 3
+print(stack)        # 输出: [1, 2]
+```
+
+4. top
+```python
+top_element = stack[-1]
+print(top_element)  # 输出: 2
+```
+
+5. isempty
+```python
+is_empty = len(stack) == 0
+print(is_empty)  # 输出: False
+```
+
+6. size
+```python
+size = len(stack)
+print(size)  # 输出: 2
+```
+
+完整实例：
+```python
+class Stack:
+    def __init__(self):
+        self.stack = []
+
+    def push(self, item):
+        self.stack.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.stack.pop()
+        else:
+            raise IndexError("pop from empty stack")
+
+    def peek(self):
+        if not self.is_empty():
+            return self.stack[-1]
+        else:
+            raise IndexError("peek from empty stack")
+
+    def is_empty(self):
+        return len(self.stack) == 0
+
+    def size(self):
+        return len(self.stack)
+
+# 使用示例
+stack = Stack()
+stack.push(1)
+stack.push(2)
+stack.push(3)
+
+print("栈顶元素:", stack.peek())  # 输出: 栈顶元素: 3
+print("栈大小:", stack.size())    # 输出: 栈大小: 3
+
+print("弹出元素:", stack.pop())  # 输出: 弹出元素: 3
+print("栈是否为空:", stack.is_empty())  # 输出: 栈是否为空: False
+print("栈大小:", stack.size())    # 输出: 栈大小: 2
+```
+
+#### 将列表当作队列使用
+在 Python 中，列表（list）可以用作队列（queue），但由于列表的特点，直接使用列表来实现队列并不是最优的选择。
+
+使用列表时，如果频繁地在列表的开头插入或删除元素，性能会受到影响，因为这些操作的时间复杂度是 `O(n)`。为了解决这个问题，Python 提供了 `collections.deque`，它是双端队列，可以在两端高效地添加和删除元素。
+
+使用 deque 实现队列的示例：
+
+```python
+from collections import deque
+
+# 创建一个空队列
+queue = deque()
+
+# 向队尾添加元素
+queue.append('a')
+queue.append('b')
+queue.append('c')
+
+print("队列状态:", queue)  # 输出: 队列状态: deque(['a', 'b', 'c'])
+
+# 从队首移除元素
+first_element = queue.popleft()
+print("移除的元素:", first_element)  # 输出: 移除的元素: a
+print("队列状态:", queue)            # 输出: 队列状态: deque(['b', 'c'])
+
+# 查看队首元素（不移除）
+front_element = queue[0]
+print("队首元素:", front_element)    # 输出: 队首元素: b
+
+# 检查队列是否为空
+is_empty = len(queue) == 0
+print("队列是否为空:", is_empty)     # 输出: 队列是否为空: False
+
+# 获取队列大小
+size = len(queue)
+print("队列大小:", size)            # 输出: 队列大小: 2
+```
+
+使用 pop(0) 方法从队首移除元素：
+```python
+first_element = queue.pop(0)
+print("移除的元素:", first_element)  # 输出: 移除的元素: a
+print("队列状态:", queue)            # 输出: 队列状态: ['b', 'c']
+```
+
+实例（使用列表实现队列）:
+```python
+class Queue:
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self, item):
+        self.queue.append(item)
+
+    def dequeue(self):
+        if not self.is_empty():
+            return self.queue.pop(0)
+        else:
+            raise IndexError("dequeue from empty queue")
+
+    def peek(self):
+        if not self.is_empty():
+            return self.queue[0]
+        else:
+            raise IndexError("peek from empty queue")
+
+    def is_empty(self):
+        return len(self.queue) == 0
+
+    def size(self):
+        return len(self.queue)
+
+# 使用示例
+queue = Queue()
+queue.enqueue('a')
+queue.enqueue('b')
+queue.enqueue('c')
+
+print("队首元素:", queue.peek())    # 输出: 队首元素: a
+print("队列大小:", queue.size())    # 输出: 队列大小: 3
+
+print("移除的元素:", queue.dequeue())  # 输出: 移除的元素: a
+print("队列是否为空:", queue.is_empty())  # 输出: 队列是否为空: False
+print("队列大小:", queue.size())    # 输出: 队列大小: 2
+```
+
+**del 语句**:使用 del 语句可以从一个列表中根据索引来删除一个元素，而不是值来删除元素。
+```python
+>>> a = [-1, 1, 66.25, 333, 333, 1234.5]
+>>> del a[0]
+>>> a
+[1, 66.25, 333, 333, 1234.5]
+>>> del a[2:4]
+>>> a
+[1, 66.25, 1234.5]
+>>> del a[:]
+>>> a
+[]
+```
 
 ### Tuple（元组）
 元组（tuple）与列表类似，不同之处在于**元组的元素不能修改**。**元组写在小括号 () 里，元素之间用逗号隔开。**
@@ -580,6 +790,20 @@ TypeError: 'tuple' object does not support item assignment
 4441088800    # 内存地址不一样了
 ```
 从以上实例可以看出，重新赋值的元组 tup，绑定到新的对象了，不是修改了原来的对象。
+
+元组在输出时总是有括号的，以便于正确表达嵌套结构。在输入时可能有或没有括号， 不过括号通常是必须的（如果元组是更大的表达式的一部分）。
+```python
+>>> t = 12345, 54321, 'hello!'
+>>> t[0]
+12345
+>>> t
+(12345, 54321, 'hello!')
+>>> # Tuples may be nested:
+... u = t, (1, 2, 3, 4, 5)
+>>> u
+((12345, 54321, 'hello!'), (1, 2, 3, 4, 5))
+```
+
 
 ### Set（集合）
 集合（Set）是一种**无序、可变**的数据类型，用于存储唯一的元素。集合中的元素**不会重复**，并且可以进行交集、并集、差集等常见的集合操作。**集合使用大括号 {} 表示，元素之间用逗号 , 分隔。**
@@ -682,6 +906,39 @@ set()
 <img width="1025" height="1020" alt="image" src="https://github.com/user-attachments/assets/1a684292-43f5-4b3c-9261-283cda6faf56" />
 
 
+```python
+>>> basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
+>>> print(basket)                      # 删除重复的
+{'orange', 'banana', 'pear', 'apple'}
+>>> 'orange' in basket                 # 检测成员
+True
+>>> 'crabgrass' in basket
+False
+
+>>> # 以下演示了两个集合的操作
+...
+>>> a = set('abracadabra')
+>>> b = set('alacazam')
+>>> a                                  # a 中唯一的字母
+{'a', 'r', 'b', 'c', 'd'}
+>>> a - b                              # 在 a 中的字母，但不在 b 中
+{'r', 'd', 'b'}
+>>> a | b                              # 在 a 或 b 中的字母
+{'a', 'c', 'r', 'd', 'b', 'm', 'z', 'l'}
+>>> a & b                              # 在 a 和 b 中都有的字母
+{'a', 'c'}
+>>> a ^ b                              # 在 a 或 b 中的字母，但不同时在 a 和 b 中
+{'r', 'd', 'b', 'm', 'z', 'l'}
+```
+集合也支持推导式：
+```python
+>>> a = {x for x in 'abracadabra' if x not in 'abc'}
+>>> a
+{'r', 'd'}
+```
+
+
+
 ### Dictionary（字典）
 列表是**有序**的对象集合，字典是**无序**的对象集合。两者之间的区别在于：字典当中的元素是通过键来存取的，而不是通过偏移存取。
 
@@ -770,6 +1027,39 @@ del tinydict         # 删除字典
 | `dict.values()` | 返回一个视图对象 |
 | `dict.pop(key[, default])` | 删除字典 key（键）所对应的值，返回被删除的值。 |
 | `dict.popitem()` | 返回并删除字典中的最后一对键和值。 |
+
+
+简单例子：
+```python
+>>> tel = {'jack': 4098, 'sape': 4139}
+>>> tel['guido'] = 4127
+>>> tel
+{'sape': 4139, 'guido': 4127, 'jack': 4098}
+>>> tel['jack']
+4098
+>>> del tel['sape']
+>>> tel['irv'] = 4127
+>>> tel
+{'guido': 4127, 'irv': 4127, 'jack': 4098}
+>>> list(tel.keys())
+['irv', 'guido', 'jack']
+>>> sorted(tel.keys())
+['guido', 'irv', 'jack']
+>>> 'guido' in tel
+True
+>>> 'jack' not in tel
+False
+```
+
+
+
+
+
+
+
+
+
+
 
 
 ### bytes 类型
@@ -968,7 +1258,7 @@ a^b = 0011 0001
 
 | 运算符 | 描述                                     | 实例                            |
 | ------ | ---------------------------------------- | ------------------------------- |
-| in     | 如果在指定的序列中找到值返回 True，否则返回 False。 | x 在 y 序列中 , 如果 x 在 y 序列中返回 True。  |
+| 在     | 如果在指定的序列中找到值返回 True，否则返回 False。 | x 在 y 序列中 , 如果 x 在 y 序列中返回 True。  |
 | not in | 如果在指定的序列中没有找到值返回 True，否则返回 False。 | x 不在 y 序列中 , 如果 x 不在 y 序列中返回 True。 |
 
 ## 身份运算符
@@ -1453,3 +1743,986 @@ for value in preorder_traversal(root):
 状态管理：Python自动为你保存和恢复函数的状态（在哪个节点、下一步该去左边还是右边），你无需操心。
 
 # with 关键字
+with 关键字为我们提供了一种优雅的方式来处理文件操作、数据库连接等需要明确释放资源的场景。with 是 Python 中的一个关键字，用于上下文管理协议（Context Management Protocol）。它简化了资源管理代码，特别是那些需要明确释放或清理的资源（如文件、网络连接、数据库连接等）。
+
+## with 语句的优势
+- 自动资源释放：确保资源在使用后被正确关闭
+- 代码简洁：减少样板代码
+- 异常安全：即使在代码块中发生异常，资源也会被正确释放
+- 可读性强：明确标识资源的作用域
+
+## 基本语法
+```python
+with expression [as variable]:
+    # 代码块
+```
+
+最常见的 with 语句应用是文件操作：
+```python
+with open('example.txt', 'r') as file:
+    content = file.read()
+    print(content)
+# 文件已自动关闭
+```
+等价于传统的：
+```python
+file = open('example.txt', 'r')
+try:
+    content = file.read()
+    # 处理文件内容
+finally:
+    file.close()
+```
+
+### 执行流程
+
+<img width="1344" height="1238" alt="image" src="https://github.com/user-attachments/assets/75a59a59-9db1-49d8-8eb0-426a04c312a6" />
+
+## 实际应用场景
+### 文件操作
+```python
+# 同时打开多个文件
+with open('input.txt', 'r') as infile, open('output.txt', 'w') as outfile:
+    content = infile.read()
+    outfile.write(content.upper())
+```
+###  数据库连接
+```python
+import sqlite3
+
+with sqlite3.connect('database.db') as conn:
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users')
+    results = cursor.fetchall()
+# 连接自动关闭
+```
+### 线程锁
+```python
+import threading
+
+lock = threading.Lock()
+
+with lock:
+    # 临界区代码
+    print("这段代码是线程安全的")
+```
+### 临时修改系统状态
+```python
+import decimal
+
+with decimal.localcontext() as ctx:
+    ctx.prec = 42  # 临时设置高精度
+    # 执行高精度计算
+# 精度恢复原设置
+```
+
+## 创建自定义的上下文管理器
+### 类实现方式
+```python
+class Timer:
+    def __enter__(self):
+        import time
+        self.start = time.time()
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        import time
+        self.end = time.time()
+        print(f"耗时: {self.end - self.start:.2f}秒")
+        return False
+
+# 使用示例
+with Timer() as t:
+    # 执行一些耗时操作
+    sum(range(1000000))
+```
+
+### 使用 contextlib 模块
+```python
+from contextlib import contextmanager
+
+@contextmanager
+def tag(name):
+    print(f"<{name}>")
+    yield
+    print(f"</{name}>")
+
+# 使用示例
+with tag("h1"):
+    print("这是一个标题")
+```
+
+
+# 函数
+## 定义一个函数
+规则：
+
+- 函数代码块以 def 关键词开头，后接函数标识符名称和圆括号 ()。
+- 任何传入参数和自变量必须放在圆括号中间，圆括号之间可以用于定义参数。
+- 函数的第一行语句可以选择性地使用文档字符串—用于存放函数说明。
+- 函数内容以冒号 : 起始，并且缩进。
+- return [表达式] 结束函数，选择性地返回一个值给调用方，不带表达式的 return 相当于返回 None。
+
+<img width="634" height="391" alt="image" src="https://github.com/user-attachments/assets/09f88a75-0d7e-47d7-8e3e-d6c0a5dd0b1f" />
+
+## 参数传递
+在 python 中，类型属于对象，对象有不同类型的区分，变量是没有类型的。
+
+### 可更改(mutable)与不可更改(immutable)对象
+在 python 中，strings, tuples, 和 numbers 是不可更改的对象，而 list,dict 等则是可以修改的对象。
+
+python 函数的参数传递：
+
+- 不可变类型：类似 C++ 的值传递，如整数、字符串、元组。如 fun(a)，传递的只是 a 的值，没有影响 a 对象本身。如果在 fun(a) 内部修改 a 的值，则是新生成一个 a 的对象。
+- 可变类型：类似 C++ 的引用传递，如 列表，字典。如 fun(la)，则是将 la 真正的传过去，修改后 fun 外部的 la 也会受影响
+
+python 中一切都是对象，严格意义我们不能说值传递还是引用传递，我们应该说传不可变对象和传可变对象。
+
+```python
+def change(a):
+    print(a)
+    print(id(a))
+    a = 2
+    print(a)
+    print(id(a))
+
+a = 1
+print(a)
+print(id(a))
+change(a)
+print(a)
+print(id(a))
+```
+输出：
+```python
+1
+2074164816176
+1
+2074164816176
+2
+2074164816208
+1
+2074164816176
+```
+
+```python
+#!/usr/bin/python3
+ 
+# 可写函数说明
+def changeme( mylist ):
+   "修改传入的列表"
+   mylist.append([1,2,3,4])
+   print ("函数内取值: ", mylist)
+   return
+ 
+# 调用changeme函数
+mylist = [10,20,30]
+changeme( mylist )
+print ("函数外取值: ", mylist)
+```
+输出：
+```python
+函数内取值:  [10, 20, 30, [1, 2, 3, 4]]
+函数外取值:  [10, 20, 30, [1, 2, 3, 4]]
+```
+
+## 参数类型
+### 必需参数
+必需参数须以正确的顺序传入函数。调用时的数量必须和声明时的一样。
+```python
+#!/usr/bin/python3
+ 
+#可写函数说明
+def printme( str ):
+   "打印任何传入的字符串"
+   print (str)
+   return
+ 
+# 调用 printme 函数，不加参数会报错
+printme()
+```
+
+### 关键字参数
+关键字参数和函数调用关系紧密，函数调用使用关键字参数来确定传入的参数值。
+
+使用关键字参数允许函数调用时参数的顺序与声明时不一致，因为 Python 解释器能够用参数名匹配参数值。
+
+```python
+#!/usr/bin/python3
+ 
+#可写函数说明
+def printinfo( name, age ):
+   "打印任何传入的字符串"
+   print ("名字: ", name)
+   print ("年龄: ", age)
+   return
+ 
+#调用printinfo函数
+printinfo( age=50, name="runoob" )
+```
+
+### 默认参数
+调用函数时，如果没有传递参数，则会使用默认参数。
+```python
+#!/usr/bin/python3
+ 
+#可写函数说明
+def printinfo( name, age = 35 ):
+   "打印任何传入的字符串"
+   print ("名字: ", name)
+   print ("年龄: ", age)
+   return
+ 
+#调用printinfo函数
+printinfo( age=50, name="runoob" )
+print ("------------------------")
+printinfo( name="runoob" )
+```
+
+### 不定长参数
+可能需要一个函数能处理比当初声明时更多的参数。这些参数叫做不定长参数，和上述 2 种参数不同，声明时不会命名。基本语法如下：
+```python
+def functionname([formal_args,] *var_args_tuple ):
+   "函数_文档字符串"
+   function_suite
+   return [expression]
+
+```
+
+加了星号 * 的参数会以元组(tuple)的形式导入，存放所有未命名的变量参数。
+```python
+#!/usr/bin/python3
+  
+# 可写函数说明
+def printinfo( arg1, *vartuple ):
+   "打印任何传入的参数"
+   print ("输出: ")
+   print (arg1)
+   print (vartuple)
+ 
+# 调用printinfo 函数
+printinfo( 70, 60, 50 )
+```
+
+还有一种就是参数带两个星号 **基本语法如下：
+```python
+def functionname([formal_args,] **var_args_dict ):
+   "函数_文档字符串"
+   function_suite
+   return [expression]
+```
+
+加了两个星号 ** 的参数会以字典的形式导入。
+```python
+#!/usr/bin/python3
+  
+# 可写函数说明
+def printinfo( arg1, **vardict ):
+   "打印任何传入的参数"
+   print ("输出: ")
+   print (arg1)
+   print (vardict)
+ 
+# 调用printinfo 函数
+printinfo(1, a=2,b=3)
+```
+输出结果：
+```python
+输出: 
+1
+{'a': 2, 'b': 3}
+
+```
+
+声明函数时，参数中星号 `*` 可以单独出现，如果单独出现星号 `*`，则星号 `*` 后的参数必须用关键字传入：
+```python
+>>> def f(a,b,*,c):
+...     return a+b+c
+... 
+>>> f(1,2,3)   # 报错
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: f() takes 2 positional arguments but 3 were given
+>>> f(1,2,c=3) # 正常
+6
+>>>
+```
+
+## 匿名函数
+Python 使用 lambda 来创建匿名函数。
+
+所谓匿名，意即不再使用 def 语句这样标准的形式定义一个函数。
+
+- lambda 只是一个表达式，函数体比 def 简单很多。
+- lambda 的主体是一个表达式，而不是一个代码块。仅仅能在 lambda 表达式中封装有限的逻辑进去。
+- lambda 函数拥有自己的命名空间，且不能访问自己参数列表之外或全局命名空间里的参数。
+- 虽然 lambda 函数看起来只能写一行，却不等同于 C 或 C++ 的内联函数，内联函数的目的是调用小函数时不占用栈内存从而减少函数调用的开销，提高代码的执行速度。
+
+### 语法
+```python
+lambda [arg1 [,arg2,.....argn]]:expression
+```
+
+例子：
+```python
+x = lambda a : a + 10
+print(x(5)) # 15
+```
+
+```python
+#!/usr/bin/python3
+ 
+# 可写函数说明
+sum = lambda arg1, arg2: arg1 + arg2
+ 
+# 调用sum函数
+print ("相加后的值为 : ", sum( 10, 20 )) # 相加后的值为 :  30
+print ("相加后的值为 : ", sum( 20, 20 )) # 相加后的值为 :  40
+```
+
+可以将匿名函数封装在一个函数内，这样可以使用同样的代码来创建多个匿名函数。
+```python
+def myfunc(n):
+  return lambda a : a * n
+ 
+mydoubler = myfunc(2)
+mytripler = myfunc(3)
+ 
+print(mydoubler(11)) # 22
+print(mytripler(11)) # 33
+```
+
+## return 语句
+不带参数值的 return 语句返回 None。
+
+## 强制位置参数
+Python3.8 新增了一个函数形参语法 / 用来指明函数形参必须使用指定位置参数，不能使用关键字参数的形式。
+
+在以下的例子中，形参 a 和 b 必须使用指定位置参数，c 或 d 可以是位置形参或关键字形参，而 e 和 f 要求为关键字形参:
+```python
+def f(a, b, /, c, d, *, e, f):
+    print(a, b, c, d, e, f)
+```
+正确的:
+```python
+f(10, 20, 30, d=40, e=50, f=60)
+```
+错误:
+```python
+f(10, b=20, c=30, d=40, e=50, f=60)   # b 不能使用关键字参数的形式
+f(10, 20, 30, 40, 50, f=60)           # e 必须使用关键字参数的形式
+```
+
+# 装饰器
+装饰器（decorators）是 Python 中的一种高级功能，它允许你动态地修改函数或类的行为。
+
+装饰器是一种函数，它接受一个函数作为参数，并返回一个新的函数或修改原来的函数。
+
+<img width="320" height="564" alt="image" src="https://github.com/user-attachments/assets/a963e42d-b1df-4a31-a4d9-fc7a179b3ac6" />
+
+装饰器的语法使用 @decorator_name 来应用在函数或方法上。Python 还提供了一些内置的装饰器，比如 @staticmethod 和 @classmethod，用于定义静态方法和类方法。
+
+应用场景：
+- 日志记录: 装饰器可用于记录函数的调用信息、参数和返回值。
+- 性能分析: 可以使用装饰器来测量函数的执行时间。
+- 权限控制: 装饰器可用于限制对某些函数的访问权限。
+- 缓存: 装饰器可用于实现函数结果的缓存，以提高性能。
+
+## 内置装饰器
+Python 提供了一些内置的装饰器，例如：
+
+1. @staticmethod: 将方法定义为静态方法，不需要实例化类即可调用。
+
+2. @classmethod: 将方法定义为类方法，第一个参数是类本身（通常命名为 cls）。
+
+3. @property: 将方法转换为属性，使其可以像属性一样访问。
+
+```python
+class MyClass:
+    @staticmethod
+    def static_method():
+        print("This is a static method.")
+
+    @classmethod
+    def class_method(cls):
+        print(f"This is a class method of {cls.__name__}.")
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = value
+
+# 使用
+MyClass.static_method()
+MyClass.class_method()
+
+obj = MyClass()
+obj.name = "Alice"
+print(obj.name)
+```
+
+## 多个装饰器的堆叠
+可以将多个装饰器堆叠在一起，它们会按照从下到上的顺序依次应用。例如：
+```python
+def decorator1(func):
+    def wrapper():
+        print("Decorator 1")
+        func()
+    return wrapper
+
+def decorator2(func):
+    def wrapper():
+        print("Decorator 2")
+        func()
+    return wrapper
+
+@decorator1
+@decorator2
+def say_hello():
+    print("Hello!")
+
+say_hello()
+```
+输出：
+```python
+Decorator 1
+Decorator 2
+Hello!
+```
+
+# 数据结构
+## 遍历
+在字典中遍历时，关键字和对应的值可以使用 items() 方法同时解读出来：
+```python
+>>> knights = {'gallahad': 'the pure', 'robin': 'the brave'}
+>>> for k, v in knights.items():
+...     print(k, v)
+...
+gallahad the pure
+robin the brave
+```
+
+在序列中遍历时，索引位置和对应值可以使用 enumerate() 函数同时得到：
+```python
+>>> for i, v in enumerate(['tic', 'tac', 'toe']):
+...     print(i, v)
+...
+0 tic
+1 tac
+2 toe
+```
+
+同时遍历两个或更多的序列，可以使用 zip() 组合：
+```python
+>>> questions = ['name', 'quest', 'favorite color']
+>>> answers = ['lancelot', 'the holy grail', 'blue']
+>>> for q, a in zip(questions, answers):
+...     print('What is your {0}?  It is {1}.'.format(q, a))
+...
+What is your name?  It is lancelot.
+What is your quest?  It is the holy grail.
+What is your favorite color?  It is blue.
+```
+
+要反向遍历一个序列，首先指定这个序列，然后调用 reversed() 函数：
+```python
+>>> for i in reversed(range(1, 10, 2)):
+...     print(i)
+...
+9
+7
+5
+3
+1
+```
+
+要按顺序遍历一个序列，使用 sorted() 函数返回一个已排序的序列，并不修改原值：
+```python
+>>> basket = ['apple', 'orange', 'apple', 'pear', 'orange', 'banana']
+>>> for f in sorted(set(basket)):
+...     print(f)
+...
+apple
+banana
+orange
+pear
+```
+
+# 模块
+一个模块只会被导入一次，不管你执行了多少次 import。这样可以防止导入模块被一遍又一遍地执行。
+
+如果我们想在模块被引入时，模块中的某一程序块不执行，我们可以用 __name__ 属性来使该程序块仅在该模块自身运行时执行。
+```python
+#!/usr/bin/python3
+# Filename: using_name.py
+
+if __name__ == '__main__':
+   print('程序自身在运行')
+else:
+   print('我来自另一模块')
+
+```
+> 说明：__name__ 与 __main__ 底下是双下划线， _ _ 是这样去掉中间的那个空格。
+
+# 输入和输出
+## 输出格式美化
+Python两种输出值的方式: 表达式语句和 print() 函数。
+
+第三种方式是使用文件对象的 write() 方法，标准输出文件可以用 sys.stdout 引用。
+
+如果你希望输出的形式更加多样，可以使用 str.format() 函数来格式化输出值。
+
+如果你希望将输出的值转成字符串，可以使用 repr() 或 str() 函数来实现。
+
+- str()： 函数返回一个用户易读的表达形式。
+- repr()： 产生一个解释器易读的表达形式。
+
+```python
+>>> s = 'Hello, Runoob'
+>>> str(s)
+'Hello, Runoob'
+>>> repr(s)
+"'Hello, Runoob'"
+>>> str(1/7)
+'0.14285714285714285'
+>>> x = 10 * 3.25
+>>> y = 200 * 200
+>>> s = 'x 的值为： ' + repr(x) + ',  y 的值为：' + repr(y) + '...'
+>>> print(s)
+x 的值为： 32.5,  y 的值为：40000...
+>>> #  repr() 函数可以转义字符串中的特殊字符
+... hello = 'hello, runoob\n'
+>>> hellos = repr(hello)
+>>> print(hellos)
+'hello, runoob\n'
+>>> # repr() 的参数可以是 Python 的任何对象
+... repr((x, y, ('Google', 'Runoob')))
+"(32.5, 40000, ('Google', 'Runoob'))"
+```
+
+str.format() 的基本使用如下:
+```python
+>>> print('{}网址： "{}!"'.format('菜鸟教程', 'www.runoob.com'))
+菜鸟教程网址： "www.runoob.com!"
+```
+括号及其里面的字符 (称作格式化字段) 将会被 format() 中的参数替换。
+
+在括号中的数字用于指向传入对象在 format() 中的位置，如下所示：
+```python
+>>> print('{0} 和 {1}'.format('Google', 'Runoob'))
+Google 和 Runoob
+>>> print('{1} 和 {0}'.format('Google', 'Runoob'))
+Runoob 和 Google
+```
+如果在 format() 中使用了关键字参数, 那么它们的值会指向使用该名字的参数。
+```python
+>>> print('{name}网址： {site}'.format(name='菜鸟教程', site='www.runoob.com'))
+菜鸟教程网址： www.runoob.com
+```
+位置及关键字参数可以任意的结合:
+```python
+>>> print('站点列表 {0}, {1}, 和 {other}。'.format('Google', 'Runoob', other='Taobao'))
+站点列表 Google, Runoob, 和 Taobao。
+```
+下面的例子将 Pi 保留到小数点后三位：
+```python
+>>> import math
+>>> print('常量 PI 的值近似为 {0:.3f}。'.format(math.pi))
+常量 PI 的值近似为 3.142。
+```
+如果你有一个很长的格式化字符串, 而你不想将它们分开, 那么在格式化时通过变量名而非位置会是很好的事情。
+
+最简单的就是传入一个字典, 然后使用方括号 [] 来访问键值 :
+```python
+>>> table = {'Google': 1, 'Runoob': 2, 'Taobao': 3}
+>>> print('Runoob: {0[Runoob]:d}; Google: {0[Google]:d}; Taobao: {0[Taobao]:d}'.format(table))
+Runoob: 2; Google: 1; Taobao: 3
+```
+也可以通过在 table 变量前使用 ** 来实现相同的功能：
+```python
+>>> table = {'Google': 1, 'Runoob': 2, 'Taobao': 3}
+>>> print('Runoob: {Runoob:d}; Google: {Google:d}; Taobao: {Taobao:d}'.format(**table))
+Runoob: 2; Google: 1; Taobao: 3
+```
+
+## 读取键盘输入
+Python 提供了 input() 内置函数从标准输入读入一行文本，默认的标准输入是键盘。
+```python
+#!/usr/bin/python3
+
+str = input("请输入：");
+print ("你输入的内容是: ", str)
+```
+
+## 读和写文件
+open() 将会返回一个 file 对象，基本语法格式如下:
+```python
+open(filename, mode)
+```
+- filename：包含了你要访问的文件名称的字符串值。
+- mode：决定了打开文件的模式：只读，写入，追加等。所有可取值见如下的完全列表。这个参数是非强制的，默认文件访问模式为只读(r)。
+
+<img width="1022" height="940" alt="image" src="https://github.com/user-attachments/assets/96da3af2-bdfe-4002-9284-a7fd3efcaa3a" />
+
+<img width="1182" height="702" alt="image" src="https://github.com/user-attachments/assets/53835fad-e27a-4a17-af41-3aa73538305e" />
+
+<img width="1018" height="370" alt="image" src="https://github.com/user-attachments/assets/8b27fefe-22b9-45a0-a2f5-656357df0c2c" />
+
+[关于文件的更多操作](https://www.runoob.com/python3/python3-file-methods.html)
+
+
+# 异常处理
+## try/except
+异常捕捉可以使用 `try/except` 语句。
+<img width="1394" height="556" alt="image" src="https://github.com/user-attachments/assets/a1addbf1-ffd9-4e6b-8012-e9dbf213e705" />
+
+以下例子中，让用户输入一个合法的整数，但是允许用户中断这个程序（使用 Control-C 或者操作系统提供的方法）。用户中断的信息会引发一个 KeyboardInterrupt 异常。
+```python
+while True:
+    try:
+        x = int(input("请输入一个数字: "))
+        break
+    except ValueError:
+        print("您输入的不是数字，请再次尝试输入！")
+```
+一个 try 语句可能包含多个except子句，分别来处理不同的特定的异常。最多只有一个分支会被执行。
+
+处理程序将只针对对应的 try 子句中的异常进行处理，而不是其他的 try 的处理程序中的异常。
+
+一个except子句可以同时处理多个异常，这些异常将被放在一个括号里成为一个元组，例如:
+```python
+except (RuntimeError, TypeError, NameError):
+    pass
+```
+最后一个except子句可以忽略异常的名称，它将被当作通配符使用。你可以使用这种方法打印一个错误信息，然后再次把异常抛出。
+```python
+import sys
+
+try:
+    f = open('myfile.txt')
+    s = f.readline()
+    i = int(s.strip())
+except OSError as err:
+    print("OS error: {0}".format(err))
+except ValueError:
+    print("Could not convert data to an integer.")
+except:
+    print("Unexpected error:", sys.exc_info()[0])
+    raise
+```
+
+## try/except...else
+
+try/except 语句还有一个可选的 else 子句，如果使用这个子句，那么必须放在所有的 except 子句之后。
+
+else 子句将在 try 子句**没有发生任何异常**的时候执行。
+
+<img width="1394" height="783" alt="image" src="https://github.com/user-attachments/assets/658125bf-cf39-4cfa-a4c8-fb63cacde101" />
+
+异常处理并不仅仅处理那些直接发生在 try 子句中的异常，而且还能处理子句中调用的函数（甚至间接调用的函数）里抛出的异常。例如:
+```python
+>>> def this_fails():
+        x = 1/0
+   
+>>> try:
+        this_fails()
+    except ZeroDivisionError as err:
+        print('Handling run-time error:', err)
+   
+Handling run-time error: int division or modulo by zero
+```
+
+## try-finally 语句
+try-finally 语句无论是否发生异常都将执行最后的代码。
+<img width="1394" height="1000" alt="image" src="https://github.com/user-attachments/assets/55e0fc6c-033d-461a-944b-618ec45ef6bd" />
+
+## 抛出异常
+Python 使用 raise 语句抛出一个指定的异常。
+
+raise语法格式如下：
+```python
+raise [Exception [, args [, traceback]]]
+```
+<img width="1394" height="311" alt="image" src="https://github.com/user-attachments/assets/c076c303-3ef1-45d9-bed9-cd19cf6ea34d" />
+
+## 用户自定义异常
+可以通过创建一个新的异常类来拥有自己的异常。异常类继承自 Exception 类，可以直接继承，或者间接继承，例如:
+```python
+>>> class MyError(Exception):
+        def __init__(self, value):
+            self.value = value
+        def __str__(self):
+            return repr(self.value)
+   
+>>> try:
+        raise MyError(2*2)
+    except MyError as e:
+        print('My exception occurred, value:', e.value)
+   
+My exception occurred, value: 4
+>>> raise MyError('oops!')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in ?
+__main__.MyError: 'oops!'
+```
+
+# 面向对象
+## 面向对象技术简介
+- 类(Class): 用来描述具有相同的属性和方法的对象的集合。它定义了该集合中每个对象所共有的属性和方法。对象是类的实例。
+- 方法：类中定义的函数。
+- 类变量：类变量在整个实例化的对象中是公用的。类变量定义在类中且在函数体之外。类变量通常不作为实例变量使用。
+- 数据成员：类变量或者实例变量用于处理类及其实例对象的相关的数据。
+- 方法重写：如果从父类继承的方法不能满足子类的需求，可以对其进行改写，这个过程叫方法的覆盖（override），也称为方法的重写。
+- 局部变量：定义在方法中的变量，只作用于当前实例的类。
+- 实例变量：在类的声明中，属性是用变量来表示的，这种变量就称为实例变量，实例变量就是一个用 self 修饰的变量。
+- 继承：即一个派生类（derived class）继承基类（base class）的字段和方法。继承也允许把一个派生类的对象作为一个基类对象对待。例如，有这样一个设计：一个Dog类型的对象派生自Animal类，这是模拟"是一个（is-a）"关系（例图，Dog是一个Animal）。
+- 实例化：创建一个类的实例，类的具体对象。
+- 对象：通过类定义的数据结构实例。对象包括两个数据成员（类变量和实例变量）和方法。
+
+## self 代表类的实例，而非类
+类的方法与普通的函数只有一个特别的区别——它们必须有一个额外的第一个参数名称, 按照惯例它的名称是 self。
+```python
+class Test:
+    def prt(self):
+        print(self)
+        print(self.__class__)
+ 
+t = Test()
+t.prt()
+```
+self 不是 python 关键字，我们把他换成 runoob 也是可以正常执行的:
+```python
+class Test:
+    def prt(runoob):
+        print(runoob)
+        print(runoob.__class__)
+ 
+t = Test()
+t.prt()
+```
+
+## 继承
+Python 同样支持类的继承，如果一种语言不支持继承，类就没有什么意义。派生类的定义如下所示:
+```python
+class DerivedClassName(BaseClassName):
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+子类（派生类 DerivedClassName）会继承父类（基类 BaseClassName）的属性和方法。
+
+BaseClassName（实例中的基类名）必须与派生类定义在一个作用域内。除了类，还可以用表达式，基类定义在另一个模块中时这一点非常有用:
+```python
+class DerivedClassName(modname.BaseClassName):
+```
+
+```python
+#!/usr/bin/python3
+ 
+#类定义
+class people:
+    #定义基本属性
+    name = ''
+    age = 0
+    #定义私有属性,私有属性在类外部无法直接进行访问
+    __weight = 0
+    #定义构造方法
+    def __init__(self,n,a,w):
+        self.name = n
+        self.age = a
+        self.__weight = w
+    def speak(self):
+        print("%s 说: 我 %d 岁。" %(self.name,self.age))
+ 
+#单继承示例
+class student(people):
+    grade = ''
+    def __init__(self,n,a,w,g):
+        #调用父类的构函
+        people.__init__(self,n,a,w)
+        self.grade = g
+    #覆写父类的方法
+    def speak(self):
+        print("%s 说: 我 %d 岁了，我在读 %d 年级"%(self.name,self.age,self.grade))
+ 
+ 
+ 
+s = student('ken',10,60,3)
+s.speak()
+```
+
+## 多继承
+Python同样有限的支持多继承形式。多继承的类定义形如下例:
+```python
+class DerivedClassName(Base1, Base2, Base3):
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+
+需要注意圆括号中父类的顺序，若是父类中有相同的方法名，而在子类使用时未指定，python从左至右搜索 即方法在子类中未找到时，从左到右查找父类中是否包含方法。
+```python
+#!/usr/bin/python3
+ 
+#类定义
+class people:
+    #定义基本属性
+    name = ''
+    age = 0
+    #定义私有属性,私有属性在类外部无法直接进行访问
+    __weight = 0
+    #定义构造方法
+    def __init__(self,n,a,w):
+        self.name = n
+        self.age = a
+        self.__weight = w
+    def speak(self):
+        print("%s 说: 我 %d 岁。" %(self.name,self.age))
+ 
+#单继承示例
+class student(people):
+    grade = ''
+    def __init__(self,n,a,w,g):
+        #调用父类的构函
+        people.__init__(self,n,a,w)
+        self.grade = g
+    #覆写父类的方法
+    def speak(self):
+        print("%s 说: 我 %d 岁了，我在读 %d 年级"%(self.name,self.age,self.grade))
+ 
+#另一个类，多继承之前的准备
+class speaker():
+    topic = ''
+    name = ''
+    def __init__(self,n,t):
+        self.name = n
+        self.topic = t
+    def speak(self):
+        print("我叫 %s，我是一个演说家，我演讲的主题是 %s"%(self.name,self.topic))
+ 
+#多继承
+class sample(speaker,student):
+    a =''
+    def __init__(self,n,a,w,g,t):
+        student.__init__(self,n,a,w,g)
+        speaker.__init__(self,n,t)
+ 
+test = sample("Tim",25,80,4,"Python")
+test.speak()   #方法名同，默认调用的是在括号中参数位置排前父类的方法
+```
+
+输出结果为：`我叫 Tim，我是一个演说家，我演讲的主题是 Python`
+
+
+## 方法重写
+如果你的父类方法的功能不能满足你的需求，你可以在子类重写你父类的方法，实例如下：
+```python
+#!/usr/bin/python3
+ 
+class Parent:        # 定义父类
+   def myMethod(self):
+      print ('调用父类方法')
+ 
+class Child(Parent): # 定义子类
+   def myMethod(self):
+      print ('调用子类方法')
+ 
+c = Child()          # 子类实例
+c.myMethod()         # 子类调用重写方法
+super(Child,c).myMethod() #用子类对象调用父类已被覆盖的方法
+```
+super() 函数是用于调用父类(超类)的一个方法。
+
+## 类属性与方法
+### 类的私有属性
+`__private_attrs`：两个下划线开头，声明该属性为私有，不能在类的外部被使用或直接访问。在类内部的方法中使用时 `self.__private_attrs`。
+
+### 类的私有方法
+`__private_method`：两个下划线开头，声明该方法为私有方法，只能在类的内部调用 ，不能在类的外部调用。`self.__private_methods`。
+
+```python
+#!/usr/bin/python3
+ 
+class JustCounter:
+    __secretCount = 0  # 私有变量
+    publicCount = 0    # 公开变量
+ 
+    def count(self):
+        self.__secretCount += 1
+        self.publicCount += 1
+        print (self.__secretCount)
+ 
+counter = JustCounter()
+counter.count()
+counter.count()
+print (counter.publicCount)
+print (counter.__secretCount)  # 报错，实例不能访问私有变量
+```
+
+```python
+#!/usr/bin/python3
+ 
+class Site:
+    def __init__(self, name, url):
+        self.name = name       # public
+        self.__url = url   # private
+ 
+    def who(self):
+        print('name  : ', self.name)
+        print('url : ', self.__url)
+ 
+    def __foo(self):          # 私有方法
+        print('这是私有方法')
+ 
+    def foo(self):            # 公共方法
+        print('这是公共方法')
+        self.__foo()
+ 
+x = Site('菜鸟教程', 'www.runoob.com')
+x.who()        # 正常输出
+x.foo()        # 正常输出
+x.__foo()      # 报错
+```
+
+<img width="1018" height="278" alt="image" src="https://github.com/user-attachments/assets/59ce9509-bef4-4d8f-8292-feed9b73eb5b" />
+
+## 运算符重载
+Python同样支持运算符重载，我们可以对类的专有方法进行重载，实例如下：
+```python
+#!/usr/bin/python3
+ 
+class Vector:
+   def __init__(self, a, b):
+      self.a = a
+      self.b = b
+ 
+   def __str__(self):
+      return 'Vector (%d, %d)' % (self.a, self.b)
+   
+   def __add__(self,other):
+      return Vector(self.a + other.a, self.b + other.b)
+ 
+v1 = Vector(2,10)
+v2 = Vector(5,-2)
+print (v1 + v2)
+```
+
+# 命名空间喝作用域
+命名空间(Namespace)是从名称到对象的映射，大部分的命名空间都是通过 Python 字典来实现的。
+
+命名空间提供了在项目中避免名字冲突的一种方法。各个命名空间是独立的，没有任何关系的，所以一个命名空间中不能有重名，但不同的命名空间是可以重名而没有任何影响。
+
+我们举一个计算机系统中的例子，一个文件夹(目录)中可以包含多个文件夹，每个文件夹中不能有相同的文件名，但不同文件夹中的文件可以重名。
+<img width="544" height="372" alt="image" src="https://github.com/user-attachments/assets/0c07e3c6-b36f-4580-9b5b-3a4929140481" />
+
+[具体可以查看此处](https://www.runoob.com/python3/python3-namespace-scope.html)
+
+# [Python3 实例](https://www.runoob.com/python3/python3-examples.html)
+
