@@ -1078,11 +1078,51 @@ Lambda 表达式本质上与函数声明非常类似。Lambda 表达式具体形
 
 ## 数字
 
+### 数学运算
+内置函数可以引用数学头文件 <cmath>。
+
+| 序号 | 函数 & 描述 |
+| ---- | ---- |
+| 1 | `double cos(double);` <br> 该函数返回弧度角（double 型）的余弦。 |
+| 2 | `double sin(double);` <br> 该函数返回弧度角（double 型）的正弦。 |
+| 3 | `double tan(double);` <br> 该函数返回弧度角（double 型）的正切。 |
+| 4 | `double log(double);` <br> 该函数返回参数的自然对数。 |
+| 5 | `double pow(double, double);` <br> 假设第一个参数为 x，第二个参数为 y，则该函数返回 x 的 y 次方。 |
+| 6 | `double hypot(double, double);` <br> 该函数返回两个参数的平方总和的平方根，也就是说，参数为一个直角三角形的两个直角边，函数会返回斜边的长度。 |
+| 7 | `double sqrt(double);` <br> 该函数返回参数的平方根。 |
+| 8 | `int abs(int);` <br> 该函数返回整数的绝对值。 |
+| 9 | `double fabs(double);` <br> 该函数返回任意一个浮点数的绝对值。 |
+| 10 | `double floor(double);` <br> 该函数返回一个小于或等于传入参数的最大整数。 |
+
 ### 随机数
 
-关于随机数生成器，有两个相关的函数。一个是 **rand()**，该函数只返回一个伪随机数。生成随机数之前必须先调用 **srand()** 函数。
+关于随机数生成器，有两个相关的函数。一个是 **rand()**，该函数只返回一个伪随机数。生成随机数之前必须先调用 **srand()** 函数。一般种子函数配合时间time()函数使用。
 
-
+```cpp
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+ 
+using namespace std;
+ 
+int main ()
+{
+   int i,j;
+ 
+   // 设置种子
+   srand( (unsigned)time( NULL ) );
+ 
+   /* 生成 10 个随机数 */
+   for( i = 0; i < 10; i++ )
+   {
+      // 生成实际的随机数
+      j= rand();
+      cout <<"随机数： " << j << endl;
+   }
+ 
+   return 0;
+}
+```
 
 ## 数组
 
@@ -1090,6 +1130,7 @@ C++ 支持**数组**数据结构，它可以存储一个**固定大小**的**相
 
 *所有的数组都是由连续的内存位置组成。最低的地址对应第一个元素，最高的地址对应最后一个元素。*
 
+声明一个类型为 double 的包含 10 个元素的数组 balance：
 ```cpp
 double balance[10];
 ```
@@ -1127,6 +1168,149 @@ double salary = balance[9];
 | [传递数组给函数](https://www.runoob.com/cplusplus/cpp-passing-arrays-to-functions.html) | 您可以通过指定不带索引的数组名称来给函数传递一个指向数组的指针。 |
 | [从函数返回数组](https://www.runoob.com/cplusplus/cpp-return-arrays-from-function.html) | C++ 允许从函数返回数组。                                     |
 
+### 多维数组
+
+多维数组最简单的形式是二维数组。一个带有 3 行 4 列的数组：
+```cpp
+int a[3][4] = {  
+ {0, 1, 2, 3} ,   /*  初始化索引号为 0 的行 */
+ {4, 5, 6, 7} ,   /*  初始化索引号为 1 的行 */
+ {8, 9, 10, 11}   /*  初始化索引号为 2 的行 */
+};
+```
+等价于：
+```cpp
+int a[3][4] = {0,1,2,3,4,5,6,7,8,9,10,11};
+```
+
+### 指向数组的指针
+
+数组名是指向数组中第一个元素的常量指针。
+```cpp
+double runoobAarray[50];
+```
+runoobAarray 是一个指向 `&runoobAarray[0]` 的指针，即数组 runoobAarray 的第一个元素的地址。`*(runoobAarray + 4)` 是一种访问 `runoobAarray[4]` 数据的合法方式。
+
+```cpp
+#include <iostream>
+using namespace std;
+ 
+int main ()
+{
+   // 带有 5 个元素的双精度浮点型数组
+   double runoobAarray[5] = {1000.0, 2.0, 3.4, 17.0, 50.0};
+   double *p;
+ 
+   p = runoobAarray;
+ 
+   // 输出数组中每个元素的值
+   cout << "使用指针的数组值 " << endl; 
+   for ( int i = 0; i < 5; i++ )
+   {
+       cout << "*(p + " << i << ") : ";
+       cout << *(p + i) << endl;
+   }
+ 
+   cout << "使用 runoobAarray 作为地址的数组值 " << endl;
+   for ( int i = 0; i < 5; i++ )
+   {
+       cout << "*(runoobAarray + " << i << ") : ";
+       cout << *(runoobAarray + i) << endl;
+   }
+ 
+   return 0;
+}
+```
+
+```cpp
+使用指针的数组值 
+*(p + 0) : 1000
+*(p + 1) : 2
+*(p + 2) : 3.4
+*(p + 3) : 17
+*(p + 4) : 50
+使用 runoobAarray 作为地址的数组值 
+*(runoobAarray + 0) : 1000
+*(runoobAarray + 1) : 2
+*(runoobAarray + 2) : 3.4
+*(runoobAarray + 3) : 17
+*(runoobAarray + 4) : 50
+```
+
+### 传递数组给函数
+
+可以通过指定不带索引的数组名来传递一个指向数组的指针。C++ 传数组给一个函数，数组类型自动转换为指针类型，因而传的实际是地址。必须以下面三种方式来声明函数形式参数:
+形式参数是一个指针：
+```cpp
+void myFunction(int *param)
+{
+.
+.
+.
+}
+```
+形式参数是一个已定义大小的数组：
+```cpp
+void myFunction(int param[10])
+{
+.
+.
+.
+}
+```
+形式参数是一个未定义大小的数组：
+```cpp
+void myFunction(int param[])
+{
+.
+.
+.
+}
+```
+就函数而言，数组的长度是无关紧要的，因为 C++ 不会对形式参数执行边界检查。
+
+### 从函数返回数组
+C++ 不允许返回一个完整的数组作为函数的参数。但是，您可以通过指定不带索引的数组名来返回一个指向数组的指针。
+
+如果您想要从函数返回一个一维数组，您必须声明一个返回指针的函数，如下：
+```cpp
+int* myFunction()
+{
+   int myArray[3] = {1, 2, 3};
+   return myArray;
+}
+```
+注意：你不能简单地返回指向局部数组的指针，因为当函数结束时，局部数组将被销毁，指向它的指针将变得无效。
+C++ 不支持在函数外返回局部变量的地址，除非定义局部变量为 static 变量。
+
+为了避免以上情况，可以使用**静态数组**或者**动态分配数组**。
+```cpp
+int* myFunction()
+{
+   static int myArray[3] = {1, 2, 3};
+   return myArray;
+}
+```
+
+使用动态分配数组需要在函数内部使用 new 运算符来分配一个数组，并在函数结束时使用 delete 运算符释放该数组，例如：
+```cpp
+int* myFunction()
+{
+   int* myArray = new int[3];
+   myArray[0] = 1;
+   myArray[1] = 2;
+   myArray[2] = 3;
+   return myArray;
+}
+
+int main()
+{
+   int* result = myFunction();
+   // 使用 result
+   delete[] result;
+   return 0;
+}
+```
 
 
 ## 字符串
@@ -2338,4 +2522,5 @@ private:
 #### 3. 与 B 树和 B + 树对比
 
 ​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
+
 
