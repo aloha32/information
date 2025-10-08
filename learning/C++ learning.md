@@ -1392,31 +1392,6 @@ int main ()
 
 每一个变量都有一个内存位置，每一个内存位置都定义了可使用连字号（&）运算符访问的地址，它表示了在内存中的一个地址。
 
-```cpp
-#include <iostream>
- 
-using namespace std;
- 
-int main ()
-{
-   int  var1;
-   char var2[10];
- 
-   cout << "var1 变量的地址： ";
-   cout << &var1 << endl;
- 
-   cout << "var2 变量的地址： ";
-   cout << &var2 << endl;
- 
-   return 0;
-}
-```
-
-```cpp
-var1 变量的地址： 0xbfebd5c0
-var2 变量的地址： 0xbfebd5b6
-```
-
 **指针**是一个变量，其值为另一个变量的地址，即，内存位置的直接地址。就像其他变量或常量一样，您必须在使用指针存储其他变量地址之前，对其进行声明。
 
 用来声明指针的星号 * 与乘法中使用的星号是相同的。但是，在这个语句中，星号是用来指定一个变量是指针。以下是有效的指针声明：
@@ -1428,10 +1403,330 @@ float  *fp;    /* 一个浮点型的指针 */
 char   *ch;    /* 一个字符型的指针 */
 ```
 
+所有指针的值的实际数据类型，不管是整型、浮点型、字符型，还是其他的数据类型，都是一样的，都是一个代表内存地址的长的十六进制数。不同数据类型的指针之间唯一的不同是，指针所指向的变量或常量的数据类型不同。
+
 ### 使用指针
 
-使用指针时会频繁进行以下几个操作：定义一个指针变量、把变量地址赋值给指针、访问指针变量中可用地址的值。这些是通过使用一元运算符 ***** 来返回位于操作数所指定地址的变量的值。
+使用指针时会频繁进行以下几个操作：定义一个指针变量、把变量地址赋值给指针、访问指针变量中可用地址的值。这些是通过使用一元运算符 `*` 来返回位于操作数所指定地址的变量的值。
 
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int var = 20;
+    int *ip;
+    ip = &var;
+    
+    cout << "var的值: " << var << endl;
+    cout << "var的地址 (&var): " << &var << endl;
+    cout << "ip存储的地址: " << ip << endl;
+    cout << "ip自身的地址 (&ip): " << &ip << endl;
+    cout << "通过ip访问的值 (*ip): " << *ip << endl;
+
+    var = 30;
+    cout << "var的值: " << var << endl;
+    cout << "var的地址 (&var): " << &var << endl;
+    cout << "ip存储的地址: " << ip << endl;
+    cout << "ip自身的地址 (&ip): " << &ip << endl;
+    cout << "通过ip访问的值 (*ip): " << *ip << endl;
+
+    int var2 = 40;
+    ip = &var2;
+    
+    cout << "var2的值: " << var2 << endl;
+    cout << "var2的地址 (&var2): " << &var2 << endl;
+    cout << "ip存储的地址: " << ip << endl;
+    cout << "ip自身的地址 (&ip): " << &ip << endl;
+    cout << "通过ip访问的值 (*ip): " << *ip << endl;
+
+    return 0;
+}
+```
+
+```cpp
+var的值: 20
+var的地址 (&var): 0x7fffffffd898
+ip存储的地址: 0x7fffffffd898
+ip自身的地址 (&ip): 0x7fffffffd8a0
+通过ip访问的值 (*ip): 20
+var的值: 30
+var的地址 (&var): 0x7fffffffd898
+ip存储的地址: 0x7fffffffd898
+ip自身的地址 (&ip): 0x7fffffffd8a0
+通过ip访问的值 (*ip): 30
+var2的值: 40
+var2的地址 (&var2): 0x7fffffffd89c
+ip存储的地址: 0x7fffffffd89c
+ip自身的地址 (&ip): 0x7fffffffd8a0
+通过ip访问的值 (*ip): 40
+```
+
+### Null 指针
+
+在变量声明的时候，如果没有确切的地址可以赋值，为指针变量赋一个 NULL 值是一个良好的**编程习惯**。赋为 NULL 值的指针被称为空指针。
+
+NULL 指针是一个定义在标准库中的值为零的常量。在大多数的操作系统上，程序不允许访问地址为 0 的内存，因为该内存是操作系统保留的。然而，内存地址 0 有特别重要的意义，它表明该指针不指向一个可访问的内存位置。但按照惯例，如果指针包含空值（零值），则假定它不指向任何东西。
+
+### 指针的算术运算
+
+可以对指针进行四种算术运算：`++`、`--`、`+`、`-`。
+
+假设 ptr 是一个指向地址 1000 的**整型指针**，是一个 32 位的整数，让我们对该指针执行下列的算术运算：
+```cpp
+ptr++
+```
+执行 ptr++ 后，指针 ptr 会向前移动 4 个字节，指向下一个整型元素的地址。这是由于指针算术运算会根据指针的类型和大小来决定移动的距离。在这种情况下，由于是一个 32 位整数指针，每个整数占据 4 个字节，因此 ptr++ 会将指针 ptr 向前移动 4 个字节，指向下一个整型元素的地址。
+
+指针算术运算的详细解析：
+
+- 加法运算：可以对指针进行加法运算。当一个指针p加上一个整数n时，结果是指针p向前移动n个元素的大小。例如，如果p是一个int类型的指针，每个int占4个字节，那么`p + 1`将指向p所指向的下一个int元素。
+
+- 减法运算：可以对指针进行减法运算。当一个指针p减去一个整数n时，结果是指针p向后移动n个元素的大小。例如，如果p是一个int类型的指针，每个int占4个字节，那么`p - 1`将指向p所指向的前一个int元素。
+
+- 指针与指针之间的减法运算：可以计算两个指针之间的距离。当从一个指针p减去另一个指针q时，结果是两个指针之间的元素个数。例如，如果p和q是两个int类型的指针，每个int占4个字节，那么`p - q`将得到两个指针之间的元素个数。
+
+- 指针与整数之间的比较运算：可以将指针与整数进行比较运算。可以使用关系运算符（如<、>、<=、>=）对指针和整数进行比较。这种比较通常用于判断指针是否指向某个有效的内存位置。
+
+#### 指针与整数之间的比较运算
+
+检查指针是否在数组有效范围内
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int arr[5] = {1, 2, 3, 4, 5};
+    int *p = arr;  // 指向数组开头
+    
+    // 遍历数组，确保指针不越界
+    for (int i = 0; i < 5; i++) {
+        // 检查指针是否还在数组范围内
+        if (p < arr + 5) {  // 指针与整数表达式比较
+            cout << *p << " ";
+            p++;
+        }
+    }
+    cout << endl;
+    
+    // 检查指针是否越界
+    if (p >= arr + 5) {
+        cout << "指针已到达数组末尾" << endl;
+    }
+    
+    return 0;
+}
+```
+
+检查空指针和有效地址
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int *ptr = nullptr;
+    int value = 100;
+    
+    // 检查指针是否为null（与0比较）
+    if (ptr == 0) {
+        cout << "指针为空" << endl;
+    }
+    
+    ptr = &value;
+    
+    // 检查指针是否非空
+    if (ptr != 0) {
+        cout << "指针指向有效地址: " << *ptr << endl;
+    }
+    
+    // 检查指针是否指向特定内存区域（嵌入式系统中常见）
+    if ((unsigned long)ptr < 0x100000) {
+        cout << "指针指向低端内存" << endl;
+    }
+    
+    return 0;
+}
+```
+
+内存块边界检查
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    const int BUFFER_SIZE = 100;
+    char buffer[BUFFER_SIZE];
+    char *current = buffer;
+    
+    // 模拟向缓冲区写入数据
+    for (int i = 0; i < 10; i++) {
+        // 检查指针是否还在缓冲区范围内
+        if (current < buffer + BUFFER_SIZE) {
+            *current = 'A' + i;
+            current++;
+        } else {
+            cout << "缓冲区已满！" << endl;
+            break;
+        }
+    }
+    
+    // 重置指针并读取
+    current = buffer;
+    while (current < buffer + 10) {  // 指针与整数表达式比较
+        cout << *current << " ";
+        current++;
+    }
+    cout << endl;
+    
+    return 0;
+}
+```
+
+动态内存管理中的边界检查
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int *dynamicArray = new int[10];
+    int *start = dynamicArray;
+    int *end = dynamicArray + 10;
+    int *p = dynamicArray;
+    
+    // 安全地遍历动态数组
+    for (int i = 0; i < 15; i++) {  // 故意超过边界
+        if (p < end) {  // 重要：检查指针是否越界
+            *p = i * 10;
+            p++;
+        } else {
+            cout << "警告：试图访问超出分配的内存！" << endl;
+            break;
+        }
+    }
+    
+    // 显示结果
+    p = start;
+    while (p < end) {
+        cout << *p << " ";
+        p++;
+    }
+    cout << endl;
+    
+    delete[] dynamicArray;
+    return 0;
+}
+```
+
+嵌入式系统中的硬件寄存器访问
+```cpp
+// 在嵌入式系统中，经常需要检查指针是否指向特定的硬件寄存器地址
+#include <iostream>
+using namespace std;
+
+int main() {
+    // 假设这些是硬件寄存器的地址
+    const unsigned long UART_BASE = 0x40000000;
+    const unsigned long GPIO_BASE = 0x40020000;
+    
+    volatile unsigned int *uartPtr = (volatile unsigned int*)UART_BASE;
+    volatile unsigned int *gpioPtr = (volatile unsigned int*)GPIO_BASE;
+    
+    // 检查指针是否指向预期的硬件地址范围
+    if ((unsigned long)uartPtr >= 0x40000000 && (unsigned long)uartPtr < 0x40010000) {
+        cout << "UART指针在预期范围内" << endl;
+    }
+    
+    if ((unsigned long)gpioPtr >= 0x40020000 && (unsigned long)gpioPtr < 0x40030000) {
+        cout << "GPIO指针在预期范围内" << endl;
+    }
+    
+    return 0;
+}
+```
+
+重要注意事项：
+- 类型安全：比较前确保类型正确，可能需要类型转换
+
+- 有效性：这种比较只能检查相对位置，不能保证指针绝对有效
+
+- 可移植性：直接与硬编码地址比较会降低代码可移植性
+
+- 现代C++：在现代C++中，更推荐使用标准库容器和迭代器来避免这类底层指针操作
+
+
+### 指针 vs 数组
+
+指针和数组并不是完全互换的。
+```cpp
+#include <iostream>
+ 
+using namespace std;
+const int MAX = 3;
+ 
+int main ()
+{
+   int  var[MAX] = {10, 100, 200};
+ 
+   for (int i = 0; i < MAX; i++)
+   {
+      *var = i;    // 这是正确的语法
+      var++;       // 这是不正确的
+   }
+   return 0;
+}
+```
+把指针运算符 `*` 应用到 var 上是完全可以的，但修改 var 的值是非法的。这是因为 var 是一个指向数组开头的常量，不能作为左值。
+
+### 指针数组
+
+我们想要让数组存储指向 int 或 char 或其他数据类型的指针。下面是一个指向整数的指针数组的声明：`int *ptr[MAX];`
+
+在这里，把 ptr 声明为一个数组，由 MAX 个整数指针组成。因此，ptr 中的每个元素，都是一个指向 int 值的指针。
+
+可以用一个指向字符的指针数组来存储一个字符串列表:
+```cpp
+#include <iostream>
+ 
+using namespace std;
+const int MAX = 4;
+ 
+int main ()
+{
+ const char *names[MAX] = {
+                   "Zara Ali",
+                   "Hina Ali",
+                   "Nuha Ali",
+                   "Sara Ali",
+   };
+ 
+   for (int i = 0; i < MAX; i++)
+   {
+      cout << "Value of names[" << i << "] = ";
+      cout << names[i] << endl;
+   }
+   return 0;
+}
+```
+```cpp
+Value of names[0] = Zara Ali
+Value of names[1] = Hina Ali
+Value of names[2] = Nuha Ali
+Value of names[3] = Sara Ali
+```
+
+### 指向指针的指针（多级间接寻址）
+
+指向指针的指针是一种多级间接寻址的形式，或者说是一个指针链。
+
+指针的指针就是将指针的地址存放在另一个指针里面。
+
+通常，一个指针包含一个变量的地址。当我们定义一个指向指针的指针时，第一个指针包含了第二个指针的地址，第二个指针指向包含实际值的位置。
+
+<img width="414" height="65" alt="image" src="https://github.com/user-attachments/assets/f6fe17aa-18db-49b3-ace8-1b1c3955e8ee" />
+
+一个指向指针的指针变量必须如下声明，即在变量名前放置两个星号，例如：`int **var;`
+
+当一个目标值被一个指针间接指向到另一个指针时，访问这个值需要使用两个星号运算符
 ```cpp
 #include <iostream>
  
@@ -1439,41 +1734,83 @@ using namespace std;
  
 int main ()
 {
-   int  var = 20;   // 实际变量的声明
-   int  *ip;        // 指针变量的声明
+    int  var;
+    int  *ptr;
+    int  **pptr;
  
-   ip = &var;       // 在指针变量中存储 var 的地址
+    var = 3000;
  
-   cout << "Value of var variable: ";
-   cout << var << endl;
+    // 获取 var 的地址
+    ptr = &var;
  
-   // 输出在指针变量中存储的地址
-   cout << "Address stored in ip variable: ";
-   cout << ip << endl;
+    // 使用运算符 & 获取 ptr 的地址
+    pptr = &ptr;
  
-   // 访问指针中地址的值
-   cout << "Value of *ip variable: ";
-   cout << *ip << endl;
+    // 使用 pptr 获取值
+    cout << "var 值为 :" << var << endl;
+    cout << "*ptr 值为:" << *ptr << endl;
+    cout << "**pptr 值为:" << **pptr << endl;
+ 
+    return 0;
+}
+```
+结果：
+```cpp
+var 值为 :3000
+*ptr 值为:3000
+**pptr 值为:3000
+```
+
+### 传递指针给函数
+C++ 允许您传递指针给函数，只需要简单地声明函数参数为指针类型即可。
+
+传递一个无符号的 long 型指针给函数，并在函数内改变这个值：
+```cpp
+#include <iostream>
+#include <ctime>
+ 
+using namespace std;
+ 
+// 在写函数时应习惯性的先声明函数，然后在定义函数
+void getSeconds(unsigned long *par);
+ 
+int main ()
+{
+   unsigned long sec;
+ 
+ 
+   getSeconds( &sec );
+ 
+   // 输出实际值
+   cout << "Number of seconds :" << sec << endl;
  
    return 0;
 }
+ 
+void getSeconds(unsigned long *par)
+{
+   // 获取当前的秒数
+   *par = time( NULL );
+   return;
+}
 ```
-
+结果：
 ```cpp
-Value of var variable: 20
-Address stored in ip variable: 0xbfc601ac
-Value of *ip variable: 20
+Number of seconds :1294450468
 ```
 
-| 概念                                                         | 描述                                                         |
-| :----------------------------------------------------------- | :----------------------------------------------------------- |
-| [C++ Null 指针](https://www.runoob.com/cplusplus/cpp-null-pointers.html) | C++ 支持空指针。NULL 指针是一个定义在标准库中的值为零的常量。 |
-| [C++ 指针的算术运算](https://www.runoob.com/cplusplus/cpp-pointer-arithmetic.html) | 可以对指针进行四种算术运算：++、--、+、-                     |
-| [C++ 指针 vs 数组](https://www.runoob.com/cplusplus/cpp-pointers-vs-arrays.html) | 指针和数组之间有着密切的关系。                               |
-| [C++ 指针数组](https://www.runoob.com/cplusplus/cpp-array-of-pointers.html) | 可以定义用来存储指针的数组。                                 |
-| [C++ 指向指针的指针](https://www.runoob.com/cplusplus/cpp-pointer-to-pointer.html) | C++ 允许指向指针的指针。                                     |
-| [C++ 传递指针给函数](https://www.runoob.com/cplusplus/cpp-passing-pointers-to-functions.html) | 通过引用或地址传递参数，使传递的参数在调用函数中被改变。     |
-| [C++ 从函数返回指针](https://www.runoob.com/cplusplus/cpp-return-pointer-from-functions.html) | C++ 允许函数返回指针到局部变量、静态变量和动态内存分配。     |
+### 从函数返回指针
+C++ 允许您从函数返回指针。为了做到这点，您必须声明一个返回指针的函数，如下所示：
+```cpp
+int * myFunction()
+{
+.
+.
+.
+}
+```
+另外，C++ 不支持在函数外返回局部变量的地址，除非定义局部变量为 static变量。
+
 
 
 
@@ -1520,12 +1857,147 @@ int &ref = a;  // ref 是 a 的引用
 | **安全性**              | 更安全，不能为 `null`，且语法更直观。                        | 更灵活，但容易出错（如空指针、野指针等）。                   |
 | **底层实现**            | 通常通过指针实现，但编译器会优化为直接操作所引用的对象。     | 直接存储目标对象的内存地址。                                 |
 
-引用通常用于函数参数列表和函数返回值。下面列出了 C++ 程序员必须清楚的两个与 C++ 引用相关的重要概念：
+#### 把引用作为参数
 
-| 概念                                                         | 描述                                                     |
-| :----------------------------------------------------------- | :------------------------------------------------------- |
-| [把引用作为参数](https://www.runoob.com/cplusplus/passing-parameters-by-references.html) | C++ 支持把引用作为参数传给函数，这比传一般的参数更安全。 |
-| [把引用作为返回值](https://www.runoob.com/cplusplus/returning-values-by-reference.html) | 可以从 C++ 函数中返回引用，就像返回其他数据类型一样。    |
+使用了引用来实现引用调用函数。
+```cpp
+#include <iostream>
+using namespace std;
+ 
+// 函数声明
+void swap(int& x, int& y);
+ 
+int main ()
+{
+   // 局部变量声明
+   int a = 100;
+   int b = 200;
+ 
+   cout << "交换前，a 的值：" << a << endl;
+   cout << "交换前，b 的值：" << b << endl;
+ 
+   /* 调用函数来交换值 */
+   swap(a, b);
+ 
+   cout << "交换后，a 的值：" << a << endl;
+   cout << "交换后，b 的值：" << b << endl;
+ 
+   return 0;
+}
+ 
+// 函数定义
+void swap(int& x, int& y)
+{
+   int temp;
+   temp = x; /* 保存地址 x 的值 */
+   x = y;    /* 把 y 赋值给 x */
+   y = temp; /* 把 x 赋值给 y  */
+  
+   return;
+}
+```
+
+
+
+#### 把引用作为返回值
+通过使用引用来替代指针，会使 C++ 程序更容易阅读和维护。C++ 函数可以返回一个引用，方式与返回一个指针类似。
+
+当函数返回一个引用时，则返回一个指向返回值的隐式指针。这样，函数就可以放在赋值语句的左边。
+```cpp
+#include <iostream>
+ 
+using namespace std;
+ 
+double vals[] = {10.1, 12.6, 33.1, 24.1, 50.0};
+ 
+double& setValues(int i) {  
+   double& ref = vals[i];    
+   return ref;   // 返回第 i 个元素的引用，ref 是一个引用变量，ref 引用 vals[i]
+ 
+ 
+}
+ 
+// 要调用上面定义函数的主函数
+int main ()
+{
+ 
+   cout << "改变前的值" << endl;
+   for ( int i = 0; i < 5; i++ )
+   {
+       cout << "vals[" << i << "] = ";
+       cout << vals[i] << endl;
+   }
+ 
+   setValues(1) = 20.23; // 改变第 2 个元素
+   setValues(3) = 70.8;  // 改变第 4 个元素
+ 
+   cout << "改变后的值" << endl;
+   for ( int i = 0; i < 5; i++ )
+   {
+       cout << "vals[" << i << "] = ";
+       cout << vals[i] << endl;
+   }
+   return 0;
+}
+```
+结果：
+```cpp
+改变前的值
+vals[0] = 10.1
+vals[1] = 12.6
+vals[2] = 33.1
+vals[3] = 24.1
+vals[4] = 50
+改变后的值
+vals[0] = 10.1
+vals[1] = 20.23
+vals[2] = 33.1
+vals[3] = 70.8
+vals[4] = 50
+
+```
+当返回一个引用时，要注意被引用的对象不能超出作用域。所以返回一个对局部变量的引用是不合法的，但是，可以返回一个对静态变量的引用。
+```cpp
+int& func() {
+   int q;
+   //! return q; // 在编译时发生错误
+   static int x;
+   return x;     // 安全，x 在函数作用域外依然是有效的
+}
+```
+静态变量的引用：
+```cpp
+#include <iostream>
+using namespace std;
+
+// 返回对静态变量的引用
+int& getStaticRef() {
+    static int num = 5; // 静态变量
+    return num;
+}
+
+int main() {
+    int& ref = getStaticRef(); // 获取对静态变量的引用
+    cout << "初始值：" << ref << endl;
+
+    ref = 10; // 修改静态变量的值
+
+    cout << "修改后的值：" << ref << endl;
+    cout << "再次调用函数后的值：" << getStaticRef() << endl;
+
+    return 0;
+}
+```
+getStaticRef() 函数返回了对静态变量 num 的引用。
+
+输出结果为：
+```cpp
+初始值：5
+修改后的值：10
+再次调用函数后的值：10
+```
+
+
 
 ## 结构体（struct）
 
@@ -2522,5 +2994,6 @@ private:
 #### 3. 与 B 树和 B + 树对比
 
 ​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
+
 
 
