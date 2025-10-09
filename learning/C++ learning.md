@@ -1990,6 +1990,53 @@ getStaticRef() 函数返回了对静态变量 num 的引用。
 再次调用函数后的值：10
 ```
 
+## 基本输入输出
+C++ 的 I/O 发生在流中，流是字节序列。如果字节流是从设备（如键盘、磁盘驱动器、网络连接等）流向内存，这叫做输入操作。如果字节流是从内存流向设备（如显示屏、打印机、磁盘驱动器、网络连接等），这叫做输出操作。
+
+### I/O 库头文件
+
+| 头文件       | 函数和描述                                                   |
+| ------------ | ------------------------------------------------------------ |
+| `<iostream>` | 该文件定义了 cin、cout、cerr 和 clog 对象，分别对应于标准输入流、标准输出流、非缓冲标准错误流和缓冲标准错误流。 |
+| `<iomanip>`  | 该文件通过所谓的参数化的流操纵器（比如 setw 和 setprecision），来声明对执行标准化 I/O 有用的服务。 |
+| `<fstream>`  | 该文件为用户控制的文件处理声明服务。 |
+
+### 标准错误流（cerr）
+
+预定义的对象 cerr 是 iostream 类的一个实例。cerr 对象附属到标准输出设备，通常也是显示屏，但是 cerr 对象是非缓冲的，且每个流插入到 cerr 都会立即输出。
+
+cerr 也是与流插入运算符 << 结合使用的，如下所示：
+```cpp
+#include <iostream>
+ 
+using namespace std;
+ 
+int main( )
+{
+   char str[] = "Unable to read....";
+ 
+   cerr << "Error message : " << str << endl;
+}
+```
+
+### 标准日志流（clog）
+
+<img width="680" height="252" alt="image" src="https://github.com/user-attachments/assets/6be69ed4-fdab-4976-8af8-7d10a0c97676" />
+预定义的对象 clog 是 iostream 类的一个实例。clog 对象附属到标准输出设备，通常也是显示屏，但是 clog 对象是缓冲的。这意味着每个流插入到 clog 都会先存储在缓冲区，直到缓冲填满或者缓冲区刷新时才会输出。
+
+clog 也是与流插入运算符 << 结合使用的，如下所示：
+```cpp
+#include <iostream>
+ 
+using namespace std;
+ 
+int main( )
+{
+   char str[] = "Unable to read....";
+ 
+   clog << "Error message : " << str << endl;
+}
+```
 
 
 ## 结构体（struct）
@@ -2021,6 +2068,12 @@ struct Books
    int   book_id;
 } book;
 ```
+
+结构体优点：
+
+- 简单数据封装：适合封装多种类型的简单数据，通常用于数据的存储。
+- 轻量级：相比 class，结构体语法更简洁，适合小型数据对象。
+- 面向对象支持：支持构造函数、成员函数和访问权限控制，可以实现面向对象的设计。
 
 为了访问结构的成员，我们使用**成员访问运算符（.）**。成员访问运算符是结构变量名称和我们要访问的结构成员之间的一个句号。
 
@@ -2129,7 +2182,7 @@ void printBook( struct Books book )
 - **struct 关键字：**用于定义结构体，它告诉编译器后面要定义的是一个自定义类型。
 - **成员变量：**成员变量是结构体中定义的数据项，它们可以是任何基本类型或其他自定义类型。在 struct 中，这些成员默认是 public，可以直接访问。
 - **成员函数：**结构体中也可以包含成员函数，这使得结构体在功能上类似于类。成员函数可以操作结构体的成员变量，提供对数据的封装和操作。
-- **访问权限：**与 class 类似，你可以在 struct 中使用 public、private 和 protected 来定义成员的访问权限。在 struct 中，默认所有成员都是 public，而 class 中默认是 private。
+- **访问权限：**与 class 类似，你可以在 struct 中使用 public、private 和 protected 来定义成员的访问权限。**在 struct 中，默认所有成员都是 public，而 class 中默认是 private。**
 
 ### 指向结构的指针
 
@@ -2145,7 +2198,7 @@ struct Books *struct_pointer;
 struct_pointer = &Book1;
 ```
 
-为了使用指向该结构的指针访问结构的成员，您必须使用 **->** 运算符:
+为了使用指向该结构的指针访问结构的成员，您必须使用 `->` 运算符:
 
 ```cpp
 struct_pointer->title;
@@ -2196,6 +2249,52 @@ int main()
 }
 ```
 
+### `->` 和 `.` 运算符的区别
+这两个运算符都用于访问结构体或类的成员，但使用场景不同：
+`.` 运算符（成员访问运算符）
+```cpp
+struct Student {
+    string name;
+    int age;
+};
+
+int main() {
+    Student s1;           // s1 是结构体变量
+    s1.name = "Alice";    // 使用 . 访问成员
+    s1.age = 20;
+    
+    return 0;
+}
+```
+`->` 运算符（指针成员访问运算符）
+```cpp
+struct Student {
+    string name;
+    int age;
+};
+
+int main() {
+    Student s1;
+    Student *ptr = &s1;   // ptr 是指向结构体的指针
+    
+    ptr->name = "Bob";    // 使用 -> 通过指针访问成员
+    ptr->age = 22;
+    
+    return 0;
+}
+```
+
+`->` 实际上是 `*` 和 `.` 的组合简写：
+```cpp
+// 以下三行代码完全等价：
+ptr->name = "Charlie";
+(*ptr).name = "Charlie";  // 先解引用，再用点运算符
+ptr[0].name = "Charlie";  // 数组表示法
+```
+
+<img width="590" height="476" alt="image" src="https://github.com/user-attachments/assets/4440f564-5e83-435a-95eb-fa312e711e61" />
+
+
 ### typedef 关键字
 
 为创建的类型取一个"别名":
@@ -2232,6 +2331,9 @@ pint32 x, y, z;
 - `class` 默认的成员和继承是 `private`。
 
 你可以将 `struct` 当作一种简化形式的 `class`，适合用于没有太多复杂功能的简单数据封装。
+
+
+
 
 ## vector 容器
 
@@ -2987,6 +3089,7 @@ private:
 #### 3. 与 B 树和 B + 树对比
 
 ​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
+
 
 
 
