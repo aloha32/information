@@ -3639,6 +3639,208 @@ Constructor called.
 Final Stage Count: 2
 ```
 
+## 继承
+继承允许我们依据另一个类来定义一个类，这使得创建和维护一个应用程序变得更容易。这样做，也达到了重用代码功能和提高执行效率的效果。
+
+当创建一个类时，您不需要重新编写新的数据成员和成员函数，只需指定新建的类继承了一个已有的类的成员即可。这个已有的类称为基类，新建的类称为派生类。
+
+继承代表了 is a 关系。例如，哺乳动物是动物，狗是哺乳动物，因此，狗是动物，等等。
+<img width="412" height="403" alt="image" src="https://github.com/user-attachments/assets/2258aeb3-dd16-4849-9371-ce6e760bba9d" />
+代码实现如下：
+```cpp
+// 基类
+class Animal {
+    // eat() 函数
+    // sleep() 函数
+};
+
+
+//派生类
+class Dog : public Animal {
+    // bark() 函数
+};
+```
+
+一个类可以派生自多个类，这意味着，它可以从多个基类继承数据和函数。
+
+`class 派生类名 : 访问修饰符 基类1, 访问修饰符 基类2, ... {
+    // 类体
+};`
+
+定义一个派生类，我们使用一个类派生列表来指定基类。类派生列表以一个或多个基类命名，形式如下：
+
+`class derived-class: access-specifier base-class`
+
+其中，访问修饰符 access-specifier 是 public、protected 或 private 其中的一个，base-class 是之前定义过的某个类的名称。如果未使用访问修饰符 access-specifier，则默认为 private。我们几乎不使用 protected 或 private 继承，通常使用 public 继承。
+
+```cpp
+#include <iostream>
+#include <string>
+
+// 第一个基类
+class Animal {
+protected:
+    std::string name;
+public:
+    Animal(const std::string& n) : name(n) {}
+    void eat() {
+        std::cout << name << " is eating." << std::endl;
+    }
+};
+
+// 第二个基类
+class Flyable {
+protected:
+    int flightHeight;
+public:
+    Flyable(int height) : flightHeight(height) {}
+    void fly() {
+        std::cout << "Flying at " << flightHeight << " meters." << std::endl;
+    }
+};
+
+// 第三个基类
+class Swimmable {
+protected:
+    int swimSpeed;
+public:
+    Swimmable(int speed) : swimSpeed(speed) {}
+    void swim() {
+        std::cout << "Swimming at " << swimSpeed << " km/h." << std::endl;
+    }
+};
+
+// 多重继承：Duck同时继承Animal、Flyable和Swimmable
+class Duck : public Animal, public Flyable, public Swimmable {
+public:
+    // 构造函数需要初始化所有基类
+    Duck(const std::string& name, int flyHeight, int swimSpeed) 
+        : Animal(name), Flyable(flyHeight), Swimmable(swimSpeed) {}
+    
+    void quack() {
+        std::cout << name << " says: Quack!" << std::endl;
+    }
+};
+
+int main() {
+    Duck duck("Donald", 100, 5);
+    
+    duck.eat();    // 来自Animal
+    duck.fly();    // 来自Flyable  
+    duck.swim();   // 来自Swimmable
+    duck.quack();  // Duck自己的方法
+    
+    return 0;
+}
+```
+
+派生类可以访问基类中所有的非私有成员。因此基类成员如果不想被派生类的成员函数访问，则应在基类中声明为 private。
+<img width="1012" height="214" alt="image" src="https://github.com/user-attachments/assets/ab548b04-edfc-4578-8cac-a89848956daa" />
+
+派生类无法继承基类以下方法：
+- 基类的构造函数、析构函数和拷贝构造函数。
+- 基类的重载运算符。
+- 基类的友元函数。
+
+虚继承（virtual inheritance） 和 组合（composition），都是 C++ 中用来解决多重继承复杂性的重要概念
+
+### 虚继承
+在多重继承中，如果两个基类都继承自同一个祖先类，而你的派生类又同时继承这两个基类，就会出现“菱形继承”结构：
+```cpp
+      A
+     / \
+    B   C
+     \ /
+      D
+```
+
+这时，类 D 会包含两份类 A 的成员（一份来自 B，一份来自 C）。当你调用 A 中的函数或访问成员时，编译器不知道该用哪一份，就会报错。
+
+虚继承的本质是：让所有中间派生类共享同一个基类子对象。无论通过多少条路径继承，共同的基类 A 在最终派生类 D 中只存在一份。
+```cpp
+#include <iostream>
+
+class A {
+public:
+    int x = 10;
+    void show() { std::cout << "A::x = " << x << std::endl; }
+};
+
+// 使用 virtual 关键字进行虚继承
+class B : virtual public A {};
+class C : virtual public A {};
+
+// D 继承 B 和 C
+class D : public B, public C {};
+
+int main() {
+    D d;
+    d.show();      // ✅ 正确！只有一个 A
+    std::cout << d.x << std::endl; // ✅ 不会歧义
+    return 0;
+}
+```
+
+组合是一种“has-a”（有一个）的关系，而不是“is-a”（是一个）的关系。
+
+- 继承（Inheritance）：Dog is a Animal（狗是一种动物）
+- 组合（Composition）：Car has a Engine（汽车有一个引擎）
+
+在组合中，一个类包含其他类的对象作为成员，而不是继承它们。
+
+用组合重写：
+```cpp
+#include <iostream>
+#include <string>
+
+class Flyable {
+    int height;
+public:
+    Flyable(int h) : height(h) {}
+    void fly() { std::cout << "Flying at " << height << "m\n"; }
+};
+
+class Swimmable {
+    int speed;
+public:
+    Swimmable(int s) : speed(s) {}
+    void swim() { std::cout << "Swimming at " << speed << "km/h\n"; }
+};
+
+class Duck {
+    std::string name;
+    Flyable wings;      // Duck 有一个 Flyable
+    Swimmable fins;     // Duck 有一个 Swimmable
+
+public:
+    Duck(const std::string& n, int h, int s) 
+        : name(n), wings(h), fins(s) {}
+
+    void eat() { std::cout << name << " is eating.\n"; }
+    void fly() { wings.fly(); }     // 委托给 wings
+    void swim() { fins.swim(); }    // 委托给 fins
+};
+```
+
+
+## 重载运算符和重载函数
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4050,6 +4252,7 @@ private:
 #### 3. 与 B 树和 B + 树对比
 
 ​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
+
 
 
 
