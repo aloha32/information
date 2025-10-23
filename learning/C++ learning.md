@@ -3824,6 +3824,593 @@ public:
 
 
 ## 重载运算符和重载函数
+C++ 允许在同一作用域中的某个函数和运算符指定多个定义，分别称为函数重载和运算符重载。
+
+重载声明是指一个与之前已经在该作用域内声明过的函数或方法具有相同名称的声明，但是它们的参数列表和定义（实现）不相同。
+
+当您调用一个重载函数或重载运算符时，编译器通过把您所使用的参数类型与定义中的参数类型进行比较，决定选用最合适的定义。选择最合适的重载函数或重载运算符的过程，称为重载决策。
+
+### 函数重载
+在同一个作用域内，可以声明几个功能类似的同名函数，但是这些同名函数的形式参数（指参数的个数、类型或者顺序）必须不同。**不能**仅通过返回类型的不同来重载函数。
+
+```cpp
+#include <iostream>
+using namespace std;
+ 
+class printData
+{
+   public:
+      void print(int i) {
+        cout << "整数为: " << i << endl;
+      }
+ 
+      void print(double  f) {
+        cout << "浮点数为: " << f << endl;
+      }
+ 
+      void print(char c[]) {
+        cout << "字符串为: " << c << endl;
+      }
+};
+ 
+int main(void)
+{
+   printData pd;
+ 
+   // 输出整数
+   pd.print(5);
+   // 输出浮点数
+   pd.print(500.263);
+   // 输出字符串
+   char c[] = "Hello C++";
+   pd.print(c);
+ 
+   return 0;
+}
+```
+
+### 运算符重载
+重载的运算符是带有特殊名称的函数，函数名是由关键字 operator 和其后要重载的运算符符号构成的。与其他函数一样，重载运算符有一个返回类型和一个参数列表。大多数的重载运算符可被定义为普通的非成员函数或者被定义为类成员函数。
+
+下面的实例使用成员函数演示了运算符重载的概念。在这里，对象作为参数进行传递，对象的属性使用 this 运算符进行访问:
+```cpp
+#include <iostream>
+using namespace std;
+ 
+class Box
+{
+   public:
+ 
+      double getVolume(void)
+      {
+         return length * breadth * height;
+      }
+      void setLength( double len )
+      {
+          length = len;
+      }
+ 
+      void setBreadth( double bre )
+      {
+          breadth = bre;
+      }
+ 
+      void setHeight( double hei )
+      {
+          height = hei;
+      }
+      // 重载 + 运算符，用于把两个 Box 对象相加
+      Box operator+(const Box& b)
+      {
+         Box box;
+         box.length = this->length + b.length;
+         box.breadth = this->breadth + b.breadth;
+         box.height = this->height + b.height;
+         return box;
+      }
+   private:
+      double length;      // 长度
+      double breadth;     // 宽度
+      double height;      // 高度
+};
+// 程序的主函数
+int main( )
+{
+   Box Box1;                // 声明 Box1，类型为 Box
+   Box Box2;                // 声明 Box2，类型为 Box
+   Box Box3;                // 声明 Box3，类型为 Box
+   double volume = 0.0;     // 把体积存储在该变量中
+ 
+   // Box1 详述
+   Box1.setLength(6.0); 
+   Box1.setBreadth(7.0); 
+   Box1.setHeight(5.0);
+ 
+   // Box2 详述
+   Box2.setLength(12.0); 
+   Box2.setBreadth(13.0); 
+   Box2.setHeight(10.0);
+ 
+   // Box1 的体积
+   volume = Box1.getVolume();
+   cout << "Volume of Box1 : " << volume <<endl;
+ 
+   // Box2 的体积
+   volume = Box2.getVolume();
+   cout << "Volume of Box2 : " << volume <<endl;
+ 
+   // 把两个对象相加，得到 Box3
+   Box3 = Box1 + Box2;
+ 
+   // Box3 的体积
+   volume = Box3.getVolume();
+   cout << "Volume of Box3 : " << volume <<endl;
+ 
+   return 0;
+}
+```
+
+### 可重载运算符
+| 类别           | 运算符                                                         |
+| -------------- | -------------------------------------------------------------- |
+| 双目算术运算符 | + (加), - (减), * (乘), / (除), % (取模)                       |
+| 关系运算符     | == (等于), != (不等于), < (小于), > (大于), <= (小于等于), >= (大于等于) |
+| 逻辑运算符     | \|\| (逻辑或), && (逻辑与), ! (逻辑非)                         |
+| 单目运算符     | + (正), - (负), * (指针), & (取地址)                           |
+| 自增自减运算符 | ++ (自增), -- (自减)                                         |
+| 位运算符       | \| (按位或), & (按位与), ~ (按位取反), ^ (按位异或), << (左移), >> (右移) |
+| 赋值运算符     | =, +=, -=, *=, /=, %=, &=, \|=, ^=, <<=, >>=                    |
+| 空间申请与释放 | new, delete, new[], delete[]                                   |
+| 其他运算符     | () (函数调用), -> (成员访问), , (逗号), [] (下标)             |
+
+### 不可重载运算符
+- `.`：成员访问运算符
+- `.*`， `->*`：成员指针访问运算符
+- `::`：域运算符
+- `sizeof`：长度运算符
+- `?:`：条件运算符
+- `#`： 预处理符号
+
+### 一元运算符重载
+一元运算符只对一个操作数进行操作
+- 递增运算符（ ++ ）和递减运算符（ -- ）
+- 一元减运算符，即负号（ - ）
+- 逻辑非运算符（ ! ）
+
+一元运算符通常出现在它们所操作的对象的左边，比如 `!obj`、`-obj` 和 `++obj`，但有时它们也可以作为后缀，比如 `obj++` 或 `obj--`。
+```cpp
+#include <iostream>
+using namespace std;
+ 
+class Distance
+{
+   private:
+      int feet;             // 0 到无穷
+      int inches;           // 0 到 12
+   public:
+      // 所需的构造函数
+      Distance(){
+         feet = 0;
+         inches = 0;
+      }
+      Distance(int f, int i){
+         feet = f;
+         inches = i;
+      }
+      // 显示距离的方法
+      void displayDistance()
+      {
+         cout << "F: " << feet << " I:" << inches <<endl;
+      }
+      // 重载负运算符（ - ）
+      Distance operator- ()  
+      {
+         feet = -feet;
+         inches = -inches;
+         return Distance(feet, inches); // 既修改了当前对象，又返回了一个新对象
+      }
+};
+int main()
+{
+   Distance D1(11, 10), D2(-5, 11);
+ 
+   -D1;                     // 取相反数
+   D1.displayDistance();    // 距离 D1
+ 
+   -D2;                     // 取相反数
+   D2.displayDistance();    // 距离 D2
+ 
+   return 0;
+}
+```
+
+#### `++` 和 `--` 运算符重载
+下面的实例演示了如何重载递增运算符（ ++ ），包括前缀和后缀两种用法。注意，int 在 括号内是为了向编译器说明这是一个后缀形式，而不是表示整数。
+```cpp
+#include <iostream>
+using namespace std;
+ 
+class Time
+{
+   private:
+      int hours;             // 0 到 23
+      int minutes;           // 0 到 59
+   public:
+      // 所需的构造函数
+      Time(){
+         hours = 0;
+         minutes = 0;
+      }
+      Time(int h, int m){
+         hours = h;
+         minutes = m;
+      }
+      // 显示时间的方法
+      void displayTime()
+      {
+         cout << "H: " << hours << " M:" << minutes <<endl;
+      }
+      // 重载前缀递增运算符（ ++ ）
+      Time operator++ ()  
+      {
+         ++minutes;          // 对象加 1
+         if(minutes >= 60)  
+         {
+            ++hours;
+            minutes -= 60;
+         }
+         return Time(hours, minutes);
+      }
+      // 重载后缀递增运算符（ ++ ）
+      Time operator++( int )         
+      {
+         // 保存原始值
+         Time T(hours, minutes);
+         // 对象加 1
+         ++minutes;                    
+         if(minutes >= 60)
+         {
+            ++hours;
+            minutes -= 60;
+         }
+         // 返回旧的原始值
+         return T; 
+      }
+};
+int main()
+{
+   Time T1(11, 59), T2(10,40);
+ 
+   ++T1;                    // T1 加 1
+   T1.displayTime();        // 显示 T1
+   ++T1;                    // T1 再加 1
+   T1.displayTime();        // 显示 T1
+ 
+   T2++;                    // T2 加 1
+   T2.displayTime();        // 显示 T2
+   T2++;                    // T2 再加 1
+   T2.displayTime();        // 显示 T2
+   return 0;
+}
+```
+
+1. 递增和递减一般是改变对象的状态，所以一般是重载为成员函数。
+2. 重载递增递减，一定要和指针的递增递减区分开。因为这里的重载操作的是对象，而不是指针(由于指针是内置类型，指针的递增递减是无法重载的)，所以一般情况的递增递减是操作对象内部的成员变量。
+3. 递增和递减分为前置和后置情况，a = ++b;(前置)， a = b++;(后置)。因为符号一样，所以给后置版本加一个int形参作为区分，这个形参是0，但是在函数体中是用不到的，只是为了区分前置后置。
+
+在前缀递增时，若想要实现 ++(++a) 这种连续自加，就要返回其对象的引用，这样才能保证操作的是同一块内存空间，否则就只是单纯的赋值操作，原来的对象并未被修改。
+```cpp
+#include <iostream>
+using namespace std;
+class Complex {
+private:
+    double i;
+    double j;
+public:
+    Complex(int = 0, int = 0);
+    void display();
+    Complex& operator ++();//前缀自增
+    Complex operator ++(int);//后缀自增，参数需要加int
+};
+
+Complex::Complex(int a, int b) {
+    i = a;
+    j = b;
+}
+
+void Complex::display() {
+    cout << "i="<< i <<"\tj="<< j << endl;
+}
+
+Complex& Complex::operator ++() {
+    ++i;
+    ++j;
+    return *this;
+}
+
+Complex Complex::operator ++(int) {
+    Complex temp = *this;
+    ++* this;
+    return temp;
+}
+
+int main()
+{
+    Complex comnum1(2, 2), comnum2, comnum3;
+    cout << "自增计算前:" << endl;
+    cout << "comnum1:";
+    comnum1.display();
+    cout << "comnum2:";
+    comnum2.display();
+    cout << "comnum3:";
+    comnum3.display();
+    cout << endl;
+
+    cout << "前缀自增计算后：" << endl;
+    comnum2 = ++comnum1;
+    cout << "comnum1:";
+    comnum1.display();
+    cout << "comnum2:";
+    comnum2.display();
+    cout << endl;
+
+    cout << "后缀自增计算后:" << endl;
+    comnum3 = comnum1++;
+    cout << "comnum1:";
+    comnum1.display();
+    cout << "comnum3:";
+    comnum3.display();
+
+    cout << "前缀递增加引用是为了连续自加++(++a)" << endl;
+    Complex comcum4;
+    ++(++comcum4);
+    cout << "comcum4:";
+    comcum4.display();
+
+    return 0;
+}
+```
+
+### 二元运算符重载
+二元运算符需要两个参数，当 2 个对象相加时是没有顺序要求的，但要重载 + 让其与一个数字相加则有顺序要求(要求左操作数必须是当前类的对象),意味着:
+```cpp
+A a1;
+a1 + 5;  // ✅ 正确：a1是左操作数，调用a1.operator+(5)
+5 + a1;  // ❌ 错误：5不是A类对象，不能调用5.operator+(a1)
+```
+
+可以通过加一个友元函数使另一个顺序的输入合法(友元函数不是成员函数，所以它没有隐含的this指针，可以自由定义参数顺序)
+```cpp
+当编译器遇到 5 + a1 时：
+查找匹配的运算符函数
+
+找到友元函数 operator+(int, A)
+
+调用友元函数：operator+(5, a1)
+
+在友元函数内部：通过 obj + b 调用成员函数 a1.operator+(5)
+
+a1 + a2  →  a1.operator+(a2)      // 成员函数
+a1 + 5   →  a1.operator+(5)       // 成员函数  
+5 + a1   →  operator+(5, a1)      // 友元函数 → 内部调用 a1.operator+(5)
+```
+完整实现如下：
+```cpp
+#include<iostream>
+using namespace std;
+class A
+{
+    private:
+        int a;
+    public:
+            A();
+            A(int n);
+            A operator+(const A & obj);
+            A operator+(const int b);
+    friend A operator+(const int b, A obj); 
+            void display(); 
+} ;
+A::A()
+{
+    a=0;
+}
+A::A(int n)//构造函数 
+{
+    a=n;
+}
+A A::operator +(const A& obj)//重载+号用于 对象相加 
+{
+    return this->a+obj.a;
+}
+A A::operator+(const int b)//重载+号用于  对象与数相加
+{
+    return A(a+b);
+}
+A operator+(const int b,  A obj)
+{
+    return obj+b;//友元函数调用第二个重载+的成员函数  相当于 obj.operator+(b); 
+}
+void A::display()
+{
+    cout<<a<<endl;
+}
+int main ()
+{
+    A a1(1);
+    A a2(2);
+    A a3,a4,a5;
+    a1.display();
+    a2.display();
+    int m=1;
+    a3=a1+a2;//可以交换顺序，相当月a3=a1.operator+(a2); 
+    a3.display();
+    a4=a1+m;//因为加了个友元函数所以也可以交换顺序了。
+    a4.display();
+    a5=m+a1;
+    a5.display();
+}
+```
+结果：
+```cpp
+1
+2
+3
+2
+2
+```
+
+### 关系运算符重载
+C++ 语言支持各种关系运算符（ < 、 > 、 <= 、 >= 、 == 等等），它们可用于比较 C++ 内置的数据类型。
+
+可以重载任何一个关系运算符，重载后的关系运算符可用于比较类的对象。
+
+下面的实例演示了如何重载 < 运算符：
+```cpp
+#include <iostream>
+using namespace std;
+ 
+class Distance
+{
+   private:
+      int feet;             // 0 到无穷
+      int inches;           // 0 到 12
+   public:
+      // 所需的构造函数
+      Distance(){
+         feet = 0;
+         inches = 0;
+      }
+      Distance(int f, int i){
+         feet = f;
+         inches = i;
+      }
+      // 显示距离的方法
+      void displayDistance()
+      {
+         cout << "F: " << feet << " I:" << inches <<endl;
+      }
+      // 重载负运算符（ - ）
+      Distance operator- ()  
+      {
+         feet = -feet;
+         inches = -inches;
+         return Distance(feet, inches);
+      }
+      // 重载小于运算符（ < ）
+      bool operator <(const Distance& d)
+      {
+         if(feet < d.feet)
+         {
+            return true;
+         }
+         if(feet == d.feet && inches < d.inches)
+         {
+            return true;
+         }
+         return false;
+      }
+};
+int main()
+{
+   Distance D1(11, 10), D2(5, 11);
+ 
+   if( D1 < D2 )
+   {
+      cout << "D1 is less than D2 " << endl;
+   }
+   else
+   {
+      cout << "D2 is less than D1 " << endl;
+   }
+   return 0;
+}
+```
+
+###　输入/输出运算符重载
+C++ 能够使用流提取运算符 >> 和流插入运算符 << 来输入和输出内置的数据类型。在这里，有一点很重要，我们需要把运算符重载函数声明为类的友元函数，这样我们就能不用创建对象而直接调用函数。
+
+下面的实例演示了如何重载提取运算符 >> 和插入运算符 <<。
+```cpp
+#include <iostream>
+using namespace std;
+ 
+class Distance
+{
+   private:
+      int feet;             // 0 到无穷
+      int inches;           // 0 到 12
+   public:
+      // 所需的构造函数
+      Distance(){
+         feet = 0;
+         inches = 0;
+      }
+      Distance(int f, int i){
+         feet = f;
+         inches = i;
+      }
+      friend ostream &operator<<( ostream &output, 
+                                       const Distance &D )
+      { 
+         output << "F : " << D.feet << " I : " << D.inches;
+         return output;            
+      }
+ 
+      friend istream &operator>>( istream  &input, Distance &D )
+      { 
+         input >> D.feet >> D.inches;
+         return input;            
+      }
+};
+int main()
+{
+   Distance D1(11, 10), D2(5, 11), D3;
+ 
+   cout << "Enter the value of object : " << endl;
+   cin >> D3;
+   cout << "First Distance : " << D1 << endl;
+   cout << "Second Distance :" << D2 << endl;
+   cout << "Third Distance :" << D3 << endl;
+ 
+ 
+   return 0;
+}
+```
+为什么需要友元函数？
+
+因为运算符的左操作数是流对象(cin/cout)，不是 Distance 对象，所以不能作为成员函数重载：
+```cpp
+// 这样是不行的：
+D1 << cout;  // 不符合使用习惯
+D3 >> cin;   // 不符合使用习惯
+
+// 我们需要这样：
+cout << D1;  // 符合习惯
+cin >> D3;   // 符合习惯
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4252,6 +4839,7 @@ private:
 #### 3. 与 B 树和 B + 树对比
 
 ​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
+
 
 
 
