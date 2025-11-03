@@ -4406,7 +4406,7 @@ class Distance
          feet = 0;
          inches = 0;
       }
-      Distance(int f, int i){
+      Distance(int f, int i){ 
          feet = f;
          inches = i;
       }
@@ -4440,9 +4440,59 @@ int main()
 }
 ```
 
+### 函数调用运算符 () 重载
+函数调用运算符 () 可以被重载用于类的对象。当重载 () 时，不是创造了一种新的调用函数的方式，相反地，这是创建一个可以传递任意数目参数的运算符函数。
+```cpp
+#include <iostream>
+using namespace std;
+ 
+class Distance
+{
+   private:
+      int feet;             // 0 到无穷
+      int inches;           // 0 到 12
+   public:
+      // 所需的构造函数
+      Distance(){
+         feet = 0;
+         inches = 0;
+      }
+      Distance(int f, int i){
+         feet = f;
+         inches = i;
+      }
+      // 重载函数调用运算符
+      Distance operator()(int a, int b, int c)
+      {
+         Distance D;
+         // 进行随机计算
+         D.feet = a + c + 10;
+         D.inches = b + c + 100 ;
+         return D;
+      }
+      // 显示距离的方法
+      void displayDistance()
+      {
+         cout << "F: " << feet <<  " I:" <<  inches << endl;
+      }
+      
+};
+int main()
+{
+   Distance D1(11, 10), D2;
 
+   cout << "First Distance : "; 
+   D1.displayDistance();
 
+   D2 = D1(10, 10, 10); // invoke operator()
+   cout << "Second Distance :"; 
+   D2.displayDistance();
 
+   return 0;
+}
+
+```
+该例子中如果重载 operator() 时只使用两个参数，确实会与构造函数的参数列表发生冲突，导致无法区分调用哪个函数。
 
 
 
@@ -4886,6 +4936,7 @@ private:
 #### 3. 与 B 树和 B + 树对比
 
 ​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
+
 
 
 
