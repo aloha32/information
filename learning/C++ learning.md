@@ -4494,13 +4494,134 @@ int main()
 ```
 该例子中如果重载 operator() 时只使用两个参数，确实会与构造函数的参数列表发生冲突，导致无法区分调用哪个函数。
 
+### 下标运算符 [] 重载
+下标操作符 [] 通常用于访问数组元素。重载该运算符用于增强操作 C++ 数组的功能。
+```cpp
+#include <iostream>
+using namespace std;
+const int SIZE = 10;
+ 
+class safearay
+{
+   private:
+      int arr[SIZE];
+   public:
+      safearay() 
+      {
+         register int i;
+         for(i = 0; i < SIZE; i++)
+         {
+           arr[i] = i;
+         }
+      }
+      int& operator[](int i)
+      {
+          if( i >= SIZE )
+          {
+              cout << "索引超过最大值" <<endl; 
+              // 返回第一个元素
+              return arr[0];
+          }
+          return arr[i];
+      }
+};
+int main()
+{
+   safearay A;
+ 
+   cout << "A[2] 的值为 : " << A[2] <<endl;
+   cout << "A[5] 的值为 : " << A[5]<<endl;
+   cout << "A[12] 的值为 : " << A[12]<<endl;
+ 
+   return 0;
+}
+```
 
+### 类成员访问运算符 -> 重载
+类成员访问运算符（ -> ）可以被重载，但它较为麻烦。它被定义用于为一个类赋予"指针"行为。运算符 -> 必须是一个成员函数。如果使用了 -> 运算符，返回类型必须是指针或者是类的对象。
 
+运算符 -> 通常与指针引用运算符 * 结合使用，用于实现"智能指针"的功能。这些指针是行为与正常指针相似的对象，唯一不同的是，当您通过指针访问对象时，它们会执行其他的任务。比如，当指针销毁时，或者当指针指向另一个对象时，会自动删除对象。
 
+间接引用运算符 -> 可被定义为一个一元后缀运算符。
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+ 
+// 假设一个实际的类
+class Obj {
+   static int i, j;
+public:
+   void f() const { cout << i++ << endl; }
+   void g() const { cout << j++ << endl; }
+};
+ 
+// 静态成员定义
+int Obj::i = 10;
+int Obj::j = 12;
+ 
+// 为上面的类实现一个容器
+class ObjContainer {
+   vector<Obj*> a;
+public:
+   void add(Obj* obj)
+   { 
+      a.push_back(obj);  // 调用向量的标准方法
+   }
+   friend class SmartPointer;
+};
+ 
+// 实现智能指针，用于访问类 Obj 的成员
+class SmartPointer {
+   ObjContainer oc;
+   int index;
+public:
+   SmartPointer(ObjContainer& objc)
+   { 
+       oc = objc;
+       index = 0;
+   }
+   // 返回值表示列表结束
+   bool operator++() // 前缀版本
+   { 
+     if(index >= oc.a.size() - 1) return false;
+     if(oc.a[++index] == 0) return false;
+     return true;
+   }
+   bool operator++(int) // 后缀版本
+   { 
+      return operator++();
+   }
+   // 重载运算符 ->
+   Obj* operator->() const 
+   {
+     if(!oc.a[index])
+     {
+        cout << "Zero value";
+        return (Obj*)0;
+     }
+     return oc.a[index];
+   }
+};
+ 
+int main() {
+   const int sz = 10;
+   Obj o[sz];
+   ObjContainer oc;
+   for(int i = 0; i < sz; i++)
+   {
+       oc.add(&o[i]);
+   }
+   SmartPointer sp(oc); // 创建一个迭代器
+   do {
+      sp->f(); // 智能指针调用
+      sp->g();
+   } while(sp++);
+   return 0;
+}
+```
 
-
-
-
+## 多态
 
 
 
@@ -4936,6 +5057,7 @@ private:
 #### 3. 与 B 树和 B + 树对比
 
 ​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
+
 
 
 
