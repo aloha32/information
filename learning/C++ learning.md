@@ -4622,45 +4622,401 @@ int main() {
 ```
 
 ## 多态
+当类之间存在层次结构，并且类之间是通过继承关联时，就会用到多态。
 
+C++ 多态允许使用基类指针或引用来调用子类的重写方法，从而使得同一接口可以表现不同的行为。
 
+多态使得代码更加灵活和通用，程序可以通过基类指针或引用来操作不同类型的对象，而不需要显式区分对象类型。这样可以使代码更具扩展性，在增加新的形状类时不需要修改主程序。
 
+以下是多态的几个关键点：
 
+虚函数（Virtual Functions）：
 
+- 在基类中声明一个函数为虚函数，使用关键字virtual。
+- 派生类可以重写（override）这个虚函数。
+- 调用虚函数时，会根据对象的实际类型来决定调用哪个版本的函数。
 
+动态绑定（Dynamic Binding）：
 
+- 也称为晚期绑定（Late Binding），在运行时确定函数调用的具体实现。
+- 需要使用指向基类的指针或引用来调用虚函数，编译器在运行时根据对象的实际类型来决定调用哪个函数。
 
+纯虚函数（Pure Virtual Functions）：
 
+- 一个包含纯虚函数的类被称为抽象类（Abstract Class），它不能被直接实例化。
+- 纯虚函数没有函数体，声明时使用= 0。
+- 它强制派生类提供具体的实现。
 
+多态的实现机制：
 
+- 虚函数表（V-Table）：C++运行时使用虚函数表来实现多态。每个包含虚函数的类都有一个虚函数表，表中存储了指向类中所有虚函数的指针。
+- 虚函数指针（V-Ptr）：对象中包含一个指向该类虚函数表的指针。
 
+使用多态的优势：
 
+- 代码复用：通过基类指针或引用，可以操作不同类型的派生类对象，实现代码的复用。
+- 扩展性：新增派生类时，不需要修改依赖于基类的代码，只需要确保新类正确重写了虚函数。
+- 解耦：多态允许程序设计更加模块化，降低类之间的耦合度。
 
+注意事项：
 
+- 只有通过基类的指针或引用调用虚函数时，才会发生多态。
+- 如果直接使用派生类的对象调用函数，那么调用的是派生类中的版本，而不是基类中的版本。
+- 多态性需要运行时类型信息（RTTI），这可能会增加程序的开销。
 
+```cpp
+#include <iostream>
+using namespace std;
 
+// 基类 Animal
+class Animal {
+public:
+    // 虚函数 sound，为不同的动物发声提供接口
+    virtual void sound() const {
+        cout << "Animal makes a sound" << endl;
+    }
+    
+    // 虚析构函数确保子类对象被正确析构
+    virtual ~Animal() { 
+        cout << "Animal destroyed" << endl; 
+    }
+};
 
+// 派生类 Dog，继承自 Animal
+class Dog : public Animal {
+public:
+    // 重写 sound 方法
+    void sound() const override {
+        cout << "Dog barks" << endl;
+    }
+    
+    ~Dog() {
+        cout << "Dog destroyed" << endl;
+    }
+};
 
+// 派生类 Cat，继承自 Animal
+class Cat : public Animal {
+public:
+    // 重写 sound 方法
+    void sound() const override {
+        cout << "Cat meows" << endl;
+    }
+    
+    ~Cat() {
+        cout << "Cat destroyed" << endl;
+    }
+};
 
+// 测试多态
+int main() {
+    Animal* animalPtr;  // 基类指针
 
+    // 创建 Dog 对象，并指向 Animal 指针
+    animalPtr = new Dog();
+    animalPtr->sound();  // 调用 Dog 的 sound 方法
+    delete animalPtr;    // 释放内存，调用 Dog 和 Animal 的析构函数
 
+    // 创建 Cat 对象，并指向 Animal 指针
+    animalPtr = new Cat();
+    animalPtr->sound();  // 调用 Cat 的 sound 方法
+    delete animalPtr;    // 释放内存，调用 Cat 和 Animal 的析构函数
 
+    return 0;
+}
+```
+关键概念
 
+- 虚函数：通过在基类中使用 virtual 关键字声明虚函数，派生类可以重写这个函数，从而使得在运行时根据对象类型调用正确的函数。
 
+- 动态绑定：C++ 的多态通过动态绑定实现。在运行时，基类指针 animalPtr 会根据它实际指向的对象类型（Dog 或 Cat）调用对应的 sound() 方法。
 
+- 虚析构函数：在具有多态行为的基类中，析构函数应该声明为 virtual，以确保在删除派生类对象时调用派生类的析构函数，防止资源泄漏。
 
+```cpp
+#include <iostream>
+using namespace std;
+ 
+// 基类 Shape，表示形状
+class Shape {
+   protected:
+      int width, height; // 宽度和高度
+ 
+   public:
+      // 构造函数，带有默认参数
+      Shape(int a = 0, int b = 0) : width(a), height(b) { }
+ 
+      // 虚函数 area，用于计算面积
+      // 使用 virtual 关键字，实现多态
+      virtual int area() {
+         cout << "Shape class area: " << endl;
+         return 0;
+      }
+};
+ 
+// 派生类 Rectangle，表示矩形
+class Rectangle : public Shape {
+   public:
+      // 构造函数，使用基类构造函数初始化 width 和 height
+      Rectangle(int a = 0, int b = 0) : Shape(a, b) { }
+ 
+      // 重写 area 函数，计算矩形面积
+      int area() override { 
+         cout << "Rectangle class area: " << endl;
+         return width * height;
+      }
+};
+ 
+// 派生类 Triangle，表示三角形
+class Triangle : public Shape {
+   public:
+      // 构造函数，使用基类构造函数初始化 width 和 height
+      Triangle(int a = 0, int b = 0) : Shape(a, b) { }
+ 
+      // 重写 area 函数，计算三角形面积
+      int area() override { 
+         cout << "Triangle class area: " << endl;
+         return (width * height / 2); 
+      }
+};
+ 
+// 主函数
+int main() {
+   Shape *shape;           // 基类指针
+   Rectangle rec(10, 7);   // 矩形对象
+   Triangle tri(10, 5);    // 三角形对象
+ 
+   // 将基类指针指向矩形对象，并调用 area 函数
+   shape = &rec;
+   cout << "Rectangle Area: " << shape->area() << endl;
+ 
+   // 将基类指针指向三角形对象，并调用 area 函数
+   shape = &tri;
+   cout << "Triangle Area: " << shape->area() << endl;
+ 
+   return 0;
+}
+```
 
+### 纯虚函数
+您可能想要在基类中定义虚函数，以便在派生类中重新定义该函数更好地适用于对象，但是您在基类中又不能对虚函数给出有意义的实现，这个时候就会用到纯虚函数。
 
+纯虚函数是没有实现的虚函数，在基类中用 = 0 来声明。
 
+纯虚函数表示基类定义了一个接口，但具体实现由派生类负责。
 
+纯虚函数使得基类变为抽象类（abstract class），无法实例化。
 
+特点：
 
+- 必须在基类中声明为 = 0，表示没有实现，子类必须重写。
+- 抽象类：包含纯虚函数的类不能直接实例化，必须通过派生类实现所有纯虚函数才能创建对象。
+- 接口定义：纯虚函数通常用于定义接口，让派生类实现具体行为。
 
+例如：
+```cpp
+#include <iostream>
+using namespace std;
+ 
+class Shape {
+public:
+    virtual int area() = 0;  // 纯虚函数，强制子类实现此方法
+};
+ 
+class Rectangle : public Shape {
+private:
+    int width, height;
+public:
+    Rectangle(int w, int h) : width(w), height(h) { }
+    
+    int area() override {  // 实现纯虚函数
+        return width * height;
+    }
+};
+ 
+int main() {
+    Shape *shape = new Rectangle(10, 5);
+    cout << "Rectangle Area: " << shape->area() << endl;  // 输出: Rectangle Area: 50
+    delete shape;
+}
+```
+<img width="1020" height="301" alt="image" src="https://github.com/user-attachments/assets/26b71598-9030-4a8a-b24f-4b2ee6070c84" />
 
+## 数据抽象
+数据抽象是指，只向外界提供关键信息，并隐藏其后台的实现细节，即只表现必要的信息而不呈现细节。
 
+数据抽象是一种依赖于接口和实现分离的编程（设计）技术。
 
+### 访问标签强制抽象
+在 C++ 中，我们使用访问标签来定义类的抽象接口。一个类可以包含零个或多个访问标签：
 
+- 使用公共标签定义的成员都可以访问该程序的所有部分。一个类型的数据抽象视图是由它的公共成员来定义的。
+- 使用私有标签定义的成员无法访问到使用类的代码。私有部分对使用类型的代码隐藏了实现细节。
 
+访问标签出现的频率没有限制。每个访问标签指定了紧随其后的成员定义的访问级别。指定的访问级别会一直有效，直到遇到下一个访问标签或者遇到类主体的关闭右括号为止。
+
+### 数据抽象的实例
+C++ 程序中，任何带有公有和私有成员的类都可以作为数据抽象的实例。
+```cpp
+#include <iostream>
+using namespace std;
+ 
+class Adder{
+   public:
+      // 构造函数
+      Adder(int i = 0)
+      {
+        total = i;
+      }
+      // 对外的接口
+      void addNum(int number)
+      {
+          total += number;
+      }
+      // 对外的接口
+      int getTotal()
+      {
+          return total;
+      };
+   private:
+      // 对外隐藏的数据
+      int total;
+};
+int main( )
+{
+   Adder a;
+   
+   a.addNum(10);
+   a.addNum(20);
+   a.addNum(30);
+ 
+   cout << "Total " << a.getTotal() <<endl;
+   return 0;
+}
+```
+
+## 数据封装
+数据封装（Data Encapsulation）是面向对象编程（OOP）的一个基本概念，它通过将数据和操作数据的函数封装在一个类中来实现。这种封装确保了数据的私有性和完整性，防止了外部代码对其直接访问和修改。
+
+所有的 C++ 程序都有以下两个基本要素：
+
+- 程序语句（代码）：这是程序中执行动作的部分，它们被称为函数。
+- 程序数据：数据是程序的信息，会受到程序函数的影响。
+
+封装是面向对象编程中的把数据和操作数据的函数绑定在一起的一个概念，这样能避免受到外界的干扰和误用，从而确保了安全。数据封装引申出了另一个重要的 OOP 概念，即数据隐藏。
+
+数据封装是一种把数据和操作数据的函数捆绑在一起的机制，数据抽象是一种仅向用户暴露接口而把具体的实现细节隐藏起来的机制。
+
+C++ 通过创建类来支持封装和数据隐藏（public、protected、private）。我们已经知道，类包含私有成员（private）、保护成员（protected）和公有成员（public）成员。默认情况下，在类中定义的所有项目都是私有的。
+
+为了使类中的成员变成公有的（即，程序中的其他部分也能访问），必须在这些成员前使用 public 关键字进行声明。所有定义在 public 标识符后边的变量或函数可以被程序中所有其他的函数访问。
+
+把一个类定义为另一个类的友元类，会暴露实现细节，从而降低了封装性。理想的做法是尽可能地对外隐藏每个类的实现细节。
+```cpp
+#include <iostream>
+using namespace std;
+ 
+class Adder{
+   public:
+      // 构造函数
+      Adder(int i = 0)
+      {
+        total = i;
+      }
+      // 对外的接口
+      void addNum(int number)
+      {
+          total += number;
+      }
+      // 对外的接口
+      int getTotal()
+      {
+          return total;
+      };
+   private:
+      // 对外隐藏的数据
+      int total;
+};
+int main( )
+{
+   Adder a;
+   
+   a.addNum(10);
+   a.addNum(20);
+   a.addNum(30);
+ 
+   cout << "Total " << a.getTotal() <<endl;
+   return 0;
+}
+```
+
+C++中, 虚函数可以为private, 并且可以被子类覆盖（因为虚函数表的传递），但子类不能调用父类的private虚函数。虚函数的重载性和它声明的权限无关。
+
+一个成员函数被定义为private属性，标志着其只能被当前类的其他成员函数(或友元函数)所访问。而virtual修饰符则强调父类的成员函数可以在子类中被重写，因为重写之时并没有与父类发生任何的调用关系，故而重写是被允许的。
+
+编译器不检查虚函数的各类属性。被virtual修饰的成员函数，不论他们是private、protect或是public的，都会被统一的放置到虚函数表中。对父类进行派生时，子类会继承到拥有相同偏移地址的虚函数表（相同偏移地址指，各虚函数相对于VPTR指针的偏移），则子类就会被允许对这些虚函数进行重载。且重载时可以给重载函数定义新的属性，例如public，其只标志着该重载函数在该子类中的访问属性为public，和父类的private属性没有任何关系！
+
+纯虚函数可以设计成私有的，不过这样不允许在本类之外的非友元函数中直接调用它，子类中只有覆盖这种纯虚函数的义务，却没有调用它的权利。
+
+### 数据封装和数据抽象概念的区别
+
+关注点不同：
+
+- 封装关注的是数据和操作方法的绑定，以及对外部访问的控制。
+- 抽象关注的是简化复杂性，通过隐藏实现细节来只暴露对象的主要特性和功能。
+
+实现方式：
+
+- 封装通过访问控制（如 private、protected 和 public 访问修饰符）实现。
+- 抽象通过抽象类和接口（纯虚函数等）实现。
+
+目的：
+
+- 封装主要是为了数据保护和隐藏实现细节。
+- 抽象主要是为了简化复杂性和提高代码的可读性与可维护性。
+
+侧重点：
+
+- 封装侧重于对象内部的设计，通过隐藏数据和提供访问方法来保护对象的内部状态。
+- 抽象侧重于对象对外的接口设计，通过提供简化的接口来隐藏复杂的实现细节。
+
+## 接口（抽象类）
+接口描述了类的行为和功能，而不需要完成类的特定实现。
+
+C++ 接口是使用抽象类来实现的，抽象类与数据抽象互不混淆，数据抽象是一个把实现细节与相关的数据分离开的概念。
+
+如果类中至少有一个函数被声明为纯虚函数，则这个类就是抽象类。
+
+设计抽象类（通常称为 ABC）的目的，是为了给其他类提供一个可以继承的适当的基类。抽象类不能被用于实例化对象，它只能作为接口使用。如果试图实例化一个抽象类的对象，会导致编译错误。
+
+因此，如果一个 ABC 的子类需要被实例化，则必须实现每个纯虚函数，这也意味着 C++ 支持使用 ABC 声明接口。如果没有在派生类中重写纯虚函数，就尝试实例化该类的对象，会导致编译错误。
+
+可用于实例化对象的类被称为具体类。
+
+经典：
+
+定义一个函数为虚函数，不代表函数为不被实现的函数。
+
+定义他为虚函数是为了允许用基类的指针来调用子类的这个函数。
+
+定义一个函数为纯虚函数，才代表函数没有被实现。
+
+定义纯虚函数是为了实现一个接口，起到一个规范的作用，规范继承这个类的程序员必须实现这个函数。
+
+## 文件和流
+iostream 标准库，提供了 cin 和 cout 方法分别用于从标准输入读取流和向标准输出写入流。从文件读取流和向文件写入流需要用到 C++ 中另一个标准库 fstream。
+<img width="1019" height="247" alt="image" src="https://github.com/user-attachments/assets/9102b41c-b882-4234-962c-306f3e46e83c" />
+
+要在 C++ 中进行文件处理，必须在 C++ 源代码文件中包含头文件 <iostream> 和 <fstream>。
+
+### 打开文件
+在从文件读取信息或者向文件写入信息之前，必须先打开文件。ofstream 和 fstream 对象都可以用来打开文件进行写操作，如果只需要打开文件进行读操作，则使用 ifstream 对象。
+
+下面是 open() 函数的标准语法，open() 函数是 fstream、ifstream 和 ofstream 对象的一个成员。
+```cpp
+void open(const char *filename, ios::openmode mode);.
+
+```
 
 
 
@@ -5057,6 +5413,7 @@ private:
 #### 3. 与 B 树和 B + 树对比
 
 ​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
+
 
 
 
