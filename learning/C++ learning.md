@@ -5003,6 +5003,7 @@ C++ 接口是使用抽象类来实现的，抽象类与数据抽象互不混淆�
 
 定义纯虚函数是为了实现一个接口，起到一个规范的作用，规范继承这个类的程序员必须实现这个函数。
 
+# C++ 高级教程
 ## 文件和流
 iostream 标准库，提供了 cin 和 cout 方法分别用于从标准输入读取流和向标准输出写入流。从文件读取流和向文件写入流需要用到 C++ 中另一个标准库 fstream。
 <img width="1019" height="247" alt="image" src="https://github.com/user-attachments/assets/9102b41c-b882-4234-962c-306f3e46e83c" />
@@ -5012,11 +5013,300 @@ iostream 标准库，提供了 cin 和 cout 方法分别用于从标准输入读
 ### 打开文件
 在从文件读取信息或者向文件写入信息之前，必须先打开文件。ofstream 和 fstream 对象都可以用来打开文件进行写操作，如果只需要打开文件进行读操作，则使用 ifstream 对象。
 
-下面是 open() 函数的标准语法，open() 函数是 fstream、ifstream 和 ofstream 对象的一个成员。
+下面是 open() 函数的标准语法，open() 函数是 fstream、ifstream 和 ofstream 对象的一个成员。第一参数指定要打开的文件的名称和位置，第二个参数定义文件被打开的模式。
 ```cpp
-void open(const char *filename, ios::openmode mode);.
-
+void open(const char *filename, ios::openmode mode);
 ```
+
+<img width="1008" height="309" alt="image" src="https://github.com/user-attachments/assets/0b10cac3-4292-4326-981a-0f28a7f76f38" />
+
+可以把以上两种或两种以上的模式结合使用。例如，如果想要以写入模式打开文件，并希望截断文件，以防文件已存在，那么您可以使用下面的语法：
+```cpp
+ofstream outfile;
+outfile.open("file.dat", ios::out | ios::trunc );
+```
+
+如果想要打开一个文件用于读写，可以使用下面的语法：
+```cpp
+ifstream  afile;
+afile.open("file.dat", ios::out | ios::in );
+```
+
+### 关闭文件
+当 C++ 程序终止时，它会自动关闭刷新所有流，释放所有分配的内存，并关闭所有打开的文件。但程序员应该养成一个好习惯，在程序终止前关闭所有打开的文件。
+
+下面是 close() 函数的标准语法，close() 函数是 fstream、ifstream 和 ofstream 对象的一个成员。
+```cpp
+void close();
+```
+
+下面的 C++ 程序以读写模式打开一个文件。在向文件 afile.dat 写入用户输入的信息之后，程序从文件读取信息，并将其输出到屏幕上：
+```cpp
+#include <fstream>
+#include <iostream>
+using namespace std;
+ 
+int main() {
+    
+   char data[100];
+ 
+   // 以写模式打开文件
+   ofstream outfile;
+   outfile.open("afile.dat");
+ 
+   cout << "Writing to the file" << endl;
+   cout << "Enter your name: "; 
+   cin.getline(data, 100);	//从标准输入读一整行到 data（最多 99 个字符，最后自动补 \0），遇到换行符就停止并把换行符丢掉。如果一行超过 99 个字符，超出的部分会留在输入缓冲区里，流还会置 failbit。
+ 
+   // 向文件写入用户输入的数据
+   outfile << data << endl;
+ 
+   cout << "Enter your age: "; 
+   cin >> data;
+   cin.ignore();	//从输入缓冲区丢弃 1 个字符（默认就是丢弃一个，通常是回车留下的 '\n'）。常用于在用 >> 读取后，把还留在缓冲区的换行丢掉，避免下一次用 getline 立刻读到空行。
+   
+   // 再次向文件写入用户输入的数据
+   outfile << data << endl;
+ 
+   // 关闭打开的文件
+   outfile.close();
+ 
+   // 以读模式打开文件
+   ifstream infile; 
+   infile.open("afile.dat"); 
+ 
+   cout << "Reading from the file" << endl; 
+   infile >> data; 
+ 
+   // 在屏幕上写入数据
+   cout << data << endl;
+   
+   // 再次从文件读取数据，并显示它
+   infile >> data; 
+   cout << data << endl; 
+ 
+   // 关闭打开的文件
+   infile.close();
+ 
+   return 0;
+}
+```
+
+会产生下列输入和输出：
+```cpp
+$./a.out
+Writing to the file
+Enter your name: Zara
+Enter your age: 9
+Reading from the file
+Zara
+9
+```
+
+### 文件位置指针
+istream 和 ostream 都提供了用于重新定位文件位置指针的成员函数。这些成员函数包括关于 istream 的 seekg（"seek get"）和关于 ostream 的 seekp（"seek put"）。
+
+seekg 和 seekp 的参数通常是一个长整型。第二个参数可以用于指定查找方向。查找方向可以是 ios::beg（默认的，从流的开头开始定位），也可以是 ios::cur（从流的当前位置开始定位），也可以是 ios::end（从流的末尾开始定位）。
+
+文件位置指针是一个整数值，指定了从文件的起始位置到指针所在位置的字节数。下面是关于定位 "get" 文件位置指针的实例：
+```cpp
+// 定位到 fileObject 的第 n 个字节（假设是 ios::beg）
+fileObject.seekg( n );
+ 
+// 把文件的读指针从 fileObject 当前位置向后移 n 个字节
+fileObject.seekg( n, ios::cur );
+ 
+// 把文件的读指针从 fileObject 末尾往回移 n 个字节
+fileObject.seekg( n, ios::end );
+ 
+// 定位到 fileObject 的末尾
+fileObject.seekg( 0, ios::end );
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# C++ 资源库
+## STL
+C++ 标准模板库（Standard Template Library，STL）是一套功能强大的 C++ 模板类和函数的集合，它提供了一系列通用的、可复用的算法和数据结构。
+
+STL 的设计基于泛型编程，这意味着使用模板可以编写出独立于任何特定数据类型的代码。
+
+STL 分为多个组件，包括容器（Containers）、迭代器（Iterators）、算法（Algorithms）、函数对象（Function Objects）和适配器（Adapters）等。
+
+使用 STL 的好处:
+
+- 代码复用：STL 提供了大量的通用数据结构和算法，可以减少重复编写代码的工作。
+- 性能优化：STL 中的算法和数据结构都经过了优化，以提供最佳的性能。
+- 泛型编程：使用模板，STL 支持泛型编程，使得算法和数据结构可以适用于任何数据类型。
+- 易于维护：STL 的设计使得代码更加模块化，易于阅读和维护。
+
+C++ 标准模板库的核心包括以下重要组件组件：
+| 组件 | 描述 |
+| ---- | ---- |
+| 容器（Containers） | 容器是 STL 中最基本的组件之一，提供了各种数据结构，包括向量（vector）、链表（list）、队列（queue）、栈（stack）、集合（set）、映射（map）等。这些容器具有不同的特性和用途，可以根据实际需求选择合适的容器。 |
+| 算法（Algorithms） | STL 提供了大量的算法，用于对容器中的元素进行各种操作，包括排序、搜索、复制、移动、变换等。这些算法在使用时不需要关心容器的具体类型，只需要指定要操作的范围即可。 |
+| 迭代器（iterators） | 迭代器用于遍历容器中的元素，允许以统一的方式访问容器中的元素，而不用关心容器的内部实现细节。STL 提供了多种类型的迭代器，包括随机访问迭代器、双向迭代器、前向迭代器和输入输出迭代器等。 |
+| 函数对象（Function Objects） | 函数对象是可以像函数一样调用的对象，可以用于算法中的各种操作。STL 提供了多种函数对象，包括一元函数对象、二元函数对象、谓词等，可以满足不同的需求。 |
+| 适配器（Adapters） | 适配器用于将一种容器或迭代器适配成另一种容器或迭代器，以满足特定的需求。STL 提供了多种适配器，包括栈适配器（stack adapter）、队列适配器（queue adapter）和优先队列适配器（priority queue adapter）等。 |
+
+### 容器
+容器是用来存储数据的序列，它们提供了不同的存储方式和访问模式。
+
+STL 中的容器可以分为三类：
+
+1、序列容器：存储元素的序列，允许双向遍历。
+
+- std::vector：动态数组，支持快速随机访问。
+- std::deque：双端队列，支持快速插入和删除。
+- std::list：链表，支持快速插入和删除，但**不支持随机访问**。
+2、关联容器：存储键值对，每个元素都有一个键（key）和一个值（value），并且通过键来组织元素。以下四个底层实现通常是红黑树（Red-Black Tree）
+
+- std::set：集合，不允许重复元素。存储的元素（在这里也称为“键”）必须是唯一的，并且所有元素都会被自动排序。
+- std::multiset：多重集合，允许多个元素具有相同的键。允许存储重复的元素。
+- std::map：映射，每个键映射到一个值。
+- std::multimap：多重映射，存储了键值对（pair），其中键是唯一的，但值可以重复，允许一个键映射到多个值。
+3、无序容器（C++11 引入）：哈希表，支持快速的查找、插入和删除。
+
+- std::unordered_set：无序集合。
+- std::unordered_multiset：无序多重集合。
+- std::unordered_map：无序映射。
+- std::unordered_multimap：无序多重映射。
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+ 
+int main()
+{
+   // 创建一个向量存储 int
+   vector<int> vec; 
+   int i;
+ 
+   // 显示 vec 的原始大小
+   cout << "vector size = " << vec.size() << endl;
+ 
+   // 推入 5 个值到向量中
+   for(i = 0; i < 5; i++){
+      vec.push_back(i);
+   }
+ 
+   // 显示 vec 扩展后的大小
+   cout << "extended vector size = " << vec.size() << endl;
+ 
+   // 访问向量中的 5 个值
+   for(i = 0; i < 5; i++){
+      cout << "value of vec [" << i << "] = " << vec[i] << endl;
+   }
+ 
+   // 使用迭代器 iterator 访问值
+   vector<int>::iterator v = vec.begin();
+   while( v != vec.end()) {
+      cout << "value of v = " << *v << endl;
+      v++;
+   }
+ 
+   return 0;
+}
+```
+结果：
+```cpp
+vector size = 0
+extended vector size = 5
+value of vec [0] = 0
+value of vec [1] = 1
+value of vec [2] = 2
+value of vec [3] = 3
+value of vec [4] = 4
+value of v = 0
+value of v = 1
+value of v = 2
+value of v = 3
+value of v = 4
+```
+
+#### vector 的 capacity 和 size 属性区别
+size 是当前 vector 容器真实占用的大小，也就是容器当前拥有多少个容器。
+
+capacity 是指在发生 realloc 前能允许的最大元素数，即预分配的内存空间。
+
+当然，这两个属性分别对应两个方法：resize() 和 reserve()。
+
+使用 resize() 容器内的对象内存空间是真正存在的。
+
+使用 reserve() 仅仅只是修改了 capacity 的值，容器内的对象并没有真实的内存空间(空间是"野"的)。
+
+此时切记使用 [] 操作符访问容器内的对象，很可能出现数组越界的问题。
+
+下面用例子进行说明：
+```cpp
+#include <iostream>
+#include <vector>
+
+using std::vector;
+int main(void)
+{
+    vector<int> v;
+    std::cout<<"v.size() == " << v.size() << " v.capacity() = " << v.capacity() << std::endl;
+    v.reserve(10);
+    std::cout<<"v.size() == " << v.size() << " v.capacity() = " << v.capacity() << std::endl;
+    v.resize(10);
+    v.push_back(0);
+    std::cout<<"v.size() == " << v.size() << " v.capacity() = " << v.capacity() << std::endl;
+
+    return 0;
+}
+```
+运行结果为：
+<img width="642" height="224" alt="image" src="https://github.com/user-attachments/assets/80f2013c-7c87-4e20-9931-1a40035b83cc" />
+
+相关引申：
+
+针对 capacity 这个属性，STL 中的其他容器，如 list map set deque，由于这些容器的内存是散列分布的，因此不会发生类似 realloc() 的调用情况，因此我们可以认为 capacity 属性针对这些容器是没有意义的，因此设计时这些容器没有该属性。
+
+在 STL 中，拥有 capacity 属性的容器只有 vector 和 string。
+
+### 导入标准库
+从 C++20 开始，C++ 引入了模块（Modules），并在 C++23 中进一步完善了对标准库模块的支持。
+```cpp
+import std; // 导入整个标准库（C++23 特性）
+
+int main() {
+    std::cout << "Hello, C++23 Modules!\n"; // 使用 std::cout 输出
+    return 0;
+}
+```
+or：
+```cpp
+import std.core;      // 导入核心库
+import std.iostream;  // 导入输入输出流库
+
+int main() {
+    std::cout << "Hello, C++23 Modules!\n";
+    return 0;
+}
+```
+
+# 有用的资源
+[url](https://www.runoob.com/cplusplus/cpp-useful-resources.html)
+
+
+
+
+
+
 
 
 
@@ -5413,6 +5703,7 @@ private:
 #### 3. 与 B 树和 B + 树对比
 
 ​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
+
 
 
 
