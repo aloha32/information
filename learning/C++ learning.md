@@ -5299,6 +5299,685 @@ int main() {
 }
 ```
 
+## <iostream>
+C++ 标准库中用于输入输出操作的头文件。
+
+- std::istream：用于输入操作的抽象基类。
+- std::ostream：用于输出操作的抽象基类。
+- std::iostream：继承自std::istream和std::ostream，用于同时进行输入和输出操作。
+- std::cin：标准输入流对象，通常与键盘关联。
+- std::cout：标准输出流对象，通常与屏幕关联。
+- std::cerr：标准错误输出流对象，不带缓冲，通常与屏幕关联。
+- std::clog：标准日志流对象，带缓冲，通常与屏幕关联。
+
+可以检查输入输出流的状态，以确定操作是否成功。
+```cpp
+#include <iostream>
+
+int main() {
+    int num;
+    std::cout << "Enter a number: ";
+    std::cin >> num;
+
+    // 检查输入操作是否成功
+    if (std::cin.fail()) {
+        std::cerr << "Invalid input!" << std::endl;
+    } else {
+        std::cout << "You entered: " << num << std::endl;
+    }
+
+    return 0;
+}
+```
+
+使用std::getline函数可以读取包含空格的整行输入。
+```cpp
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string fullName;
+    std::cout << "Enter your full name: ";
+    std::getline(std::cin, fullName);
+    std::cout << "Hello, " << fullName << "!" << std::endl;
+
+    return 0;
+}
+```
+
+## <fstream>
+标准库中用于文件输入输出操作的类。它提供了一种方便的方式来读写文件。
+
+fstream是iostream库的一部分，支持文本和二进制文件的读写。
+
+写入文本文件:
+```cpp
+#include <fstream>
+#include <iostream>
+
+int main() {
+    std::fstream file;
+    file.open("example.txt", std::ios::out); // 以输出模式打开文件
+
+    if (!file) {
+        std::cerr << "Unable to open file!" << std::endl;
+        return 1; // 文件打开失败
+    }
+
+    file << "Hello, World!" << std::endl; // 写入文本
+    file.close(); // 关闭文件
+
+    return 0;
+}
+```
+常见的模式有：
+
+- std::ios::in：以输入模式打开文件。
+- std::ios::out：以输出模式打开文件。
+- std::ios::app：以追加模式打开文件。
+- std::ios::ate：打开文件并定位到文件末尾。
+- std::ios::trunc：打开文件并截断文件，即清空文件内容。
+
+读取文本文件:
+```cpp
+#include <fstream>
+#include <iostream>
+#include <string>
+
+int main() {
+    std::fstream file;
+    file.open("example.txt", std::ios::in); // 以输入模式打开文件
+
+    if (!file) {
+        std::cerr << "Unable to open file!" << std::endl;
+        return 1; // 文件打开失败
+    }
+
+    std::string line;
+    while (getline(file, line)) { // 逐行读取
+        std::cout << line << std::endl;
+    }
+
+    file.close(); // 关闭文件
+
+    return 0;
+}
+```
+
+追加到文件:
+```cpp
+#include <fstream>
+#include <iostream>
+
+int main() {
+    std::fstream file;
+    file.open("example.txt", std::ios::app); // 以追加模式打开文件
+
+    if (!file) {
+        std::cerr << "Unable to open file!" << std::endl;
+        return 1; // 文件打开失败
+    }
+
+    file << "Appending this line to the file." << std::endl; // 追加文本
+    file.close(); // 关闭文件
+
+    return 0;
+}
+```
+
+## <sstream>
+在 C++ 编程中，处理字符串和数字之间的转换是一项常见的任务。
+
+sstream 是 C++ 标准库中的一个组件，它提供了一种方便的方式来处理字符串流（可以像处理流一样处理字符串）。
+
+<sstream> 允许你将字符串当作输入/输出流来使用，这使得从字符串中读取数据或将数据写入字符串变得非常简单。
+
+sstream是 C++ 标准库中的一个命名空间，它包含了几个类，用于处理字符串流，这些类包括：
+
+- istringstream：用于从字符串中读取数据。
+- ostringstream：用于将数据写入字符串。
+- stringstream：是istringstream和ostringstream的组合，可以同时进行读取和写入操作。
+
+基本语法如下：
+```cpp
+#include <sstream>
+
+// 使用istringstream
+std::istringstream iss("some data");
+
+// 使用ostringstream
+std::ostringstream oss;
+
+// 使用stringstream
+std::stringstream ss;
+```
+
+使用 istringstream 从字符串中读取整数和浮点数的例子：
+```cpp
+#include <iostream>
+#include <sstream>
+
+int main() {
+    std::string data = "10 20.5";
+    std::istringstream iss(data);
+
+    int i;
+    double d;
+
+    iss >> i >> d;
+
+    std::cout << "Integer: " << i << std::endl;
+    std::cout << "Double: " << d << std::endl;
+
+    return 0;
+}
+```
+
+使用 ostringstream 将数据写入字符串的例子：
+```cpp
+#include <iostream>
+#include <sstream>
+
+int main() {
+    std::ostringstream oss;
+    int i = 100;
+    double d = 200.5;
+
+    oss << i << " " << d;
+
+    std::string result = oss.str();
+    std::cout << "Resulting string: " << result << std::endl;
+
+    return 0;
+}
+```
+
+使用 stringstream 同时进行读取和写入操作的例子：
+```cpp
+#include <iostream>
+#include <sstream>
+
+int main() {
+    std::string data = "30 40.5";
+    std::stringstream ss(data);
+
+    int i;
+    double d;
+
+    // 从stringstream读取数据
+    ss >> i >> d;
+
+    std::cout << "Read Integer: " << i << ", Double: " << d << std::endl;
+
+    // 向stringstream写入数据
+    ss.str(""); // 清空stringstream
+    ss << "New data: " << 50 << " " << 60.7;
+
+    std::string newData = ss.str();
+    std::cout << "New data string: " << newData << std::endl;
+
+    return 0;
+}
+```
+
+## <iomanip>
+iomanip 库中的函数允许开发者控制输出格式，如设置小数点后的位数、设置宽度、对齐方式等。
+
+iomanip 是 Input/Output Manipulators 的缩写，它提供了一组操作符，用于控制 C++ 标准库中的输入/输出流的格式，适用以下场景：
+
+- 科学计算中浮点数格式的处理；
+- 数据对齐与美化；
+- 显示特定进制或格式的数值。
+
+![详见](https://www.runoob.com/cplusplus/cpp-libs-iomanip.html)
+
+
+## <array>
+C++11 标准引入了 <array> 头文件，它提供了一种固定大小的数组容器，与 C 语言中的数组相比，具有更好的类型安全和内存管理特性。
+
+std::array 的基本语法如下：
+```cpp
+#include <array>
+
+std::array<T, N> array_name;
+```
+T 是数组中元素的类型。N 是数组的大小，必须是一个非负整数。
+
+特点
+- 类型安全：std::array 强制类型检查，避免了 C 语言数组的类型不安全问题。
+- 固定大小：数组的大小在编译时确定，不能在运行时改变。
+- 内存连续：std::array 的元素在内存中是连续存储的，这使得它可以高效地访问元素。
+- 标准容器：std::array 提供了与 std::vector 类似的接口，如 size(), at(), front(), back() 等。
+
+```cpp
+#include <iostream>
+#include <array>
+
+int main() {
+    // 创建一个包含 5 个整数的 std::array
+    std::array<int, 5> myArray = {1, 2, 3, 4, 5};
+
+    // 使用范围 for 循环遍历数组
+    for (const auto& value : myArray) {
+        std::cout << value << " ";
+    }
+    std::cout << std::endl;
+
+    // 使用索引访问数组元素
+    std::cout << "Element at index 2: " << myArray.at(2) << std::endl;
+
+    // 获取数组的大小
+    std::cout << "Array size: " << myArray.size() << std::endl;
+
+    // 修改数组元素
+    myArray[3] = 10;
+
+    // 再次遍历数组以显示修改后的元素
+    for (const auto& value : myArray) {
+        std::cout << value << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+```
+
+常用成员函数：
+| 函数               | 说明                         |
+| ------------------ | ---------------------------- |
+| at(size_t pos)     | 返回指定位置的元素，带边界检查 |
+| operator[]         | 返回指定位置的元素，不带边界检查 |
+| front()            | 返回数组的第一个元素         |
+| back()             | 返回数组的最后一个元素       |
+| data()             | 返回指向数组数据的指针       |
+| size()             | 返回数组大小（固定不变）|
+| fill(const T& value) | 将数组所有元素设置为指定值   |
+| swap(array& other) | 交换两个数组的内容           |
+| begin() / end()    | 返回数组的起始/结束迭代器    |
+
+基本操作
+```cpp
+#include <iostream>
+#include <array>
+
+int main() {
+    std::array<int, 5> arr = {10, 20, 30, 40, 50};
+
+    std::cout << "Array elements: ";
+    for (int i = 0; i < arr.size(); ++i) {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+
+    // 获取第一个和最后一个元素
+    std::cout << "First element: " << arr.front() << std::endl;
+    std::cout << "Last element: " << arr.back() << std::endl;
+
+    return 0;
+}
+```
+
+使用 at 和边界检查
+```cpp
+#include <iostream>
+#include <array>
+
+int main() {
+    std::array<int, 3> arr = {1, 2, 3};
+
+    try {
+        std::cout << arr.at(2) << std::endl;  // 正常输出
+        std::cout << arr.at(5) << std::endl;  // 超出范围，抛出异常
+    } catch (const std::out_of_range& e) {
+        std::cout << "Exception: " << e.what() << std::endl;
+    }
+
+    return 0;
+}
+```
+
+使用 fill 填充元素
+```cpp
+#include <iostream>
+#include <array>
+
+int main() {
+    std::array<int, 5> arr;
+    arr.fill(100);  // 将所有元素设置为100
+
+    std::cout << "Filled array: ";
+    for (const auto& elem : arr) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+```
+
+数组交换
+```cpp
+#include <iostream>
+#include <array>
+
+int main() {
+    std::array<int, 3> arr1 = {1, 2, 3};
+    std::array<int, 3> arr2 = {4, 5, 6};
+
+    arr1.swap(arr2);
+
+    std::cout << "Array 1: ";
+    for (const auto& elem : arr1) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Array 2: ";
+    for (const auto& elem : arr2) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+```
+
+| 特性     | std::array       | C风格数组       | std::vector        |
+| -------- | ---------------- | --------------- | ------------------ |
+| 大小     | 编译时固定       | 编译时固定      | 动态可变           |
+| 边界检查 | at() 提供边界检查 | 无              | at() 提供边界检查  |
+| 内存管理 | 栈上分配         | 栈上分配        | 堆上分配           |
+| 性能     | 高效             | 高效            | 较低（动态分配）|
+| 接口     | 支持STL标准接口  | 不支持STL标准接口 | 支持STL标准接口    |
+
+## <vector>
+<vector> 是 STL 中的一个容器类，用于存储动态大小的数组。
+
+<vector> 是一个序列容器，它允许用户在容器的末尾快速地添加或删除元素。与数组相比，<vector> 提供了更多的功能，如自动调整大小、随机访问等。
+
+基本的语法：
+```cpp
+// 声明一个 vector
+std::vector<int> myVector;
+// 添加元素
+myVector.push_back(10);
+// 访问元素
+int firstElement = myVector[0];
+// 获取元素数量
+size_t size = myVector.size();
+// 清空 vector
+myVector.clear();
+```
+
+<vector> 需要指定元素类型，可通过多种方式进行初始化：
+```cpp
+#include <iostream>
+#include <vector>
+
+int main() {
+    std::vector<int> vec1;                  // 空的vector
+    std::vector<int> vec2(5);               // 长度为5的vector，元素默认初始化
+    std::vector<int> vec3(5, 10);           // 长度为5的vector，元素值为10
+    std::vector<int> vec4 = {1, 2, 3, 4};   // 使用初始化列表初始化
+
+    return 0;
+}
+```
+
+| 函数                     | 说明                         |
+| ------------------------ | ---------------------------- |
+| push_back(const T& val)  | 在末尾添加元素               |
+| pop_back()               | 删除末尾元素                 |
+| at(size_t pos)           | 返回指定位置的元素，带边界检查 |
+| operator[]               | 返回指定位置的元素，不带边界检查 |
+| front()                  | 返回第一个元素               |
+| back()                   | 返回最后一个元素             |
+| data()                   | 返回指向底层数组的指针       |
+| size()                   | 返回当前元素数量             |
+| capacity()               | 返回当前分配的容量           |
+| reserve(size_t n)        | 预留至少n个元素的存储空间    |
+| resize(size_t n)         | 将元素数量调整为n            |
+| clear()                  | 清空所有元素                 |
+| insert(iterator pos, val)| 在指定位置插入元素           |
+| erase(iterator pos)      | 删除指定位置的元素           |
+| begin() / end()          | 返回起始/结束迭代器          |
+
+基本操作
+```cpp
+#include <iostream>
+#include <vector>
+
+int main() {
+    std::vector<int> vec = {1, 2, 3, 4, 5};
+
+    // 输出所有元素
+    std::cout << "Vector elements: ";
+    for (int i = 0; i < vec.size(); ++i) {
+        std::cout << vec[i] << " ";
+    }
+    std::cout << std::endl;
+
+    // 获取第一个和最后一个元素
+    std::cout << "First element: " << vec.front() << std::endl;
+    std::cout << "Last element: " << vec.back() << std::endl;
+
+    return 0;
+}
+```
+
+动态增加和删除元素
+```cpp
+#include <iostream>
+#include <vector>
+
+int main() {
+    std::vector<int> vec;
+    vec.push_back(10);
+    vec.push_back(20);
+    vec.push_back(30);
+
+    std::cout << "Vector size: " << vec.size() << std::endl;
+    std::cout << "Vector capacity: " << vec.capacity() << std::endl;
+
+    // 删除最后一个元素
+    vec.pop_back();
+    std::cout << "After pop_back, size: " << vec.size() << std::endl;
+
+    return 0;
+}
+```
+
+边界检查和安全访问
+```cpp
+#include <iostream>
+#include <vector>
+
+int main() {
+    std::vector<int> vec = {1, 2, 3};
+
+    try {
+        std::cout << vec.at(2) << std::endl;  // 正常输出
+        std::cout << vec.at(5) << std::endl;  // 超出范围，抛出异常
+    } catch (const std::out_of_range& e) {
+        std::cout << "Exception: " << e.what() << std::endl;
+    }
+
+    return 0;
+}
+```
+
+预分配容量
+```cpp
+#include <iostream>
+#include <vector>
+
+int main() {
+    std::vector<int> vec;
+    vec.reserve(10);  // 预留容量，避免频繁分配内存
+
+    for (int i = 0; i < 10; ++i) {
+        vec.push_back(i);
+        std::cout << "Capacity after push_back(" << i << "): " << vec.capacity() << std::endl;
+    }
+
+    return 0;
+}
+```
+
+## <list>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 有用的资源
 [url](https://www.runoob.com/cplusplus/cpp-useful-resources.html)
 
@@ -5703,6 +6382,7 @@ private:
 #### 3. 与 B 树和 B + 树对比
 
 ​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
+
 
 
 
