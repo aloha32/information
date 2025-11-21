@@ -5858,6 +5858,31 @@ int main() {
 ```
 
 实例：
+
+双向遍历：
+```cpp
+#include <iostream>
+#include <list>
+
+int main() {
+    std::list<int> nums = {1, 2, 3, 4, 5};
+
+    // 从 begin() 到 end()，用 ++it 向前遍历
+    for (std::list<int>::iterator it = nums.begin(); it != nums.end(); ++it) {
+        std::cout << *it << ' ';
+    }
+
+	// 从 end() 开始，每次先 --it，再访问 *it，达到从后往前遍历的效果
+    for (std::list<int>::iterator it = nums.end(); it != nums.begin(); ) {
+        --it;                  // 先往前移动一步（从“尾后”移到真正最后一个元素）
+        std::cout << *it << ' ';
+    }
+
+    return 0;
+}
+
+```
+
 ```cpp
 #include <iostream>
 #include <list>
@@ -5898,22 +5923,135 @@ int main() {
 }
 ```
 
+常用成员函数:
+| 函数                     | 说明                     |
+| ------------------------ | ------------------------ |
+| push_back(const T& val)  | 在链表末尾添加元素       |
+| push_front(const T& val) | 在链表头部添加元素       |
+| pop_back()               | 删除链表末尾的元素       |
+| pop_front()              | 删除链表头部的元素       |
+| insert(iterator pos, val)| 在指定位置插入元素       |
+| erase(iterator pos)      | 删除指定位置的元素       |
+| clear()                  | 清空所有元素             |
+| size()                   | 返回链表中的元素数量     |
+| empty()                  | 检查链表是否为空         |
+| front()                  | 返回链表第一个元素       |
+| back()                   | 返回链表最后一个元素     |
+| remove(const T& val)     | 删除所有等于指定值的元素 |
+| sort()                   | 对链表中的元素进行排序   |
+| merge(list& other)       | 合并另一个已排序的链表   |
+| reverse()                | 反转链表                 |
+| begin() / end()          | 返回链表的起始/结束迭代器 |
 
+排序和去重:
+```cpp
+#include <iostream>
+#include <list>
 
+int main() {
+    std::list<int> lst = {3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5};
+    lst.sort();                    // 排序
+    lst.unique();                  // 删除相邻重复元素
 
+    // 输出链表内容
+    std::cout << "Sorted and unique list: ";
+    for (const auto& elem : lst) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
 
+    return 0;
+}
+```
 
+合并和反转:
+```cpp
+#include <iostream>
+#include <list>
 
+int main() {
+    std::list<int> lst1 = {1, 3, 5, 7};
+    std::list<int> lst2 = {2, 4, 6, 8};
 
+    lst1.merge(lst2);              // 合并两个已排序的链表
+    lst1.reverse();                // 反转链表
 
+    // 输出链表内容
+    std::cout << "Merged and reversed list: ";
+    for (const auto& elem : lst1) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
 
+    return 0;
+}
+```
 
+对比:
+| 特性         | std::list                     | std::vector               | std::deque               |
+| ------------ | ----------------------------- | ------------------------- | ------------------------ |
+| 内存结构     | 非连续内存，双向链表          | 连续内存                  | 分段连续内存             |
+| 访问性能     | 顺序访问较快，随机访问慢      | 随机访问快                | 末尾和头部访问都快       |
+| 插入/删除性能 | 任意位置插入、删除快          | 末尾插入快，中间位置慢    | 头尾插入、删除快         |
+| 适用场景     | 频繁在中间插入/删除           | 需要高效随机访问          | 需要在头尾快速插入/删除  |
+| 迭代器稳定性 | 稳定，元素插入或删除不会失效  | 插入、删除可能导致迭代器失效 | 插入、删除可能导致迭代器失效 |
 
+注意事项:
 
+- <list> 的元素是按插入顺序存储的，而不是按元素值排序。
+- 由于 <list> 的元素存储在不同的内存位置，所以它不适合需要随机访问的场景。
+- 与向量相比，<list> 的内存使用效率较低，因为每个元素都需要额外的空间来存储指向前后元素的指针。
 
+## <forward_list>
+与双向链表（std::list）不同，std::forward_list 只支持单向遍历。它适用于需要频繁进行前向遍历和插入、删除操作的场景。
 
+单向链表：
 
+- std::forward_list 是单向链表，只能从前往后遍历，不能反向遍历。
+- 由于其单向链表的结构，插入和删除操作在已知位置的情况下非常高效（O(1) 复杂度）。
 
+低内存开销：
+
+- 与 std::list 相比，std::forward_list 只需要一个指向下一个节点的指针，节省了内存。
+
+不支持随机访问：
+
+- 不支持通过索引访问元素，不能使用 operator[] 或 at 方法，只能通过迭代器进行访问。
+
+常用成员函数：
+
+- void push_front(const T& value)：在列表的前端插入一个元素。
+- void pop_front()：移除列表前端的元素。
+- iterator before_begin()：返回指向列表前端之前的迭代器。
+- iterator begin()：返回指向列表前端的迭代器。
+- iterator end()：返回指向列表末尾的迭代器。
+
+```cpp
+#include <iostream>
+#include <forward_list>
+
+int main() {
+    // 创建一个空的 forward_list
+    std::forward_list<int> fl;
+
+    // 在列表前端添加元素
+    fl.push_front(10);
+    fl.push_front(20);
+    fl.push_front(30);
+
+    // 遍历 forward_list 并输出元素
+    for (auto it = fl.begin(); it != fl.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    // 输出结果：30 20 10
+
+    return 0;
+}
+```
+
+## <deque>
 
 
 
@@ -6445,6 +6583,7 @@ private:
 #### 3. 与 B 树和 B + 树对比
 
 ​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
+
 
 
 
