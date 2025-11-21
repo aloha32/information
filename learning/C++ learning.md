@@ -5825,15 +5825,78 @@ int main() {
 ```
 
 ## <list>
+<list> 是 C++ 标准模板库（STL）中的一个序列容器，它允许在容器的任意位置快速插入和删除元素。与数组或向量（<vector>）不同，<list> 不需要在创建时指定大小，并且可以在任何位置添加或删除元素，而不需要重新分配内存。
 
+基本操作：
 
+- 包含头文件：#include <list>
+- 声明列表：std::list<T> mylist;，其中 T 是存储在列表中的元素类型。
+- 插入元素：mylist.push_back(value);
+- 删除元素：mylist.pop_back(); 或 mylist.erase(iterator);
+- 访问元素：mylist.front(); 和 mylist.back();
+- 遍历列表：使用迭代器 for (auto it = mylist.begin(); it != mylist.end(); ++it)
 
+特点:
 
+- 双向迭代：<list> 提供了双向迭代器，可以向前和向后遍历元素。
+- 动态大小：与数组不同，<list> 的大小可以动态变化，不需要预先分配固定大小的内存。
+- 快速插入和删除：可以在列表的任何位置快速插入或删除元素，而不需要像向量那样移动大量元素。
 
+初始化:
+```cpp
+#include <iostream>
+#include <list>
 
+int main() {
+    std::list<int> lst1;                  // 空的list
+    std::list<int> lst2(5);               // 包含5个默认初始化元素的list
+    std::list<int> lst3(5, 10);           // 包含5个元素，每个元素为10
+    std::list<int> lst4 = {1, 2, 3, 4};   // 使用初始化列表
 
+    return 0;
+}
+```
 
+实例：
+```cpp
+#include <iostream>
+#include <list>
 
+int main() {
+    // 创建一个整数类型的列表
+    std::list<int> numbers;
+
+    // 向列表中添加元素
+    numbers.push_back(10);
+    numbers.push_back(20);
+    numbers.push_back(30);
+
+    // 访问并打印列表的第一个元素
+    std::cout << "First element: " << numbers.front() << std::endl;
+
+    // 访问并打印列表的最后一个元素
+    std::cout << "Last element: " << numbers.back() << std::endl;
+
+    // 遍历列表并打印所有元素
+    std::cout << "List elements: ";
+    for (std::list<int>::iterator it = numbers.begin(); it != numbers.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    // 删除列表中的最后一个元素
+    numbers.pop_back();
+
+    // 再次遍历列表并打印所有元素
+    std::cout << "List elements after removing the last element: ";
+    for (std::list<int>::iterator it = numbers.begin(); it != numbers.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+```
 
 
 
@@ -6382,6 +6445,7 @@ private:
 #### 3. 与 B 树和 B + 树对比
 
 ​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
+
 
 
 
