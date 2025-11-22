@@ -6051,42 +6051,398 @@ int main() {
 }
 ```
 
-## <deque>
+## <deque> 双端队列
+双端队列是一种允许在两端进行插入和删除操作的线性数据结构。
+
+<deque> 的全称是 "double-ended queue"，它在C++中以模板类的形式存在，允许存储任意类型的数据。
+
+<deque> 是一个动态数组，它提供了快速的随机访问能力，同时允许在两端进行高效的插入和删除操作。这使得 <deque> 成为处理需要频繁插入和删除元素的场景的理想选择。
+
+常用成员函数：
+| 函数名称                          | 功能描述                                     |
+|-----------------------------------|----------------------------------------------|
+| deque()                           | 默认构造函数，创建一个空的 deque 容器。      |
+| deque(size_type n)                | 创建一个包含 n 个默认值元素的 deque 容器。   |
+| deque(size_type n, const T& value)| 创建一个包含 n 个值为 value 的 deque 容器。  |
+| deque(initializer_list<T> il)     | 使用初始化列表 il 构造 deque 容器。          |
+| operator=                         | 赋值操作符，赋值给 deque 容器。              |
+| assign()                          | 用新值替换 deque 容器中的所有元素。          |
+| at(size_type pos)                 | 返回 pos 位置的元素，并进行范围检查。        |
+| operator[](size_type pos)         | 返回 pos 位置的元素，不进行范围检查。        |
+| front()                           | 返回第一个元素的引用。                       |
+| back()                            | 返回最后一个元素的引用。                     |
+| begin()                           | 返回指向第一个元素的迭代器。                 |
+| end()                             | 返回指向末尾元素后一位置的迭代器。           |
+| rbegin()                          | 返回指向最后一个元素的逆向迭代器。           |
+| rend()                            | 返回指向第一个元素之前位置的逆向迭代器。     |
+| empty()                           | 检查容器是否为空。                           |
+| size()                            | 返回容器中的元素个数。                       |
+| max_size()                        | 返回容器可容纳的最大元素个数。               |
+| clear()                           | 清除容器中的所有元素。                       |
+| insert(iterator pos, const T& value) | 在 pos 位置插入 value 元素。             |
+| erase(iterator pos)               | 移除 pos 位置的元素。                        |
+| push_back(const T& value)         | 在容器末尾添加 value 元素。                  |
+| pop_back()                        | 移除容器末尾的元素。                         |
+| push_front(const T& value)        | 在容器前端添加 value 元素。                  |
+| pop_front()                       | 移除容器前端的元素。                         |
+| resize(size_type count)           | 调整容器大小为 count，多出部分用默认值填充。 |
+| swap(deque<T> other)              | 交换两个 deque 容器的内容。                  |
+| get_allocator()                   | 返回一个用于构造双端队列的分配器对象的副本。 |
+
+```cpp
+#include <iostream>
+#include <deque>
+
+int main() {
+    std::deque<int> myDeque;
+
+    // 插入元素
+    myDeque.push_back(10);
+    myDeque.push_back(20);
+    myDeque.push_front(5);
+
+    // 访问元素
+    std::cout << "Deque contains: ";
+    for (int i = 0; i < myDeque.size(); ++i) {
+        std::cout << myDeque[i] << " ";
+    }
+    std::cout << std::endl;
+
+    // 删除元素
+    myDeque.pop_back();
+    myDeque.pop_front();
+
+    // 再次访问元素
+    std::cout << "Deque after popping: ";
+    for (int i = 0; i < myDeque.size(); ++i) {
+        std::cout << myDeque[i] << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+```
+注意：在使用 front() 或 back() 之前，确保双端队列不为空，否则会引发未定义的行为。如果需要检查双端队列是否为空，可以使用 empty() 成员函数。
+
+## <stack>
+实现了一个后进先出（LIFO，Last In First Out）的数据结构。这种数据结构非常适合于需要"最后添加的元素最先被移除"的场景。
+
+<stack> 容器适配器提供了一个栈的接口，它基于其他容器（如 deque 或 vector）来实现。栈的元素是线性排列的，但只允许在一端（栈顶）进行添加和移除操作。
+
+基本操作:
+
+- push(): 在栈顶添加一个元素。
+- pop(): 移除栈顶元素。
+- top(): 返回栈顶元素的引用，但不移除它。
+- empty(): 检查栈是否为空。
+- size(): 返回栈中元素的数量。
+
+```cpp
+#include <iostream>
+#include <stack>
+
+int main() {
+    std::stack<int> s;
+
+    // 向栈中添加元素
+    s.push(10);
+    s.push(20);
+    s.push(30);
+
+    // 打印栈顶元素
+    std::cout << "Top element is: " << s.top() << std::endl; // 输出: Top element is: 30
+
+    // 移除栈顶元素
+    s.pop();
+    std::cout << "After popping, top element is: " << s.top() << std::endl; // 输出: After popping, top element is: 20
+
+    // 检查栈是否为空
+    if (!s.empty()) {
+        std::cout << "Stack is not empty." << std::endl; // 输出: Stack is not empty.
+    }
+
+    // 打印栈的大小
+    std::cout << "Size of stack: " << s.size() << std::endl; // 输出: Size of stack: 2
+
+    // 继续移除元素
+    s.pop();
+    s.pop();
+
+    // 检查栈是否为空
+    if (s.empty()) {
+        std::cout << "Stack is empty." << std::endl; // 输出: Stack is empty.
+    }
+
+    return 0;
+}
+```
+
+注意事项
+
+- <stack> 不提供直接访问栈中元素的方法，只能通过 top() 访问栈顶元素。
+- 尝试在空栈上调用 top() 或 pop() 将导致未定义行为。
+- <stack> 的底层容器可以是任何支持随机访问迭代器的序列容器，如 vector 或 deque。
+
+## <queue>
+提供了队列（Queue）数据结构的实现。队列是一种先进先出（FIFO, First In First Out）的数据结构，它允许在一端添加元素（称为队尾），并在另一端移除元素（称为队首）。
+
+常用操作：
+
+- empty(): 检查队列是否为空。
+- size(): 返回队列中的元素数量。
+- front(): 返回队首元素的引用。
+- back(): 返回队尾元素的引用。
+- push(): 在队尾添加一个元素。
+- pop(): 移除队首元素。
+
+```cpp
+#include <iostream>
+#include <queue>
+
+int main() {
+    // 创建一个整数队列
+    std::queue<int> q;
+
+    // 向队列中添加元素
+    q.push(10);
+    q.push(20);
+    q.push(30);
+
+    // 打印队列中的元素数量
+    std::cout << "队列中的元素数量: " << q.size() << std::endl;
+
+    // 打印队首元素
+    std::cout << "队首元素: " << q.front() << std::endl;
+
+    // 打印队尾元素
+    std::cout << "队尾元素: " << q.back() << std::endl;
+
+    // 移除队首元素
+    q.pop();
+    std::cout << "移除队首元素后，队首元素: " << q.front() << std::endl;
+
+    // 再次打印队列中的元素数量
+    std::cout << "队列中的元素数量: " << q.size() << std::endl;
+
+    return 0;
+}
+```
+
+注意事项
+
+- 队列不允许随机访问元素，即不能直接通过索引访问队列中的元素。
+- 队列的实现通常使用链表或动态数组，这取决于具体的实现。
+
+## <priority_queue>
+优先队列是一种特殊的队列，它允许我们快速访问队列中具有最高（或最低）优先级的元素。
+
+在 C++ 中，priority_queue 默认是一个最大堆，这意味着队列的顶部元素总是具有最大的值。
+
+priority_queue 是一个容器适配器，它提供了对底层容器的堆操作。它不提供迭代器，也不支持随机访问。
+
+常用操作：
+
+- empty(): 检查队列是否为空。
+- size(): 返回队列中的元素数量。
+- top(): 返回队列顶部的元素（不删除它）。
+- push(): 向队列添加一个元素。
+- pop(): 移除队列顶部的元素。
+
+push / pop / top 的复杂度：O(log n)，底层是用堆（一般基于数组的二叉堆）实现的。
+
+最大堆实例：
+```cpp
+#include <iostream>
+#include <queue>
+
+int main() {
+    // 创建一个整型优先队列
+    std::priority_queue<int> pq;
+
+    // 向优先队列中添加元素
+    pq.push(30);
+    pq.push(10);
+    pq.push(50);
+    pq.push(20);
+
+    // 输出队列中的元素
+    std::cout << "队列中的元素：" << std::endl;
+    while (!pq.empty()) {
+        std::cout << pq.top() << std::endl;
+        pq.pop();
+    }
+
+    return 0;
+}
+```
+
+自定义优先级(最小堆):
+```cpp
+#include <iostream>
+#include <queue>
+#include <vector>
+
+struct compare {
+    bool operator()(int a, int b) {
+        return a > b; // 定义最小堆
+    }
+};
+
+int main() {
+    // 创建一个自定义类型的优先队列，使用最小堆
+    std::priority_queue<int, std::vector<int>, compare> pq_min;
+
+    // 向优先队列中添加元素
+    pq_min.push(30);
+    pq_min.push(10);
+    pq_min.push(50);
+    pq_min.push(20);
+
+    // 输出队列中的元素
+    std::cout << "最小堆中的元素：" << std::endl;
+    while (!pq_min.empty()) {
+        std::cout << pq_min.top() << std::endl;
+        pq_min.pop();
+    }
+
+    return 0;
+}
+```
+常用写法：
+```cpp
+std::priority_queue<int, std::vector<int>, std::greater<int>> min_heap;
+```
+
+## <set>
+<set> 是一个关联容器，它存储了一组唯一的元素，并按照一定的顺序进行排序。
+
+<set> 提供了高效的元素查找、插入和删除操作。它是基于红黑树实现的，因此具有对数时间复杂度的查找、插入和删除性能。
+
+<set> 容器中存储的元素类型必须满足以下条件：
+
+- 元素类型必须可以比较大小。
+- 元素类型必须可以被复制和赋值。
+
+常用操作
+
+- insert(元素): 插入一个元素。
+- erase(元素): 删除一个元素。
+- find(元素): 查找一个元素。
+- size(): 返回容器中元素的数量。
+- empty(): 检查容器是否为空。
+
+```cpp
+#include <iostream>
+#include <set>
+
+int main() {
+    // 声明一个整型 set 容器
+    std::set<int> mySet;
+
+    // 插入元素
+    mySet.insert(10);
+    mySet.insert(20);
+    mySet.insert(30);
+    mySet.insert(40);
+
+    // 输出 set 中的元素
+    std::cout << "Set contains: ";
+    for (int num : mySet) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    // 查找元素
+    if (mySet.find(20) != mySet.end()) {
+        std::cout << "20 is in the set." << std::endl;
+    } else {
+        std::cout << "20 is not in the set." << std::endl;
+    }
+
+    // 删除元素
+    mySet.erase(20);
+
+    // 再次输出 set 中的元素
+    std::cout << "After erasing 20, set contains: ";
+    for (int num : mySet) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    // 检查 set 是否为空
+    if (mySet.empty()) {
+        std::cout << "The set is empty." << std::endl;
+    } else {
+        std::cout << "The set is not empty." << std::endl;
+    }
+
+    // 输出 set 中元素的数量
+    std::cout << "The set contains " << mySet.size() << " elements." << std::endl;
+
+    return 0;
+}
+```
 
 
+### 红黑树
+
+红黑树是一种自平衡二叉查找树。红黑树的特点如下：
+
+- 每个节点非红即黑。
+
+- 根节点总是黑色的。
+
+- 每个叶子节点都是黑色的空节点（NIL 节点）。
+
+- 如果节点是红色的，则它的子节点必须是黑色的（反之不一定），通常这条规则也叫不会有连续的红色节点。
+
+- 从根节点到叶节点或空子节点的每条路径，必须包含相同数目的黑色节点（即相同的黑色高度）。
+
+红黑树是每个节点都带有颜色属性的二叉查找树，颜色或红色或黑色。在二叉查找树强制一般要求以外，对于任何有效的红黑树我们增加了如下的额外要求：
+
+- 性质 1. 节点是红色或黑色。
+
+- 性质 2. 根节点是黑色。
+
+- 性质 3. 每个叶节点（NIL 节点，空节点）是黑色的。
+
+- 性质 4. 每个红色节点的两个子节点都是黑色。(从每个叶子到根的所有路径上不能有两个连续的红色节点)
+
+- 性质 5. 从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点。
+
+关键性质：从根到叶子的最长的可能路径不多于最短的可能路径的两倍长。结果是这个树大致上是平衡的。因为操作比如插入、删除和查找某个值的最坏情况时间都要求与树的高度成比例，这个在高度上的理论上限允许红黑树在最坏情况下都是高效的，而不同于普通的二叉查找树。
+
+### 红黑树与其他数据结构的对比
+
+#### 1. 与二叉树对比
+
+​    二叉树没有自平衡机制，可能导致树的不平衡。例如，当大量插入有序数据时，二叉树可能会变得线性化，结构不平衡。而红黑树通过节点的颜色标记和旋转操作来保持平衡。红黑树中的每个节点非红即黑，根节点总是黑色的，红色节点的两个子节点必须是黑色的，从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点。这些规则确保了红黑树在插入和删除节点时能够保持相对平衡，避免出现极端不平衡的情况。
+
+#### 2. 与 AVL 树对比
+
+​    AVL 树对平衡性要求更高，在任何节点的左右子树高度差不超过 1。这使得 AVL 树在插入和删除操作时的性能开销较大，因为需要频繁地进行旋转操作来维持平衡。而红黑树更常用于各种常规应用，在插入和删除操作中具有较好的平均和最坏情况时间复杂度。红黑树是一种弱平衡二叉树，它不要求像 AVL 树那样严格的平衡条件，但通过颜色标记和旋转操作，也能保证树的大致平衡，同时减少了旋转操作的次数，提高了性能。
+
+#### 3. 与 B 树和 B + 树对比
+
+​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
 
 
+## <unordered_set>
+提供了一种基于哈希表的容器，用于存储唯一的元素集合。
 
+与 set 不同，unordered_set 不保证元素的排序，但通常提供更快的查找、插入和删除操作。
 
+unordered_set 是一个模板类，其定义如下：
+```cpp
+#include <unordered_set>
 
+std::unordered_set<Key, Hash = std::hash<Key>, Pred = std::equal_to<Key>, Alloc = std::allocator<Key>>
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- Key 是存储在 unordered_set 中的元素类型。
+- Hash 是一个函数或函数对象，用于生成元素的哈希值，默认为 std::hash<Key>。
+- Pred 是一个二元谓词，用于比较两个元素是否相等，默认为 std::equal_to<Key>。
+- Alloc 是分配器类型，用于管理内存分配，默认为 std::allocator<Key>。
 
 
 
@@ -6542,47 +6898,6 @@ private:
 
  这里的weak_ptr就不涉及RAII，不参与资源管理，从根源上杜绝了这个问题
 
-## 红黑树
-
-红黑树是一种自平衡二叉查找树。红黑树的特点如下：
-
-- 每个节点非红即黑。
-
-- 根节点总是黑色的。
-
-- 每个叶子节点都是黑色的空节点（NIL 节点）。
-
-- 如果节点是红色的，则它的子节点必须是黑色的（反之不一定），通常这条规则也叫不会有连续的红色节点。
-
-- 从根节点到叶节点或空子节点的每条路径，必须包含相同数目的黑色节点（即相同的黑色高度）。
-
-红黑树是每个节点都带有颜色属性的二叉查找树，颜色或红色或黑色。在二叉查找树强制一般要求以外，对于任何有效的红黑树我们增加了如下的额外要求：
-
-- 性质 1. 节点是红色或黑色。
-
-- 性质 2. 根节点是黑色。
-
-- 性质 3. 每个叶节点（NIL 节点，空节点）是黑色的。
-
-- 性质 4. 每个红色节点的两个子节点都是黑色。(从每个叶子到根的所有路径上不能有两个连续的红色节点)
-
-- 性质 5. 从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点。
-
-关键性质：从根到叶子的最长的可能路径不多于最短的可能路径的两倍长。结果是这个树大致上是平衡的。因为操作比如插入、删除和查找某个值的最坏情况时间都要求与树的高度成比例，这个在高度上的理论上限允许红黑树在最坏情况下都是高效的，而不同于普通的二叉查找树。
-
-### 红黑树与其他数据结构的对比
-
-#### 1. 与二叉树对比
-
-​    二叉树没有自平衡机制，可能导致树的不平衡。例如，当大量插入有序数据时，二叉树可能会变得线性化，结构不平衡。而红黑树通过节点的颜色标记和旋转操作来保持平衡。红黑树中的每个节点非红即黑，根节点总是黑色的，红色节点的两个子节点必须是黑色的，从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点。这些规则确保了红黑树在插入和删除节点时能够保持相对平衡，避免出现极端不平衡的情况。
-
-#### 2. 与 AVL 树对比
-
-​    AVL 树对平衡性要求更高，在任何节点的左右子树高度差不超过 1。这使得 AVL 树在插入和删除操作时的性能开销较大，因为需要频繁地进行旋转操作来维持平衡。而红黑树更常用于各种常规应用，在插入和删除操作中具有较好的平均和最坏情况时间复杂度。红黑树是一种弱平衡二叉树，它不要求像 AVL 树那样严格的平衡条件，但通过颜色标记和旋转操作，也能保证树的大致平衡，同时减少了旋转操作的次数，提高了性能。
-
-#### 3. 与 B 树和 B + 树对比
-
-​    B 树和 B + 树适用于处理大规模数据和磁盘存储的情况。B 树是一种多路搜索树，每个节点可以包含多个键值对，通过分裂和合并节点来维持平衡。B + 树在 B 树的基础上进行了改进，非叶子节点只存储索引关键字数据，叶子节点数据之间通过双向链表链接，方便范围检索。而红黑树适用于内存中的数据结构。红黑树是一种二叉查找树，通过颜色标记和旋转操作来保持平衡，适用于内存中数据的快速查找、插入和删除操作。它的高度相对较低，能够在 O (logN) 的时间复杂度内完成这些操作。
 
 
 
