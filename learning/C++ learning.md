@@ -6444,18 +6444,466 @@ std::unordered_set<Key, Hash = std::hash<Key>, Pred = std::equal_to<Key>, Alloc 
 - Pred 是一个二元谓词，用于比较两个元素是否相等，默认为 std::equal_to<Key>。
 - Alloc 是分配器类型，用于管理内存分配，默认为 std::allocator<Key>。
 
+```cpp
+#include <iostream>
+#include <unordered_set>
+
+int main() {
+    // 创建一个整数类型的 unordered_set
+    std::unordered_set<int> uset;
+
+    // 插入元素
+    uset.insert(10);
+    uset.insert(20);
+    uset.insert(30);
+
+    // 打印 unordered_set 中的元素
+    std::cout << "Elements in uset: ";
+    for (int elem : uset) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
+
+    // 查找元素
+    auto it = uset.find(20);
+    if (it != uset.end()) {
+        std::cout << "Element 20 found in uset." << std::endl;
+    } else {
+        std::cout << "Element 20 not found in uset." << std::endl;
+    }
+
+    // 删除元素
+    uset.erase(20);
+    std::cout << "After erasing 20, elements in uset: ";
+    for (int elem : uset) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
+
+    // 检查大小和是否为空
+    std::cout << "Size of uset: " << uset.size() << std::endl;
+    std::cout << "Is uset empty? " << (uset.empty() ? "Yes" : "No") << std::endl;
+
+    // 清空 unordered_set
+    uset.clear();
+    std::cout << "After clearing, is uset empty? " << (uset.empty() ? "Yes" : "No") << std::endl;
+
+    return 0;
+}
+```
+
+## <map>
+提供了一种关联容器，用于存储键值对（key-value pairs）。
+
+map 容器中的元素是按照键的顺序自动排序的，这使得它非常适合需要快速查找和有序数据的场景。
+
+定义和特性：
+
+- 键值对：map 存储的是键值对，其中每个键都是唯一的。
+- 排序：map 中的元素按照键的顺序自动排序，通常是升序。
+- 唯一性：每个键在 map 中只能出现一次。
+- 双向迭代器：map 提供了双向迭代器，可以向前和向后遍历元素。
+
+创建一个 map 来存储员工的姓名和他们的年龄，并遍历这个 map 来打印每个员工的姓名和年龄：
+```cpp
+#include <iostream>#include <map>
+#include <string>
+
+int main() {
+    // 创建一个 map 容器，存储员工的姓名和年龄
+    std::map<std::string, int> employees;
+
+    // 插入员工信息
+    employees["Alice"] = 30;
+    employees["Bob"] = 25;
+    employees["Charlie"] = 35;
+
+    // 遍历 map 并打印员工信息
+    for (std::map<std::string, int>::iterator it = employees.begin(); it != employees.end(); ++it) {
+        std::cout << it->first << " is " << it->second << " years old." << std::endl;
+    }
+
+    return 0;
+}
+```
+
+C++11 及以上标准，遍历部分可以简化为范围 for 循环，代码更简洁：
+```cpp
+for (auto &p : m) {
+    std::cout << p.first << " : " << p.second << std::endl;
+}
+```
+
+实例：
+```cpp
+#include <iostream>
+#include <map>
+#include <string>
+
+int main() {
+    std::map<std::string, int> scores;
+
+    // 插入
+    scores["Alice"] = 90;
+    scores["Bob"] = 85;
+    scores.insert({"Charlie", 92});
+
+    // 遍历
+    for (auto &p : scores) {
+        std::cout << p.first << " => " << p.second << std::endl;
+    }
+
+    // 查找
+    auto it = scores.find("Bob");
+    if (it != scores.end()) {
+        std::cout << "Bob's score: " << it->second << std::endl;
+    }
+
+    // 删除
+    scores.erase("Alice");
+
+    std::cout << "Size: " << scores.size() << std::endl;
+
+    return 0;
+}
+```
+```cpp
+#include <iostream>
+#include <map>
+#include <string>
+
+int main() {
+    std::map<std::string, int> scores;
+
+    // 插入
+    scores["Alice"] = 90;
+    scores["Bob"] = 85;
+    scores.insert({"Charlie", 92});
+
+    // 遍历
+    for (auto &p : scores) {
+        std::cout << p.first << " => " << p.second << std::endl;
+    }
+
+    // 查找
+    auto it = scores.find("Bob");
+    if (it != scores.end()) {
+        std::cout << "Bob's score: " << it->second << std::endl;
+    }
+
+    // 删除
+    scores.erase("Alice");
+
+    std::cout << "Size: " << scores.size() << std::endl;
+
+    return 0;
+}
+```
+
+## <unordered_map>
+与 std::map 不同，unordered_map 不保证元素的排序，但通常提供更快的查找速度。
+
+unordered_map 是一个关联容器，它存储了键值对（key-value pairs），其中每个键（key）都是唯一的。unordered_map 使用哈希表来存储元素，这使得它在查找、插入和删除操作中具有平均常数时间复杂度。
+
+可以以多种方式构造：
+```cpp
+// 默认构造
+std::unordered_map<int, std::string> myMap;
+
+// 构造并初始化
+std::unordered_map<int, std::string> myMap = {{1, "one"}, {2, "two"}};
+
+// 构造并指定初始容量
+std::unordered_map<int, std::string> myMap(10);
+
+// 构造并复制另一个 unordered_map
+std::unordered_map<int, std::string> anotherMap = myMap;
+```
+
+实例：
+```cpp
+#include <iostream>
+#include <unordered_map>
+
+int main() {
+    // 创建一个 unordered_map，键为 int，值为 string
+    std::unordered_map<int, std::string> myMap;
+
+    // 插入一些键值对
+    myMap[1] = "one";
+    myMap[2] = "two";
+    myMap[3] = "three";
+
+    // 打印所有元素
+    for (const auto& pair : myMap) {
+        std::cout << "Key: " << pair.first << ", Value: " << pair.second << std::endl;
+    }
+
+    // 访问特定键的值
+    std::cout << "Value for key 2: " << myMap[2] << std::endl;
+
+    // 删除键为1的元素
+    myMap.erase(1);
+
+    // 再次打印所有元素
+    std::cout << "After erasing key 1:" << std::endl;
+    for (const auto& pair : myMap) {
+        std::cout << "Key: " << pair.first << ", Value: " << pair.second << std::endl;
+    }
+
+    return 0;
+}
+```
+
+注意事项
+
+- unordered_map 不保证元素的顺序，因此元素的迭代顺序可能在不同的运行中不同。
+- 哈希表的性能依赖于良好的哈希函数，以避免过多的哈希冲突。
+- 与 std::map 相比，unordered_map 在元素数量较少时可能占用更多的内存。
+
+## <bitset>
+位集合是一个由位（bit）组成的数组，每个位可以是 0 或 1。
+
+<bitset> 提供了一种高效的方式来存储和操作二进制数据，特别适合需要位级操作的场景，如标志位管理、位掩码操作等。
+
+bitset 是一个模板类，其模板参数定义了位集合的大小。例如，bitset<32> 表示一个包含 32 位的位集合。
 
 
+## <algorithm>
+### 排序算法
+```cpp
+sort(container.begin(), container.end(), compare_function);
+```
+
+```cpp
+#include <algorithm>
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<int> numbers = {5, 2, 9, 1, 5, 6};
+    std::sort(numbers.begin(), numbers.end());
+
+    for (int num : numbers) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+```
+
+std::partial_sort: 对部分区间排序，前 n 个元素为有序。
+```cpp
+std::partial_sort(vec.begin(), vec.begin() + 3, vec.end());
+```
+
+std::stable_sort: 稳定排序，保留相等元素的相对顺序。
+```cpp
+std::stable_sort(vec.begin(), vec.end());
+```
+
+### 搜索算法
+在容器中查找与给定值匹配的第一个元素。
+```cpp
+auto it = find(container.begin(), container.end(), value);
+```
+如果找到，it 将指向匹配的元素；如果没有找到，it 将等于 container.end()。
+```cpp
+#include <algorithm>
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<int> numbers = {1, 2, 3, 4, 5};
+    auto it = std::find(numbers.begin(), numbers.end(), 3);
+
+    if (it != numbers.end()) {
+        std::cout << "Found: " << *it << std::endl;
+    } else {
+        std::cout << "Value not found." << std::endl;
+    }
+
+    return 0;
+}
+```
+
+std::binary_search: 对有序区间进行二分查找。
+```cpp
+std::sort(vec.begin(), vec.end());  // 先排序
+bool found = std::binary_search(vec.begin(), vec.end(), 4);
+```
+
+std::find_if: 查找第一个满足特定条件的元素。
+```cpp
+auto it = std::find_if(vec.begin(), vec.end(), [](int x) { return x > 3; });
+```
+
+### 复制算法
+将一个范围内的元素复制到另一个容器或数组。
+```cpp
+#include <algorithm>
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<int> source = {1, 2, 3, 4, 5};
+    int destination[5];
+    std::copy(source.begin(), source.end(), destination);
+
+    for (int i = 0; i < 5; ++i) {
+        std::cout << destination[i] << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+```
+
+### 比较算法
+比较两个容器或两个范围内的元素是否相等。
+```cpp
+bool result = equal(first1, last1, first2);
+
+或
+
+bool result = equal(first1, last1, first2, compare_function);
+```
+```cpp
+#include <algorithm>
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<int> v1 = {1, 2, 3, 4, 5};
+    std::vector<int> v2 = {1, 2, 3, 4, 5};
+
+    bool are_equal = std::equal(v1.begin(), v1.end(), v2.begin());
+    std::cout << (are_equal ? "Vectors are equal." : "Vectors are not equal.") << std::endl;
+
+    return 0;
+}
+```
+```cpp
+#include <algorithm>
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<int> v1 = {1, 2, 3, 4, 5};
+    std::vector<int> v2 = {1, 2, 3, 4, 5, 6};
+
+    bool are_equal = std::equal(v1.begin(), v1.end(), v2.begin());
+    std::cout << (are_equal ? "Vectors are equal." : "Vectors are not equal.") << std::endl;
+
+    return 0;
+}
+```
+以上两段代码输出一致，所以要比较两个容器（如 std::vector）是否 完全相同（即大小相同且每个元素都相同），std::equal 本身并不足够。
 
 
+### 修改算法
+std::reverse: 反转区间内的元素顺序。
+```cpp
+std::reverse(vec.begin(), vec.end());
+```
 
+std::fill: 将指定区间内的所有元素赋值为某个值。
+```cpp
+std::fill(vec.begin(), vec.end(), 0);  // 所有元素设为 0
+```
 
+std::replace: 将区间内的某个值替换为另一个值。
+```cpp
+std::replace(vec.begin(), vec.end(), 1, 99);  // 将所有 1 替换为 99
+```
 
+std::copy: 将区间内的元素复制到另一个区间。
+```cpp
+std::vector<int> vec2(6);
+std::copy(vec.begin(), vec.end(), vec2.begin());
+```
 
+### 排列算法
+std::next_permutation: 生成字典序的下一个排列，如果没有下一个排列则返回 false。
+```cpp
+std::vector<int> vec = {1, 2, 3};
+do {
+    for (int n : vec) std::cout << n << " ";
+    std::cout << std::endl;
+} while (std::next_permutation(vec.begin(), vec.end()));
+```
 
+std::prev_permutation: 生成字典序的上一个排列。
+```cpp
+std::prev_permutation(vec.begin(), vec.end());
+```
 
+### 归并算法
+std::merge: 将两个有序区间合并到一个有序区间。
+```cpp
+std::vector<int> vec1 = {1, 3, 5};
+std::vector<int> vec2 = {2, 4, 6};
+std::vector<int> result(6);
+std::merge(vec1.begin(), vec1.end(), vec2.begin(), vec2.end(), result.begin());
+```
 
+std::inplace_merge: 在单个区间中合并两个有序子区间。
+```cpp
+std::inplace_merge(vec.begin(), middle, vec.end());
+```
 
+### 集合算法
+std::set_union: 计算两个有序集合的并集。
+```cpp
+std::vector<int> result(10);
+auto it = std::set_union(vec1.begin(), vec1.end(), vec2.begin(), vec2.end(), result.begin());
+result.resize(it - result.begin());
+```
+
+std::set_intersection: 计算两个有序集合的交集。
+```cpp
+auto it = std::set_intersection(vec1.begin(), vec1.end(), vec2.begin(), vec2.end(), result.begin());
+result.resize(it - result.begin());
+```
+
+std::set_difference: 计算集合的差集。
+```cpp
+auto it = std::set_difference(vec1.begin(), vec1.end(), vec2.begin(), vec2.end(), result.begin());
+result.resize(it - result.begin());
+```
+
+### 其他有用算法
+std::accumulate（需要 <numeric> 库）：计算范围内元素的累计和。
+```cpp
+#include <numeric>
+int sum = std::accumulate(vec.begin(), vec.end(), 0);
+```
+
+std::for_each: 对区间内的每个元素执行操作。
+```cpp
+std::for_each(vec.begin(), vec.end(), [](int& x) { x += 1; });
+```
+
+std::min_element 和 std::max_element: 查找区间内的最小值和最大值。
+```cpp
+auto min_it = std::min_element(vec.begin(), vec.end());
+auto max_it = std::max_element(vec.begin(), vec.end());
+```
+
+## <functional>
+提供了一组函数模板，这些模板允许我们使用函数对象（function objects）作为参数传递给算法，或者作为算法的返回值。函数对象是那些重载了 operator() 的对象，它们可以像普通函数一样被调用。
+
+在 C++ 中，函数对象是一种特殊的类，它重载了 operator() 来允许对象像函数一样被调用。这使得我们可以将行为作为对象传递，增加了代码的灵活性和可重用性。
+
+常用的函数对象，包括：
+
+- std::function：一个通用的多态函数封装器。
+- std::bind：用于绑定函数的参数。
+- std::plus、std::minus、std::multiplies、std::divides、std::modulus：基本的算术操作。
+- std::equal_to、std::not_equal_to、std::greater、std::less、std::greater_equal、std::less_equal：比较操作。
+- std::unary_negate、std::binary_negate：逻辑否定操作。
+- std::logical_and、std::logical_or、std::logical_not：逻辑操作。
 
 
 
@@ -6897,6 +7345,7 @@ private:
 ```
 
  这里的weak_ptr就不涉及RAII，不参与资源管理，从根源上杜绝了这个问题
+
 
 
 
